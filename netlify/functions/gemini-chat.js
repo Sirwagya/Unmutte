@@ -1,11 +1,25 @@
 // Netlify Function: gemini-chat
-// Proxies chat requests to Google Gemini API without exposing the API key to the client.
+// Proxies chat requests to an LLM provider without exposing the API key to the client.
+// Supports:
+// - Google Gemini (default) via Generative Language API
+// - NVIDIA API (Nemotron, Llama, etc.) via OpenAI-compatible Chat Completions
 
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
+const NVIDIA_CHAT_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
+const NVIDIA_PREFERRED_MODELS = [
+  'meta/llama-3.1-8b-instruct',
+  'mistralai/mistral-large-2-instruct',
+  'qwen/qwen2.5-7b-instruct',
+  'google/gemma-2-9b-it',
+];
 // Prefer widely available models first; allow override via GEMINI_MODEL
 const PREFERRED_MODELS = [
+  // Prefer newest, highly available stable models first
+  'gemini-2.5-flash',
+  'gemini-2.5-pro',
   'gemini-2.0-flash',
   'gemini-2.0-flash-lite',
+  // Older families as fallback
   'gemini-1.5-flash',
   'gemini-1.5-flash-latest',
   'gemini-1.5-pro',
@@ -50,10 +64,17 @@ exports.handler = async function (event) {
     return jsonResponse(405, { error: 'Method Not Allowed' });
   }
 
-  // Sanitize API key and model envs (strip quotes/whitespace)
-  const apiKey = (process.env.GEMINI_API_KEY || "").trim().replace(/^['"]|['"]$/g, "");
-  if (!apiKey) {
+  // Provider selection
+  const provider = (process.env.AI_PROVIDER || '').trim().toLowerCase();
+  const usingNvidia = provider === 'nvidia' || !!(process.env.NVIDIA_API_KEY);
+  // Sanitize API keys and model envs (strip quotes/whitespace)
+  const geminiApiKey = (process.env.GEMINI_API_KEY || "").trim().replace(/^['"]|['"]$/g, "");
+  const nvidiaApiKey = (process.env.NVIDIA_API_KEY || "").trim().replace(/^['"]|['"]$/g, "");
+  if (!usingNvidia && !geminiApiKey) {
     return jsonResponse(500, { error: 'Server misconfiguration: GEMINI_API_KEY not set' });
+  }
+  if (usingNvidia && !nvidiaApiKey) {
+    return jsonResponse(500, { error: 'Server misconfiguration: NVIDIA_API_KEY not set' });
   }
 
   try {
@@ -62,27 +83,81 @@ exports.handler = async function (event) {
       return jsonResponse(400, { error: 'Missing required field: prompt' });
     }
 
-    // Build contents: optionally include a short conversational history, then the new user prompt
-  const contents = [];
+    // Build request payloads for providers from history + prompt
+    // Our history format: [{ role: 'user'|'model', text: string }]
+    // Gemini 'contents' format; NVIDIA uses OpenAI-style 'messages'.
+    const contents = [];
+    const messages = [];
+    // Optional system prompt for NVIDIA
+    const systemPrompt = process.env.AI_SYSTEM_PROMPT || 'You are a helpful, concise assistant for the Unmutte app.';
+    messages.push({ role: 'system', content: systemPrompt });
     if (Array.isArray(history)) {
-      // history expects: [{ role: 'user'|'model', text: string }]
       for (const item of history.slice(-6)) { // limit to last 6 turns
+        const text = String(item.text || '');
+        // Gemini
         contents.push({
           role: item.role === 'model' ? 'model' : 'user',
-          parts: [{ text: String(item.text || '') }],
+          parts: [{ text }],
         });
+        // NVIDIA (assistant instead of model)
+        messages.push({ role: item.role === 'model' ? 'assistant' : 'user', content: text });
       }
     }
     contents.push({ role: 'user', parts: [{ text: prompt }] });
+    messages.push({ role: 'user', content: prompt });
 
-    // Determine available models dynamically and pick best supported for generateContent
+    // If using NVIDIA, short-circuit to NVIDIA API
+    if (usingNvidia) {
+      const overrideNvidiaModel = (process.env.NVIDIA_MODEL || process.env.NIM_MODEL || '').trim().replace(/^['"]|['"]$/g, '');
+      const tryList = [overrideNvidiaModel, ...NVIDIA_PREFERRED_MODELS].filter(Boolean);
+      let lastErr = null;
+      for (const nvidiaModel of tryList) {
+        try {
+          const resp = await fetch(NVIDIA_CHAT_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${nvidiaApiKey}`,
+            },
+            body: JSON.stringify({ model: nvidiaModel, messages, temperature: 0.7 }),
+          });
+          if (!resp.ok) {
+            const errText = await resp.text().catch(() => '');
+            let errJson; try { errJson = JSON.parse(errText); } catch {}
+            const detail = errJson?.error?.message || errJson?.message || errText || 'NVIDIA API error';
+            lastErr = { status: resp.status, detail, model: nvidiaModel };
+            // 404 Not Found for function/model on account: try next model
+            if (resp.status === 404 || resp.status === 403) continue;
+            // Other errors: break
+            break;
+          }
+          const data = await resp.json();
+          const reply = data?.choices?.[0]?.message?.content || '';
+          return jsonResponse(200, { text: reply, raw: data, model: nvidiaModel, provider: 'nvidia' });
+        } catch (e) {
+          lastErr = { status: 502, detail: String(e?.message || e), model: nvidiaModel };
+          // Try next
+          continue;
+        }
+      }
+      return jsonResponse(lastErr?.status || 502, { error: 'NVIDIA API error', detail: lastErr?.detail || 'All NVIDIA model attempts failed', provider: 'nvidia', tried: tryList });
+    }
+
+    // Determine available Gemini models dynamically and pick best supported for generateContent
     let lastError = null;
     const overrideModel = (process.env.GEMINI_MODEL || '').trim().replace(/^['"]|['"]$/g, '');
     let modelsToTry = [];
     try {
-      const models = await listModels(apiKey);
-      const byName = new Set(models.map(m => m.name));
-      const supportsGen = new Set(models.filter(m => (m.supportedGenerationMethods || []).includes('generateContent')).map(m => m.name));
+      const models = await listModels(geminiApiKey);
+      // Normalize model names. ListModels returns names like "models/gemini-2.5-flash";
+      // strip the leading "models/" so we can request the per-model endpoint as
+      // /v1beta/models/{modelName}:generateContent where modelName should be e.g. "gemini-2.5-flash".
+      const normalize = (n) => String(n || '').replace(/^models\//, '');
+      const byName = new Set(models.map(m => normalize(m.name)));
+      const supportsGen = new Set(models
+        .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+        .map(m => normalize(m.name))
+      );
 
       // Build an ordered list: override (if present & supported), then preferred intersecting supported, then any supported
       if (overrideModel && supportsGen.has(overrideModel)) modelsToTry.push(overrideModel);
@@ -104,7 +179,7 @@ exports.handler = async function (event) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-goog-api-key': apiKey,
+          'X-goog-api-key': geminiApiKey,
         },
         body: JSON.stringify({ contents }),
       });

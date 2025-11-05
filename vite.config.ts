@@ -56,5 +56,14 @@
     server: {
       port: 3000,
       open: true,
+      proxy: {
+        // Allow using the Vite URL (http://localhost:3000) while Netlify Dev runs on 8888
+        // Proxy /api/chat to the Netlify Function locally
+        '/api/chat': {
+          target: 'http://localhost:8889',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/chat$/, '/.netlify/functions/gemini-chat'),
+        },
+      },
     },
   });

@@ -45,15 +45,25 @@
 
   This serves the built site locally (default http://localhost:4173). Useful to validate the production bundle.
 
-  ## AI Chat (Gemini) setup
+  ## AI Chat providers
 
-  The AI chat uses a Netlify Function that proxies requests to Google Gemini so your API key stays server-side.
+  The AI chat uses a Netlify Function (`/.netlify/functions/gemini-chat`) that proxies requests to your chosen provider so API keys stay server-side.
 
-  1) Set the environment variable in Netlify:
-    - Site settings → Build & deploy → Environment → Add variable
-    - `GEMINI_API_KEY = <your_api_key>`
-  2) Optional for local dev: copy `.env.example` to `.env` and fill `GEMINI_API_KEY`.
-  3) The frontend posts to `/api/chat`, which is redirected to the function in `netlify.toml`.
+  Supported providers:
+  - Google Gemini (default)
+  - NVIDIA API (Nemotron, etc.) via OpenAI-compatible Chat Completions
+
+  Configure via environment variables (either in `.env` for local dev or in Netlify site settings):
+
+  - `AI_PROVIDER` — `gemini` (default) or `nvidia`
+  - If `gemini`:
+    - `GEMINI_API_KEY=<your_gemini_key>`
+    - Optional: `GEMINI_MODEL=gemini-2.5-flash`
+  - If `nvidia`:
+    - `NVIDIA_API_KEY=<your_nvidia_key>`
+    - Optional: `NVIDIA_MODEL=nvidia/nemotron-4-9b-instruct`
+
+  The frontend posts to `/api/chat`, which is redirected to the function in `netlify.toml`.
 
   ## Requirements
 

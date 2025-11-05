@@ -188,13 +188,16 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
       const detailText = await res.text().catch(() => '');
       let detailJson: any = undefined;
       try { detailJson = JSON.parse(detailText); } catch {}
-      const detail = detailJson?.error || detailJson?.detail || detailText || 'Unknown error';
+      const apiError = detailJson?.error;
+      const detail = apiError?.message || detailJson?.detail || detailText || 'Unknown error';
       const err = new Error(`Gemini API error: ${res.status} ${detail}`);
       // Attach hints for the UI layer
       // @ts-expect-error augment
-      err.__status = res.status;
+      err.__status = apiError?.code || res.status;
       // @ts-expect-error augment
       err.__detail = detail;
+      // @ts-expect-error augment
+      err.__statusText = apiError?.status;
       throw err;
     }
     const data = await res.json();
@@ -234,6 +237,8 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
       const detail = String(err?.__detail || '');
       if (detail.includes('GEMINI_API_KEY')) {
         toast.error('AI response failed', { description: 'Server is missing GEMINI_API_KEY. Set it in Netlify env and redeploy.' });
+      } else if (/invalid api key|api key not valid|invalid key/i.test(detail)) {
+        toast.error('Invalid API key', { description: 'Check .env and Netlify env. Remove quotes and restart dev.' });
       } else if (status === 404 || status === 400) {
         toast.error('AI model not available', { description: 'Falling back to local reply. You can set GEMINI_MODEL to a supported model.' });
       } else if (status === 403) {

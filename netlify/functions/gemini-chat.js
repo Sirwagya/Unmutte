@@ -32,7 +32,8 @@ exports.handler = async function (event) {
     return jsonResponse(405, { error: 'Method Not Allowed' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  // Sanitize API key and model envs (strip quotes/whitespace)
+  const apiKey = (process.env.GEMINI_API_KEY || "").trim().replace(/^['"]|['"]$/g, "");
   if (!apiKey) {
     return jsonResponse(500, { error: 'Server misconfiguration: GEMINI_API_KEY not set' });
   }
@@ -58,7 +59,11 @@ exports.handler = async function (event) {
 
     // Try preferred models in order
     let lastError = null;
-    for (const model of DEFAULT_MODELS) {
+    // Allow sanitized override of first model
+    const firstModel = (process.env.GEMINI_MODEL || '').trim().replace(/^['"]|['"]$/g, '') || DEFAULT_MODELS[0];
+    const modelsToTry = [firstModel, ...DEFAULT_MODELS.filter(m => m !== firstModel)];
+
+    for (const model of modelsToTry) {
       const url = `${BASE_URL}/${encodeURIComponent(model)}:generateContent`;
       const resp = await fetch(url, {
         method: 'POST',
@@ -70,8 +75,13 @@ exports.handler = async function (event) {
       });
 
       if (!resp.ok) {
-        const text = await resp.text();
-        lastError = { status: resp.status, detail: text, model };
+        let payloadText = await resp.text();
+        let payloadJson = undefined;
+        try { payloadJson = JSON.parse(payloadText); } catch {}
+        const detail = payloadJson?.error?.message || payloadText;
+        const code = payloadJson?.error?.code || resp.status;
+        const statusText = payloadJson?.error?.status;
+        lastError = { status: code, detail, model, statusText };
         // If model invalid/unavailable, try the next option
         if (resp.status === 400 || resp.status === 404) continue;
         // Permission or quota issues can differ per model; try next as well
@@ -89,7 +99,8 @@ exports.handler = async function (event) {
     return jsonResponse(lastError?.status || 502, {
       error: 'Gemini API error',
       detail: lastError?.detail || 'All model attempts failed',
-      tried: DEFAULT_MODELS,
+      statusText: lastError?.statusText,
+      tried: modelsToTry,
     });
   } catch (err) {
     console.error('gemini-chat error', err);

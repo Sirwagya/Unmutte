@@ -2,9 +2,12 @@
 // Proxies chat requests to Google Gemini API without exposing the API key to the client.
 
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
+// Prefer widely available models first; allow override via GEMINI_MODEL
 const DEFAULT_MODELS = [
-  process.env.GEMINI_MODEL || 'gemini-2.0-flash',
-  'gemini-1.5-flash',
+  process.env.GEMINI_MODEL || 'gemini-1.5-flash',
+  'gemini-2.0-flash',
+  'gemini-1.5-flash-latest',
+  'gemini-1.5-pro',
 ];
 
 function jsonResponse(statusCode, body, extraHeaders = {}) {
@@ -69,8 +72,10 @@ exports.handler = async function (event) {
       if (!resp.ok) {
         const text = await resp.text();
         lastError = { status: resp.status, detail: text, model };
-        // If model not found or invalid, try the next one
+        // If model invalid/unavailable, try the next option
         if (resp.status === 400 || resp.status === 404) continue;
+        // Permission or quota issues can differ per model; try next as well
+        if (resp.status === 403) continue;
         // Other errors: break early
         break;
       }

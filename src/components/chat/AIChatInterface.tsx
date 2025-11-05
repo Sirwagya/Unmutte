@@ -236,6 +236,8 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
         toast.error('AI response failed', { description: 'Server is missing GEMINI_API_KEY. Set it in Netlify env and redeploy.' });
       } else if (status === 404 || status === 400) {
         toast.error('AI model not available', { description: 'Falling back to local reply. You can set GEMINI_MODEL to a supported model.' });
+      } else if (status === 403) {
+        toast.error('AI access denied', { description: 'Check billing/region access for your key, or try GEMINI_MODEL=gemini-1.5-flash.' });
       } else if (status === 404 && location.hostname === 'localhost') {
         toast.error('Function not found', { description: 'Run via Netlify Dev: netlify dev (to enable /api/chat locally).' });
       } else {

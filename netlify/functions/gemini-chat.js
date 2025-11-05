@@ -3,12 +3,30 @@
 
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 // Prefer widely available models first; allow override via GEMINI_MODEL
-const DEFAULT_MODELS = [
-  process.env.GEMINI_MODEL || 'gemini-1.5-flash',
+const PREFERRED_MODELS = [
   'gemini-2.0-flash',
+  'gemini-2.0-flash-lite',
+  'gemini-1.5-flash',
   'gemini-1.5-flash-latest',
   'gemini-1.5-pro',
+  'gemini-1.0-pro',
+  'gemini-pro',
+  'gemini-pro-vision',
 ];
+
+async function listModels(apiKey) {
+  const url = `${BASE_URL}`;
+  const resp = await fetch(url, {
+    method: 'GET',
+    headers: { 'X-goog-api-key': apiKey },
+  });
+  if (!resp.ok) {
+    const text = await resp.text().catch(() => '');
+    throw new Error(`ListModels failed: ${resp.status} ${text}`);
+  }
+  const data = await resp.json();
+  return Array.isArray(data?.models) ? data.models : [];
+}
 
 function jsonResponse(statusCode, body, extraHeaders = {}) {
   return {
@@ -57,11 +75,28 @@ exports.handler = async function (event) {
     }
     contents.push({ role: 'user', parts: [{ text: prompt }] });
 
-    // Try preferred models in order
+    // Determine available models dynamically and pick best supported for generateContent
     let lastError = null;
-    // Allow sanitized override of first model
-    const firstModel = (process.env.GEMINI_MODEL || '').trim().replace(/^['"]|['"]$/g, '') || DEFAULT_MODELS[0];
-    const modelsToTry = [firstModel, ...DEFAULT_MODELS.filter(m => m !== firstModel)];
+    const overrideModel = (process.env.GEMINI_MODEL || '').trim().replace(/^['"]|['"]$/g, '');
+    let modelsToTry = [];
+    try {
+      const models = await listModels(apiKey);
+      const byName = new Set(models.map(m => m.name));
+      const supportsGen = new Set(models.filter(m => (m.supportedGenerationMethods || []).includes('generateContent')).map(m => m.name));
+
+      // Build an ordered list: override (if present & supported), then preferred intersecting supported, then any supported
+      if (overrideModel && supportsGen.has(overrideModel)) modelsToTry.push(overrideModel);
+      for (const m of PREFERRED_MODELS) if (supportsGen.has(m) && !modelsToTry.includes(m)) modelsToTry.push(m);
+      for (const m of supportsGen) if (!modelsToTry.includes(m)) modelsToTry.push(m);
+
+      // Fallback if ListModels is empty or blocked
+      if (modelsToTry.length === 0) {
+        modelsToTry = [overrideModel || 'gemini-1.5-flash', ...PREFERRED_MODELS].filter(Boolean);
+      }
+    } catch (e) {
+      // If ListModels fails (some keys restrict it), fall back to preference list
+      modelsToTry = [overrideModel || 'gemini-1.5-flash', ...PREFERRED_MODELS].filter(Boolean);
+    }
 
     for (const model of modelsToTry) {
       const url = `${BASE_URL}/${encodeURIComponent(model)}:generateContent`;
@@ -92,7 +127,7 @@ exports.handler = async function (event) {
 
       const data = await resp.json();
       const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      return jsonResponse(200, { text: reply, raw: data, model });
+  return jsonResponse(200, { text: reply, raw: data, model });
     }
 
     // If we got here, all attempts failed

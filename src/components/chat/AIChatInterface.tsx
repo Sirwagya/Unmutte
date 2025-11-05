@@ -108,7 +108,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
     }
   };
 
-  // AI Response patterns
+  // Local fallback AI Response patterns (used if server call fails)
   const getAIResponse = (userMessage: string): string => {
     const lowerMessage = userMessage.toLowerCase();
 
@@ -164,7 +164,23 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
     return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
   };
 
-  const handleSendMessage = () => {
+  async function fetchGeminiResponse(prompt: string, history: Message[]): Promise<string> {
+    // Map history to minimal format for the function
+    const mapped = history.map((m) => ({ role: m.sender === 'ai' ? 'model' : 'user', text: m.text }));
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, history: mapped }),
+    });
+    if (!res.ok) {
+      const detail = await res.text().catch(() => '');
+      throw new Error(`Gemini API error: ${res.status} ${detail}`);
+    }
+    const data = await res.json();
+    return data?.text ?? '';
+  }
+
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
     // Add user message
@@ -179,18 +195,28 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate AI typing delay
-    setTimeout(() => {
+    try {
+      const replyText = await fetchGeminiResponse(userMessage.text, messages);
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        sender: "ai",
-        text: getAIResponse(inputValue),
+        sender: 'ai',
+        text: replyText || getAIResponse(userMessage.text),
         timestamp: new Date(),
       };
-
       setMessages((prev) => [...prev, aiResponse]);
+    } catch (err) {
+      console.error(err);
+      toast.error('AI response failed', { description: 'Using a local fallback reply.' });
+      const aiResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        sender: 'ai',
+        text: getAIResponse(userMessage.text),
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, aiResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 1500); // Random delay between 1-2.5s
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

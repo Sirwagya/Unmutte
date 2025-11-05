@@ -55,7 +55,8 @@
             "vite": "6.3.5"
       },
       "scripts": {
-            "dev": "vite",
+                  "dev": "vite",
+                  "dev:netlify": "netlify dev",
             "build": "vite build",
             "preview": "vite preview --port 4173"
       }

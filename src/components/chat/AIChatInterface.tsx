@@ -173,8 +173,17 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
       body: JSON.stringify({ prompt, history: mapped }),
     });
     if (!res.ok) {
-      const detail = await res.text().catch(() => '');
-      throw new Error(`Gemini API error: ${res.status} ${detail}`);
+      const detailText = await res.text().catch(() => '');
+      let detailJson: any = undefined;
+      try { detailJson = JSON.parse(detailText); } catch {}
+      const detail = detailJson?.error || detailJson?.detail || detailText || 'Unknown error';
+      const err = new Error(`Gemini API error: ${res.status} ${detail}`);
+      // Attach hints for the UI layer
+      // @ts-expect-error augment
+      err.__status = res.status;
+      // @ts-expect-error augment
+      err.__detail = detail;
+      throw err;
     }
     const data = await res.json();
     return data?.text ?? '';
@@ -207,9 +216,19 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
         timestamp: new Date(),
       };
   setMessages((prev: Message[]) => [...prev, aiResponse]);
-    } catch (err) {
-      console.error(err);
-      toast.error('AI response failed', { description: 'Using a local fallback reply.' });
+    } catch (err: any) {
+      console.error('Gemini request failed:', err?.message || err);
+      const status = err?.__status as number | undefined;
+      const detail = String(err?.__detail || '');
+      if (detail.includes('GEMINI_API_KEY')) {
+        toast.error('AI response failed', { description: 'Server is missing GEMINI_API_KEY. Set it in Netlify env and redeploy.' });
+      } else if (status === 404 || status === 400) {
+        toast.error('AI model not available', { description: 'Falling back to local reply. You can set GEMINI_MODEL to a supported model.' });
+      } else if (status === 404 && location.hostname === 'localhost') {
+        toast.error('Function not found', { description: 'Run via Netlify Dev: netlify dev (to enable /api/chat locally).' });
+      } else {
+        toast.error('AI response failed', { description: 'Using a local fallback reply.' });
+      }
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         sender: 'ai',

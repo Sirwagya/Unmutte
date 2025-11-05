@@ -1,7 +1,11 @@
 // Netlify Function: gemini-chat
 // Proxies chat requests to Google Gemini API without exposing the API key to the client.
 
-const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
+const DEFAULT_MODELS = [
+  process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+  'gemini-1.5-flash',
+];
 
 function jsonResponse(statusCode, body, extraHeaders = {}) {
   return {
@@ -37,7 +41,7 @@ exports.handler = async function (event) {
     }
 
     // Build contents: optionally include a short conversational history, then the new user prompt
-    const contents = [];
+  const contents = [];
     if (Array.isArray(history)) {
       // history expects: [{ role: 'user'|'model', text: string }]
       for (const item of history.slice(-6)) { // limit to last 6 turns
@@ -49,23 +53,39 @@ exports.handler = async function (event) {
     }
     contents.push({ role: 'user', parts: [{ text: prompt }] });
 
-    const resp = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-goog-api-key': apiKey,
-      },
-      body: JSON.stringify({ contents }),
-    });
+    // Try preferred models in order
+    let lastError = null;
+    for (const model of DEFAULT_MODELS) {
+      const url = `${BASE_URL}/${encodeURIComponent(model)}:generateContent`;
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-goog-api-key': apiKey,
+        },
+        body: JSON.stringify({ contents }),
+      });
 
-    if (!resp.ok) {
-      const text = await resp.text();
-      return jsonResponse(resp.status, { error: 'Gemini API error', detail: text });
+      if (!resp.ok) {
+        const text = await resp.text();
+        lastError = { status: resp.status, detail: text, model };
+        // If model not found or invalid, try the next one
+        if (resp.status === 400 || resp.status === 404) continue;
+        // Other errors: break early
+        break;
+      }
+
+      const data = await resp.json();
+      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      return jsonResponse(200, { text: reply, raw: data, model });
     }
 
-    const data = await resp.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    return jsonResponse(200, { text, raw: data });
+    // If we got here, all attempts failed
+    return jsonResponse(lastError?.status || 502, {
+      error: 'Gemini API error',
+      detail: lastError?.detail || 'All model attempts failed',
+      tried: DEFAULT_MODELS,
+    });
   } catch (err) {
     console.error('gemini-chat error', err);
     return jsonResponse(500, { error: 'Internal Server Error' });

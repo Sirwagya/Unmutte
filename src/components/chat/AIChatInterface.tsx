@@ -55,12 +55,19 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
 
   // Auto scroll to bottom when new messages arrive
   useEffect(() => {
+    let t: number | undefined;
     if (scrollViewportRef.current) {
-      const viewport = scrollViewportRef.current.querySelector('[data-slot="scroll-area-viewport"]');
-      if (viewport) {
-        viewport.scrollTop = viewport.scrollHeight;
-      }
+      t = window.setTimeout(() => {
+        const viewport = scrollViewportRef.current!.querySelector('[data-slot="scroll-area-viewport"]');
+        if (viewport) {
+          // Smoothly jump to bottom after render
+          viewport.scrollTop = viewport.scrollHeight;
+        }
+      }, 50);
     }
+    return () => {
+      if (t) window.clearTimeout(t);
+    };
   }, [messages, isTyping]);
 
   // Check microphone permission on mount
@@ -167,11 +174,16 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
   async function fetchGeminiResponse(prompt: string, history: Message[]): Promise<string> {
     // Map history to minimal format for the function
     const mapped = history.map((m) => ({ role: m.sender === 'ai' ? 'model' : 'user', text: m.text }));
+
+    // Timeout guard so hung requests don't block future sends
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000); // 12s
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({ prompt, history: mapped }),
-    });
+    }).finally(() => clearTimeout(timeout));
     if (!res.ok) {
       const detailText = await res.text().catch(() => '');
       let detailJson: any = undefined;
@@ -406,7 +418,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-grow p-4" ref={scrollViewportRef}>
+  <ScrollArea className="flex-grow min-h-0 p-4" ref={scrollViewportRef}>
           <div className="space-y-4">
             {messages.map((message) => (
               <motion.div

@@ -19,6 +19,16 @@
 
   Dev server runs on http://localhost:3000 (configurable in `vite.config.ts`).
 
+  If you want the AI chat to work locally (calls `/api/chat`), run the Netlify function runtime:
+
+  ```sh
+  npm run dev:netlify
+  ```
+  
+  Notes:
+  - This uses `npx netlify-cli@17.34.0` under the hood. If you see errors, use Node 18–20 (e.g. `nvm use 20`).
+  - Create `.env` from `.env.example` and set `GEMINI_API_KEY` for local function dev. Never commit real secrets.
+
   ## Build for production
 
   ```sh

@@ -25,7 +25,7 @@
   npm run build
   ```
 
-  The static files are output to the `build/` directory (see `vite.config.ts` `outDir`).
+  The static files are output to the `dist/` directory (see `vite.config.ts` `outDir`).
 
   ## Preview the production build
 
@@ -34,6 +34,16 @@
   ```
 
   This serves the built site locally (default http://localhost:4173). Useful to validate the production bundle.
+
+  ## AI Chat (Gemini) setup
+
+  The AI chat uses a Netlify Function that proxies requests to Google Gemini so your API key stays server-side.
+
+  1) Set the environment variable in Netlify:
+    - Site settings → Build & deploy → Environment → Add variable
+    - `GEMINI_API_KEY = <your_api_key>`
+  2) Optional for local dev: copy `.env.example` to `.env` and fill `GEMINI_API_KEY`.
+  3) The frontend posts to `/api/chat`, which is redirected to the function in `netlify.toml`.
 
   ## Requirements
 

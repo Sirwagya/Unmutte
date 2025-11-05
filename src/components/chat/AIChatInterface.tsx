@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, type KeyboardEvent } from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { PostSessionFeedbackModal, type FeedbackData } from "../PostSessionFeedbackModal";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface Message {
   id: string;
@@ -191,7 +191,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+  setMessages((prev: Message[]) => [...prev, userMessage]);
     setInputValue("");
     setIsTyping(true);
 
@@ -203,7 +203,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
         text: replyText || getAIResponse(userMessage.text),
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, aiResponse]);
+  setMessages((prev: Message[]) => [...prev, aiResponse]);
     } catch (err) {
       console.error(err);
       toast.error('AI response failed', { description: 'Using a local fallback reply.' });
@@ -213,13 +213,13 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
         text: getAIResponse(userMessage.text),
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, aiResponse]);
+  setMessages((prev: Message[]) => [...prev, aiResponse]);
     } finally {
       setIsTyping(false);
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();

@@ -181,7 +181,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
   }
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || isTyping || isRecording) return;
 
     // Add user message
     const userMessage: Message = {
@@ -191,12 +191,15 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
       timestamp: new Date(),
     };
 
-  setMessages((prev: Message[]) => [...prev, userMessage]);
+    // Optimistically append the user message
+    setMessages((prev: Message[]) => [...prev, userMessage]);
     setInputValue("");
     setIsTyping(true);
 
     try {
-      const replyText = await fetchGeminiResponse(userMessage.text, messages);
+      // Use up-to-date history including the user's new message
+      const recentHistory = [...messages, userMessage].slice(-10);
+      const replyText = await fetchGeminiResponse(userMessage.text, recentHistory);
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         sender: 'ai',

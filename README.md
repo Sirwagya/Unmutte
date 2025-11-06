@@ -65,6 +65,27 @@
 
   The frontend posts to `/api/chat`, which is redirected to the function in `netlify.toml`.
 
+  ### Deploying on Vercel
+
+  If you host on Vercel instead of Netlify, this project includes a Vercel Serverless Function at `api/chat.js`.
+  Requests to `/api/chat` will automatically invoke the function on Vercel.
+
+  Set these environment variables in your Vercel Project (Production and Preview as needed):
+
+  - `AI_PROVIDER` = `gemini` or `nvidia`
+  - `GEMINI_API_KEY` (when using Gemini)
+  - `GEMINI_MODEL` (optional; the function auto-discovers supported models)
+  - `NVIDIA_API_KEY` (when using NVIDIA)
+  - `NVIDIA_MODEL` (optional; the function falls back to widely-available models if restricted)
+
+  Build: `npm run build` (detected automatically)
+  Output dir: `dist` (Vite default here)
+
+  Troubleshooting on Vercel:
+  - If you see "AI model not available" in the UI, it often means `/api/chat` returned 404/400.
+    Ensure `api/chat.js` is deployed and your environment variables are configured. Check Vercel Function logs for details.
+  - Some NVIDIA models may be restricted per account/region. If you get 404/403 from NVIDIA, set `NVIDIA_MODEL=meta/llama-3.1-8b-instruct` or leave it empty to let the function try safe fallbacks.
+
   ## Requirements
 
   - Node.js 18+ recommended

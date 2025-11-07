@@ -8,8 +8,7 @@
   // Initialize analytics (safe no-op when Mixpanel token is absent)
   initAnalytics();
 
-  const viteEnv = (import.meta as unknown as { env?: { PROD?: boolean } }).env;
-  if (viteEnv?.PROD) {
+  if (import.meta.env.PROD) {
     inject();
   }
 

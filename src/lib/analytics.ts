@@ -1,50 +1,41 @@
-declare const __MIXPANEL_TOKEN__: string;
+import mixpanel from 'mixpanel-browser';
 
-declare global {
-  interface Window {
-    mixpanel?: {
-      init?: (...args: any[]) => void;
-      identify?: (...args: any[]) => void;
-      track?: (event: string, props?: Record<string, any>) => void;
-    };
-  }
-}
-
-const MIXPANEL_TOKEN = typeof __MIXPANEL_TOKEN__ !== 'undefined' ? __MIXPANEL_TOKEN__ : '';
+const MIXPANEL_TOKEN = (import.meta.env.VITE_MIXPANEL_TOKEN || '').toString().trim();
+let initialized = false;
 
 export function initAnalytics() {
-  if (!MIXPANEL_TOKEN || typeof window === 'undefined') return;
-  const instance = window.mixpanel;
-  if (!instance) return;
+  if (initialized || !MIXPANEL_TOKEN) return;
 
   try {
-    let anonId: string | null = null;
+    mixpanel.init(MIXPANEL_TOKEN, {
+      autocapture: true,
+      record_sessions_percent: 100,
+      persistence: 'localStorage',
+      ip: false, // reduce PII automatically collected
+    });
+    initialized = true;
+
     try {
-      anonId = localStorage.getItem('unmutte_anon_id');
+      let anonId = localStorage.getItem('unmutte_anon_id');
       if (!anonId) {
         anonId = `anon_${Math.random().toString(36).slice(2, 9)}`;
         localStorage.setItem('unmutte_anon_id', anonId);
       }
+      mixpanel.identify(anonId);
     } catch (storageErr) {
-      // Ignore storage errors (privacy mode, etc.)
+      // localStorage may be unavailable in some privacy contexts; ignore
     }
-
-    if (anonId && typeof instance.identify === 'function') {
-      instance.identify(anonId);
-    }
-  } catch (e) {
-    // Fail silently if Mixpanel is unavailable
+  } catch (err) {
+    // Swallow errors—if Mixpanel fails to init, the app should keep running.
   }
 }
 
 export function trackEvent(event: string, props?: Record<string, any>) {
-  if (!MIXPANEL_TOKEN || typeof window === 'undefined') return;
-  const instance = window.mixpanel;
-  if (!instance || typeof instance.track !== 'function') return;
+  if (!initialized || !MIXPANEL_TOKEN) return;
   try {
-    instance.track(event, props || {});
-  } catch (e) {
-    // ignore tracking errors
+    mixpanel.track(event, props || {});
+  } catch (err) {
+    // ignore tracking errors to avoid impacting UX
   }
 }
 

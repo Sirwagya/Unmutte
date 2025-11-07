@@ -78,6 +78,8 @@
   - `NVIDIA_API_KEY` (when using NVIDIA)
   - `NVIDIA_MODEL` (optional; the function falls back to widely-available models if restricted)
 
+  - `VITE_MIXPANEL_TOKEN` (optional) — your Mixpanel project token. Prefix with `VITE_` so the token is exposed to the client by Vite. Keep this token secret in repo; set it in Vercel/Netlify UI.
+
   Build: `npm run build` (detected automatically)
   Output dir: `dist` (Vite default here)
 

@@ -20,6 +20,7 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import { PostSessionFeedbackModal, type FeedbackData } from "../PostSessionFeedbackModal";
 import { toast } from "sonner";
+import { trackEvent } from "../../lib/analytics";
 
 interface Message {
   id: string;
@@ -171,7 +172,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
     return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
   };
 
-  async function fetchGeminiResponse(prompt: string, history: Message[]): Promise<string> {
+  async function fetchGeminiResponse(prompt: string, history: Message[]): Promise<any> {
     // Map history to minimal format for the function
     const mapped = history.map((m) => ({ role: m.sender === 'ai' ? 'model' : 'user', text: m.text }));
 
@@ -201,7 +202,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
       throw err;
     }
     const data = await res.json();
-    return data?.text ?? '';
+    return data;
   }
 
   const handleSendMessage = async () => {
@@ -221,20 +222,29 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
     setIsTyping(true);
 
     try {
+      // Track send event
+      trackEvent('chat_send', { textLength: userMessage.text.length, historyLength: messages.length });
+
       // Use up-to-date history including the user's new message
       const recentHistory = [...messages, userMessage].slice(-10);
-      const replyText = await fetchGeminiResponse(userMessage.text, recentHistory);
+      const result = await fetchGeminiResponse(userMessage.text, recentHistory);
+      // result may include { text, provider, model, raw }
+      const replyText = result?.text ?? result?.raw?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         sender: 'ai',
         text: replyText || getAIResponse(userMessage.text),
         timestamp: new Date(),
       };
-  setMessages((prev: Message[]) => [...prev, aiResponse]);
+      setMessages((prev: Message[]) => [...prev, aiResponse]);
+
+      // Track receive event with provider/model when available
+      trackEvent('chat_receive', { provider: result?.provider, model: result?.model });
     } catch (err: any) {
       console.error('Gemini request failed:', err?.message || err);
       const status = err?.__status as number | undefined;
       const detail = String(err?.__detail || '');
+      trackEvent('chat_error', { status, detail });
       if (detail.includes('GEMINI_API_KEY')) {
         toast.error('AI response failed', { description: 'Server is missing GEMINI_API_KEY. Set it in Netlify env and redeploy.' });
       } else if (/invalid api key|api key not valid|invalid key/i.test(detail)) {

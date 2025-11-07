@@ -71,6 +71,15 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
     };
   }, [messages, isTyping]);
 
+  // Track initial mount of chat interface (once)
+  useEffect(() => {
+    trackEvent('chat_interface_open', { initialMessageCount: messages.length });
+    return () => {
+      trackEvent('chat_interface_close', { finalMessageCount: messages.length });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Check microphone permission on mount
   useEffect(() => {
     checkMicrophonePermission();

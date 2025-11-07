@@ -10,6 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 import { Progress } from "./ui/progress";
+import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { 
   Zap, 
@@ -20,6 +21,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { trackEvent } from "../lib/analytics";
 
 interface SmashStressGameProps {
   isOpen: boolean;
@@ -190,6 +192,7 @@ export function SmashStressGame({
     setMisses(0);
     setTotalTaps(0);
     setBubbles([]);
+    trackEvent('smash_start');
   };
 
   const handlePlayAgain = () => {
@@ -225,6 +228,7 @@ export function SmashStressGame({
     if (onComplete) {
       onComplete(results);
     }
+    trackEvent('smash_complete', results as any);
     onClose();
   };
 
@@ -316,6 +320,7 @@ export function SmashStressGame({
                 onClick={() => {
                   setGameState("intro");
                   setBubbles([]);
+                  trackEvent('smash_skip');
                 }}
               >
                 Skip

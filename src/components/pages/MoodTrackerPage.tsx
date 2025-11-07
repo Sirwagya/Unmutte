@@ -11,6 +11,7 @@ import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import { Activity, TrendingUp, Calendar as CalendarIcon, Smile, Meh, Frown, AlertCircle, CheckCircle, Heart, Download, Upload, Zap, Users, Coffee, Moon, Droplets, Wind, Sun, CloudRain } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { toast } from "sonner@2.0.3";
+import { trackEvent } from "../../lib/analytics";
 
 interface MoodEntry {
   date: string;
@@ -98,6 +99,7 @@ export function MoodTrackerPage() {
   const handleQuickLogMood = (moodValue: number) => {
     setSelectedMood(moodValue);
     setShowDetailedForm(true);
+    trackEvent('mood_quick_select', { moodValue });
   };
 
   const handleSubmitDetailedLog = () => {
@@ -127,12 +129,14 @@ export function MoodTrackerPage() {
       updated[existingIndex] = newEntry;
       setMoodEntries(updated);
       toast.success("Mood updated for today!");
+      trackEvent('mood_log_update', { date: today, mood: selectedMood });
     } else {
       // Create new entry
       setMoodEntries([...moodEntries, newEntry].sort((a, b) => 
         new Date(b.date).getTime() - new Date(a.date).getTime()
       ));
       toast.success("Mood logged successfully!");
+      trackEvent('mood_log_create', { date: today, mood: selectedMood });
     }
     
     setTodayMood(selectedMood);
@@ -264,6 +268,7 @@ export function MoodTrackerPage() {
     link.click();
     URL.revokeObjectURL(url);
     toast.success("Mood data exported successfully!");
+    trackEvent('mood_export', { count: moodEntries.length });
   };
 
   const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -276,8 +281,10 @@ export function MoodTrackerPage() {
         const importedData = JSON.parse(e.target?.result as string);
         setMoodEntries([...importedData, ...moodEntries]);
         toast.success(`Imported ${importedData.length} mood entries successfully!`);
+        trackEvent('mood_import_success', { imported: importedData.length });
       } catch (error) {
         toast.error("Failed to import data. Please check the file format.");
+        trackEvent('mood_import_fail');
       }
     };
     reader.readAsText(file);
@@ -688,7 +695,7 @@ export function MoodTrackerPage() {
                   </CardHeader>
                   <CardContent>
                     <div className={stat.isText ? "text-xl" : "text-3xl"}>
-                      {stat.value > 0 || stat.isText ? stat.value : "—"}
+                      {stat.isText ? stat.value : (Number(stat.value) > 0 ? stat.value : "—")}
                       {!stat.isText && stat.suffix}
                     </div>
                   </CardContent>

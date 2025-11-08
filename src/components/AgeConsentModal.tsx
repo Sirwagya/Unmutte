@@ -94,7 +94,7 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
   return (
     <Dialog open={true}>
       <DialogContent 
-        className="sm:max-w-[680px] max-h-[95vh] overflow-y-auto border-0 shadow-2xl p-0 bg-white dark:bg-black" 
+        className="sm:max-w-[680px] max-h-[95vh] overflow-y-auto border-0 shadow-2xl p-0 bg-white" 
         hideClose
       >
         {/* Floating background elements */}
@@ -129,20 +129,20 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
         </div>
 
         {/* Progress bar */}
-        <div className="w-full h-1.5 bg-gray-100 dark:bg-[rgba(191,195,209,0.1)] rounded-t-3xl overflow-hidden">
+        <div className="w-full h-1.5 bg-gray-100,195,209,0.1)] rounded-t-3xl overflow-hidden">
           <motion.div 
-            className="h-full bg-gradient-to-r from-[#C9A7EB] to-[#A88FEF] dark:from-[#B088F9] dark:to-[#D8B4FE]"
+            className="h-full bg-gradient-to-r from-[#C9A7EB] to-[#A88FEF]#B088F9]#D8B4FE]"
             initial={{ width: 0 }}
             animate={{ width: "50%" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           />
         </div>
         <div className="px-2 pt-2 pb-1">
-          <p className="text-xs text-center text-gray-600 dark:text-[#BFC3D1]">Step 1 of 2 — Safety Check</p>
+          <p className="text-xs text-center text-gray-600#BFC3D1]">Step 1 of 2 — Safety Check</p>
         </div>
 
         {/* Main content card */}
-        <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-lg dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] mx-4 mb-4 p-8 relative z-10">
+        <div className="bg-white rounded-3xl shadow-lg,0,0,0.4)] mx-4 mb-4 p-8 relative z-10">
           <DialogHeader className="space-y-4">
             {/* Header with icon */}
             <motion.div 
@@ -152,7 +152,7 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
               transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
             >
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#C9A7EB] to-[#A88FEF] flex items-center justify-center shadow-lg">
-                <Heart className="w-10 h-10 text-white" fill="white" />
+                <Heart className="w-10 h-10 text-gray-900 fill-gray-900" />
               </div>
             </motion.div>
 
@@ -162,11 +162,11 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <DialogTitle className="text-center text-3xl flex items-center justify-center gap-2 flex-wrap">
-                <span className="bg-gradient-to-r from-[#7CB9E8] via-[#BFA2DB] to-[#F8C8DC] dark:from-[#BCA7FF] dark:via-[#A5B4FC] dark:to-[#F8C8DC] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#7CB9E8] via-[#BFA2DB] to-[#F8C8DC]#BCA7FF]#A5B4FC]#F8C8DC] bg-clip-text text-transparent">
                   Welcome to Unmutte — Age Verification & Consent
                 </span>
               </DialogTitle>
-              <DialogDescription id="consent-description" className="text-center text-base pt-2 text-gray-700 dark:text-[#E3E6F0]">
+              <DialogDescription id="consent-description" className="text-center text-base pt-2 text-gray-700#E3E6F0]">
                 Where Feelings Find Freedom. Let's make sure you're safe and ready before we begin.
               </DialogDescription>
             </motion.div>
@@ -176,9 +176,9 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-[#BFC3D1]"
+              className="flex items-center justify-center gap-2 text-sm text-gray-600#BFC3D1]"
             >
-              <Lock className="w-4 h-4 text-[#7CB9E8] dark:text-[#A5B4FC]" />
+              <Lock className="w-4 h-4 text-[#7CB9E8]#A5B4FC]" />
               <span>Your safety and privacy are our top priorities.</span>
             </motion.div>
           </DialogHeader>
@@ -186,7 +186,7 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
           <div className="py-8 space-y-6">
             {/* Title with tooltip */}
             <div className="flex items-center justify-center gap-2">
-              <h3 className="text-center text-gray-900 dark:text-white">Please confirm the following before continuing:</h3>
+              <h3 className="text-center text-gray-900">Please confirm the following before continuing:</h3>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -224,8 +224,8 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
                     <div 
                       className={`flex items-start gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer ${
                         isChecked 
-                          ? 'border-[#A88FEF] dark:border-[#B088F9] bg-gradient-to-br from-[#EAD9FF]/30 to-[#FFF0F5]/30 dark:from-[#B088F9]/20 dark:to-[#A5B4FC]/15 shadow-md dark:shadow-[0_4px_16px_rgba(176,136,249,0.2)]' 
-                          : 'border-gray-200 dark:border-[rgba(191,195,209,0.2)] hover:border-[#C9A7EB]/50 dark:hover:border-[#B088F9]/40 hover:bg-gradient-to-br hover:from-[#EAD9FF]/10 hover:to-[#FFF0F5]/10 dark:hover:from-[#B088F9]/10 dark:hover:to-[#A5B4FC]/5'
+                          ? 'border-[#A88FEF]#B088F9] bg-gradient-to-br from-[#EAD9FF]/30 to-[#FFF0F5]/30#B088F9]/20#A5B4FC]/15 shadow-md,136,249,0.2)]' 
+                          : 'border-gray-200,195,209,0.2)] hover:border-[#C9A7EB]/50#B088F9]/40 hover:bg-gradient-to-br hover:from-[#EAD9FF]/10 hover:to-[#FFF0F5]/10#B088F9]/10#A5B4FC]/5'
                       }`}
                       onClick={() => handleCheckChange(item.key)}
                     >
@@ -244,7 +244,7 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
                         </div>
                         <Label
                           htmlFor={item.key}
-                          className="text-sm cursor-pointer leading-relaxed pt-1 text-gray-900 dark:text-white"
+                          className="text-sm cursor-pointer leading-relaxed pt-1 text-gray-900"
                         >
                           {item.text}
                         </Label>
@@ -260,10 +260,10 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/10 border-2 border-red-200 dark:border-red-800 rounded-xl"
+                className="flex items-start gap-3 p-4 bg-red-50 border-2 border-red-200 rounded-xl"
               >
-                <Info className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
-                <p className="text-sm text-red-600 dark:text-red-400">
+                <Info className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                <p className="text-sm text-red-600">
                   Please confirm all items above to continue. Your safety is important to us.
                 </p>
               </motion.div>
@@ -274,23 +274,23 @@ export function AgeConsentModal({ onConsent }: AgeConsentModalProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1 }}
-              className="p-5 bg-gradient-to-br from-[#E8F1FF] to-[#F0F9FF] dark:from-[#1E2535]/50 dark:to-[#253545]/50 rounded-xl border-2 border-[#7CB9E8]/30 dark:border-[#A5B4FC]/30 space-y-3"
+              className="p-5 bg-gradient-to-br from-[#E8F1FF] to-[#F0F9FF]#1E2535]/50#253545]/50 rounded-xl border-2 border-[#7CB9E8]/30#A5B4FC]/30 space-y-3"
             >
               <div className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-[#7CB9E8] dark:text-[#A5B4FC]" />
-                <h4 className="text-[#7CB9E8] dark:text-[#A5B4FC]">If you are under 18 or need support, please contact:</h4>
+                <Heart className="w-5 h-5 text-[#7CB9E8]#A5B4FC]" />
+                <h4 className="text-[#7CB9E8]#A5B4FC]">If you are under 18 or need support, please contact:</h4>
               </div>
               <div className="space-y-2 ml-7">
-                <div className="flex items-center gap-2 text-sm text-gray-800 dark:text-[#E3E6F0]">
-                  <Phone className="w-4 h-4 text-[#7CB9E8] dark:text-[#A5B4FC]" />
-                  <span><strong>Childline India:</strong> <a href="tel:1098" className="text-[#7CB9E8] dark:text-[#A5B4FC] hover:underline">1098</a></span>
+                <div className="flex items-center gap-2 text-sm text-gray-800#E3E6F0]">
+                  <Phone className="w-4 h-4 text-[#7CB9E8]#A5B4FC]" />
+                  <span><strong>Childline India:</strong> <a href="tel:1098" className="text-[#7CB9E8]#A5B4FC] hover:underline">1098</a></span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-800 dark:text-[#E3E6F0]">
-                  <MessageSquare className="w-4 h-4 text-[#7CB9E8] dark:text-[#A5B4FC]" />
+                <div className="flex items-center gap-2 text-sm text-gray-800#E3E6F0]">
+                  <MessageSquare className="w-4 h-4 text-[#7CB9E8]#A5B4FC]" />
                   <span><strong>Crisis Text Line:</strong> Text HOME to 741741</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-800 dark:text-[#E3E6F0]">
-                  <User className="w-4 h-4 text-[#7CB9E8] dark:text-[#A5B4FC]" />
+                <div className="flex items-center gap-2 text-sm text-gray-800#E3E6F0]">
+                  <User className="w-4 h-4 text-[#7CB9E8]#A5B4FC]" />
                   <span>School counselor or trusted adult</span>
                 </div>
               </div>

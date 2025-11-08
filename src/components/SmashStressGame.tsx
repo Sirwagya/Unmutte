@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import GradientSparkles from "./icons/GradientSparkles";
 import { trackEvent } from "../lib/analytics";
 
 interface SmashStressGameProps {
@@ -51,6 +52,7 @@ export default function SmashStressGame({
   isHighRisk = false,
   preSessionMood = 2
 }: SmashStressGameProps) {
+  const prefersReducedMotion = useReducedMotion();
   const [gameState, setGameState] = useState<"intro" | "countdown" | "playing" | "results" | "reflection">("intro");
   const [countdown, setCountdown] = useState(3);
   const [timeLeft, setTimeLeft] = useState(30);
@@ -76,6 +78,18 @@ export default function SmashStressGame({
       trackEvent("stress_game_opened", { isHighRisk });
     }
   }, [isOpen, isHighRisk]);
+
+  // Close on Escape for accessibility
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (gameState === "countdown" && countdown > 0) {
@@ -133,9 +147,9 @@ export default function SmashStressGame({
           setBubbles(prev => [...prev, newBubble]);
         };
 
-        // Try spawning immediately and then every 700ms
+        // Try spawning immediately and then every 2000ms
         spawnBubble();
-        const interval = setInterval(spawnBubble, 700);
+        const interval = setInterval(spawnBubble, 2000);
 
         return () => clearInterval(interval);
       }, 200); // Wait longer for AnimatePresence
@@ -197,9 +211,19 @@ export default function SmashStressGame({
 
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center bg-black/95 backdrop-blur-xl"
+      className={`fixed inset-0 flex items-center justify-center transition-colors ${
+        gameState === "countdown" ? "bg-black/60 backdrop-blur-2xl" : "bg-black/80 backdrop-blur-md"
+      }`}
       style={{ zIndex: 9999 }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="stress-game-title"
+      aria-describedby="stress-game-description"
     >
+      {/* Screen reader description */}
+      <p id="stress-game-description" className="sr-only">
+        Stress relief game. Pop the emotion bubbles as they rise. Time and score update live.
+      </p>
       <AnimatePresence mode="wait" initial={false}>
         {gameState === "intro" && (
           <motion.div
@@ -207,38 +231,43 @@ export default function SmashStressGame({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="relative w-full max-w-2xl mx-4 bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8 border-2 border-purple-200 dark:border-purple-500/50"
+            className="relative w-full max-w-2xl mx-4 bg-white rounded-3xl shadow-2xl p-8 border-2 border-purple-200"
           >
             <Button
               variant="ghost"
               size="icon"
               onClick={onClose}
-              className="absolute top-4 right-4 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="absolute top-4 right-4 hover:bg-gray-100"
+              aria-label="Close stress game"
             >
-              <X className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              <X className="w-6 h-6 text-gray-700" />
             </Button>
 
             <div className="text-center space-y-6">
               <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
+                animate={prefersReducedMotion ? undefined : { rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="text-8xl mb-4"
+                className="mb-4 flex justify-center"
               >
-                😤
+                {/* Gradient icon for a friendlier look than solid black */}
+                <GradientSparkles className="w-20 h-20 drop-shadow-lg" />
               </motion.div>
 
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent">
+              <h2 id="stress-game-title" className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent">
                 Smash Your Stress
               </h2>
 
-              <p className="text-lg text-gray-900 dark:text-gray-100 max-w-md mx-auto font-medium">
+              <p className="text-lg text-gray-900 max-w-md mx-auto font-medium">
                 Pop as many stress bubbles as you can in 30 seconds!
               </p>
 
               <Button
                 onClick={handleStartGame}
                 size="lg"
-                className="mt-8 px-12 py-6 text-xl font-bold rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 hover:from-purple-700 hover:via-blue-700 hover:to-pink-700 text-white shadow-xl border-0 overflow-visible"
+                className="mt-12 w-[340px] max-w-full py-7 text-2xl font-semibold rounded-full text-white shadow-[0_20px_42px_rgba(79,70,229,0.35)] border border-indigo-500/50 hover:scale-[1.03] transition-transform mx-auto tracking-wide"
+                style={{
+                  background: "linear-gradient(90deg,#4f46e5 0%,#6366f1 40%,#8b5cf6 65%,#ec4899 100%)"
+                }}
               >
                 Start Game
               </Button>
@@ -253,6 +282,9 @@ export default function SmashStressGame({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.5 }}
             className="text-center"
+            aria-live="assertive"
+            aria-atomic="true"
+            role="status"
           >
             <motion.div
               key={countdown}
@@ -263,6 +295,7 @@ export default function SmashStressGame({
             >
               {countdown}
             </motion.div>
+            <span className="sr-only">Game starting in {countdown} seconds</span>
           </motion.div>
         )}
 
@@ -272,15 +305,37 @@ export default function SmashStressGame({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="relative w-full h-full bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
+            className="relative w-full h-full overflow-hidden"
+            style={{ backgroundColor: '#e9d5ff' }}
           >
+            {/* Blurred Background Layers */}
+            <div className="absolute inset-0" style={{ zIndex: 1 }}>
+              {/* Base solid color background */}
+              <div className="absolute inset-0" style={{ 
+                background: 'linear-gradient(135deg, #d8b4fe 0%, #bfdbfe 50%, #fbcfe8 100%)'
+              }} />
+              
+              {/* Blurred color spots overlay */}
+              <div 
+                className="absolute w-full h-full"
+                style={{
+                  background: `
+                    radial-gradient(circle 600px at 25% 25%, #a855f7, transparent 70%),
+                    radial-gradient(circle 600px at 75% 75%, #3b82f6, transparent 70%),
+                    radial-gradient(circle 600px at 50% 50%, #ec4899, transparent 70%)
+                  `,
+                  filter: 'blur(150px)',
+                  opacity: 0.6
+                }}
+              />
+            </div>
             {/* Header */}
-            <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md z-10 border-b-2 border-purple-200 dark:border-purple-500/50">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                ⏱️ {timeLeft}s
+            <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-6 bg-white/90 backdrop-blur-md border-b-2 border-purple-200" style={{ zIndex: 20 }}>
+              <div className="text-2xl font-bold text-gray-900" aria-live="polite" role="status">
+                ⏱️ <span aria-label="Time remaining">{timeLeft}</span>s
               </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                🎯 {score}
+              <div className="text-3xl font-bold text-gray-900" aria-live="polite" role="status">
+                🎯 <span aria-label="Score">{score}</span>
               </div>
               <Button
                 variant="ghost"
@@ -289,7 +344,8 @@ export default function SmashStressGame({
                   setGameState("results");
                   setBubbles([]);
                 }}
-                className="hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold"
+                className="hover:bg-gray-200 text-gray-900 font-semibold"
+                aria-label="Skip game and view results"
               >
                 Skip
               </Button>
@@ -300,14 +356,16 @@ export default function SmashStressGame({
               ref={gameAreaRef}
               onClick={handleGameAreaClick}
               className="absolute inset-0 top-20 overflow-hidden cursor-crosshair"
-              style={{ zIndex: 1 }}
+              style={{ zIndex: 10 }}
+              role="region"
+              aria-label="Stress relief game area"
             >
               {/* Bubbles */}
               {bubbles.map((bubble) => (
                 <button
                   key={bubble.id}
                   onClick={(e) => handleBubbleClick(e, bubble.id)}
-                  className="transition-transform hover:scale-110 active:scale-95"
+                  className="transition-transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                   style={{
                     position: "absolute",
                     left: `${bubble.x}px`,
@@ -319,13 +377,16 @@ export default function SmashStressGame({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: `${bubble.size * 0.5}px`,
+                    fontSize: `${bubble.size * 0.6}px`,
                     cursor: "pointer",
-                    boxShadow: `0 0 20px ${bubble.color}aa`,
-                    border: "4px solid rgba(255, 255, 255, 0.9)",
+                    boxShadow: `0 4px 20px ${bubble.color}dd, 0 0 40px ${bubble.color}88, inset 0 2px 10px rgba(255,255,255,0.3)`,
+                    border: "5px solid rgba(255, 255, 255, 0.95)",
                     zIndex: 100,
                     pointerEvents: "auto",
+                    textShadow: "0 2px 4px rgba(0,0,0,0.3), 0 0 8px rgba(255,255,255,0.5)",
+                    filter: "contrast(1.2) saturate(1.3)",
                   }}
+                  aria-label={`Pop ${bubble.label} bubble`}
                 >
                   {bubble.emoji}
                 </button>
@@ -340,27 +401,27 @@ export default function SmashStressGame({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="relative w-full max-w-2xl mx-4 bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8 border-2 border-purple-200 dark:border-purple-500/50"
+            className="relative w-full max-w-2xl mx-4 bg-white rounded-3xl shadow-2xl p-8 border-2 border-purple-200"
           >
             <div className="text-center space-y-6">
               <div className="text-8xl mb-4">🎉</div>
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Great Job!</h2>
+              <h2 className="text-4xl font-bold text-gray-900">Great Job!</h2>
 
               <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-                <div className="bg-purple-50 dark:bg-gray-800 rounded-xl p-6 border border-purple-200 dark:border-gray-700">
-                  <div className="text-4xl font-bold text-purple-600 dark:text-purple-400">{score}</div>
-                  <div className="text-sm text-gray-700 dark:text-gray-300 mt-2 font-medium">Bubbles Popped</div>
+                <div className="bg-purple-50 rounded-xl p-6 border border-purple-200">
+                  <div className="text-4xl font-bold text-purple-600">{score}</div>
+                  <div className="text-sm text-gray-700 mt-2 font-medium">Bubbles Popped</div>
                 </div>
-                <div className="bg-blue-50 dark:bg-gray-800 rounded-xl p-6 border border-blue-200 dark:border-gray-700">
-                  <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">{misses}</div>
-                  <div className="text-sm text-gray-700 dark:text-gray-300 mt-2 font-medium">Missed Taps</div>
+                <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                  <div className="text-4xl font-bold text-blue-600">{misses}</div>
+                  <div className="text-sm text-gray-700 mt-2 font-medium">Missed Taps</div>
                 </div>
               </div>
 
               <Button
                 onClick={() => setGameState("reflection")}
                 size="lg"
-                className="mt-8 px-12 py-6 text-xl font-bold rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 hover:from-purple-700 hover:via-blue-700 hover:to-pink-700 text-white shadow-xl border-0 overflow-visible"
+                className="mt-10 w-[340px] max-w-full py-6 text-2xl font-bold rounded-full bg-gradient-to-r from-purple-200 via-blue-200 to-pink-200 text-gray-950 border border-purple-300 shadow-[0_8px_26px_rgba(134,134,192,0.35)] hover:from-purple-300 hover:via-blue-300 hover:to-pink-300 mx-auto tracking-wide"
               >
                 Continue
               </Button>
@@ -374,10 +435,10 @@ export default function SmashStressGame({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="relative w-full max-w-2xl mx-4 bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8 border-2 border-purple-200 dark:border-purple-500/50"
+            className="relative w-full max-w-2xl mx-4 bg-white rounded-3xl shadow-2xl p-8 border-2 border-purple-200"
           >
             <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
+              <h2 className="text-3xl font-bold text-center text-gray-900">
                 How do you feel now?
               </h2>
 
@@ -389,6 +450,7 @@ export default function SmashStressGame({
                     className={`text-5xl transition-transform hover:scale-110 ${
                       moodAfter === mood ? "scale-125" : "scale-100 opacity-50"
                     }`}
+                    aria-label={`Select mood level ${mood}`}
                   >
                     {mood === 1 && "😢"}
                     {mood === 2 && "😟"}
@@ -400,7 +462,7 @@ export default function SmashStressGame({
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-900 dark:text-white">
+                <label className="text-sm font-medium text-gray-900">
                   Anything else you'd like to share? (Optional)
                 </label>
                 <Textarea
@@ -415,7 +477,7 @@ export default function SmashStressGame({
                 onClick={handleReflectionComplete}
                 disabled={!moodAfter}
                 size="lg"
-                className="w-full py-6 text-lg font-bold rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 hover:from-purple-700 hover:via-blue-700 hover:to-pink-700 text-white shadow-xl border-0 overflow-visible disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-7 text-lg font-bold rounded-full bg-gradient-to-r from-purple-200 via-blue-200 to-pink-200 text-gray-950 border border-purple-300 shadow-[0_8px_26px_rgba(134,134,192,0.35)] hover:from-purple-300 hover:via-blue-300 hover:to-pink-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Complete
               </Button>

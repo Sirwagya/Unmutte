@@ -199,7 +199,7 @@ export function PostSessionFeedbackModal({
           </DialogHeader>
           <div className="py-12 text-center space-y-6">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7CB9E8] to-[#BFA2DB] flex items-center justify-center mx-auto">
-              <Heart className="w-10 h-10 text-white" />
+              <Heart className="w-10 h-10 text-gray-900 fill-gray-900" />
             </div>
             <div className="space-y-3">
               <h2>Thank you for sharing 🌼</h2>
@@ -291,9 +291,9 @@ export function PostSessionFeedbackModal({
           </div>
 
           {currentQ.type === "critical" && (
-            <Alert className="border-red-500/50 bg-red-50 dark:bg-red-900/10">
+            <Alert className="border-red-500/50 bg-red-50">
               <AlertTriangle className="h-4 w-4 text-red-600" />
-              <AlertDescription className="text-sm text-red-900 dark:text-red-300">
+              <AlertDescription className="text-sm text-red-900">
                 If you're experiencing thoughts of self-harm, please know that help is available 24/7.
                 Selecting "Yes" will immediately connect you with crisis support resources.
               </AlertDescription>

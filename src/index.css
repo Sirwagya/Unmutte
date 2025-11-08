@@ -2463,6 +2463,9 @@
   .fill-white {
     fill: var(--color-white);
   }
+  .fill-gray-900 {
+    fill: #111827;
+  }
 
   .fill-yellow-400 {
     fill: var(--color-yellow-400);

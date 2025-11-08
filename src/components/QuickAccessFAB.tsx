@@ -23,7 +23,7 @@ export function QuickAccessFAB({ onStartChat, onStartVoice, onStartGame }: Quick
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             className="absolute bottom-20 right-0 mb-4"
           >
-            <Card className="p-4 shadow-2xl border-2 border-primary/20 bg-white dark:bg-slate-900">
+            <Card className="p-4 shadow-2xl border-2 border-primary/20 bg-white">
               <div className="space-y-3">
                 <p className="text-sm font-semibold mb-3 text-foreground">Quick Connect</p>
                 

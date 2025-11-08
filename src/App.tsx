@@ -5,7 +5,8 @@ import { QuickAccessFAB } from "./components/QuickAccessFAB";
 import { WelcomeModal } from "./components/WelcomeModal";
 import { AIChatInterface } from "./components/chat/AIChatInterface";
 import { VoiceCallInterface } from "./components/chat/VoiceCallInterface";
-import { useDarkMode } from "./hooks/useDarkMode";
+import SmashStressGame, { type GameResults } from "./components/SmashStressGame";
+import { toast } from "sonner@2.0.3";
 import { Toaster } from "./components/ui/sonner";
 
 const HomePage = lazy(() =>
@@ -13,19 +14,66 @@ const HomePage = lazy(() =>
     default: module.HomePage,
   }))
 );
-const AboutPage = lazy(() => import("./components/pages/AboutPage"));
-const FeaturesPage = lazy(() => import("./components/pages/FeaturesPage"));
+const AboutPage = lazy(() =>
+  import("./components/pages/AboutPage").then((module) => ({
+    default: module.AboutPage,
+  }))
+);
+const FeaturesPage = lazy(() =>
+  import("./components/pages/FeaturesPage").then((module) => ({
+    default: module.FeaturesPage,
+  }))
+);
 const MoodJournalPage = lazy(() =>
-  import("./components/pages/MoodJournalPage")
+  import("./components/pages/MoodJournalPage").then((module) => ({
+    default: module.MoodJournalPage,
+  }))
 );
 const MoodTrackerPage = lazy(() =>
-  import("./components/pages/MoodTrackerPage")
+  import("./components/pages/MoodTrackerPage").then((module) => ({
+    default: module.MoodTrackerPage,
+  }))
 );
-const ResourcesPage = lazy(() => import("./components/pages/ResourcesPage"));
-const CommunityPage = lazy(() => import("./components/pages/CommunityPage"));
-const ConnectPage = lazy(() => import("./components/pages/ConnectPage"));
-const ContactPage = lazy(() => import("./components/pages/ContactPage"));
-const AccountPage = lazy(() => import("./components/pages/AccountPage"));
+const ResourcesPage = lazy(() =>
+  import("./components/pages/ResourcesPage").then((module) => ({
+    default: module.ResourcesPage,
+  }))
+);
+const CommunityPage = lazy(() =>
+  import("./components/pages/CommunityPage").then((module) => ({
+    default: module.CommunityPage,
+  }))
+);
+const ConnectPage = lazy(() =>
+  import("./components/pages/ConnectPage").then((module) => ({
+    default: module.ConnectPage,
+  }))
+);
+const ContactPage = lazy(() =>
+  import("./components/pages/ContactPage").then((module) => ({
+    default: module.ContactPage,
+  }))
+);
+const AccountPage = lazy(() =>
+  import("./components/pages/AccountPage").then((module) => ({
+    default: module.AccountPage,
+  }))
+);
+const PrivacyPolicyPage = lazy(() =>
+  import("./components/pages/PrivacyPolicyPage").then((module) => ({
+    default: module.PrivacyPolicyPage,
+  }))
+);
+const TermsOfServicePage = lazy(() =>
+  import("./components/pages/TermsOfServicePage").then((module) => ({
+    default: module.TermsOfServicePage,
+  }))
+);
+const CookiePolicyPage = lazy(() =>
+  import("./components/pages/CookiePolicyPage").then((module) => ({
+    default: module.CookiePolicyPage,
+  }))
+);
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -33,11 +81,14 @@ export default function App() {
     "none" | "chat" | "voice" | "game"
   >("none");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const [showStressGame, setShowStressGame] = useState(false);
   const isHighRisk =
     localStorage.getItem("unmutte_high_risk") === "true";
-  const { isDarkMode, toggleTheme } = useDarkMode();
+
+  useEffect(() => {
+    // Ensure dark mode class is removed
+    document.documentElement.classList.remove("dark");
+  }, []);
 
   useEffect(() => {
     const userEmail = localStorage.getItem("unmutte_user_email");
@@ -118,6 +169,12 @@ export default function App() {
             onLogout={handleLogout}
           />
         );
+      case "privacy":
+        return <PrivacyPolicyPage />;
+      case "terms":
+        return <TermsOfServicePage />;
+      case "cookies":
+        return <CookiePolicyPage />;
       default:
         return (
           <HomePage
@@ -129,7 +186,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-[#0E0E16]">
+    <div className="min-h-screen flex flex-col bg-white">
       {/* Welcome Modal for first-time visitors */}
       <WelcomeModal onClose={() => {}} />
 
@@ -161,8 +218,6 @@ export default function App() {
         onNavigate={handleNavigate}
         onStartTalking={handleStartChat}
         isLoggedIn={isLoggedIn}
-        isDarkMode={isDarkMode}
-        onToggleTheme={toggleTheme}
       />
 
       <main className="flex-grow">

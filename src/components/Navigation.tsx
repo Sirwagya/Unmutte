@@ -59,8 +59,8 @@ export function Navigation({
                 }`
               : `transition-all duration-200 ${
                   currentPage === item.value
-                    ? "text-primary-accent dark:text-secondary-accent font-semibold"
-                    : "text-gray-700 dark:text-gray-300 hover:text-primary-accent dark:hover:text-secondary-accent"
+                    ? "text-primary-accent font-semibold"
+                    : "text-gray-700 hover:text-primary-accent"
                 }`
           }
         >
@@ -71,7 +71,7 @@ export function Navigation({
   );
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-lg border-b border-gray-200 dark:border-white/10 shadow-sm">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <a

@@ -6,19 +6,19 @@ import { motion } from "motion/react";
 import { cn } from "./utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive relative overflow-hidden",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white aria-invalid:ring-destructive/20 aria-invalid:border-destructive relative overflow-hidden",
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg active:scale-95",
         destructive:
-          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 hover:shadow-lg active:scale-95",
+          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 hover:shadow-lg active:scale-95",
         outline:
-          "border bg-background text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 hover:border-primary/50 hover:shadow-md active:scale-95",
+          "border bg-background text-foreground hover:bg-accent hover:text-accent-foreground hover:border-primary/50 hover:shadow-md active:scale-95",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-lg active:scale-95",
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 active:scale-95",
+          "hover:bg-accent hover:text-accent-foreground active:scale-95",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -50,7 +50,7 @@ const Button = React.forwardRef<
       {/* Shimmer effect on hover */}
       {!disabled && variant !== "link" && variant !== "ghost" && (
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"
           initial={{ x: "-100%" }}
           animate={isHovered ? { x: "100%" } : { x: "-100%" }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
@@ -58,30 +58,24 @@ const Button = React.forwardRef<
       )}
       
       {/* Button children */}
-      <span className="relative z-10 flex items-center gap-2">
+      <span className="relative z-10 flex items-center gap-2 pointer-events-none">
         {props.children}
       </span>
     </>
   );
 
   return (
-    <motion.div
-      className="inline-block"
-      whileHover={!disabled ? { scale: 1.02 } : {}}
-      whileTap={!disabled ? { scale: 0.98 } : {}}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+    <Comp
+      ref={ref}
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      disabled={disabled}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      {...props}
     >
-      <Comp
-        ref={ref}
-        data-slot="button"
-        className={cn(buttonVariants({ variant, size, className }))}
-        disabled={disabled}
-        {...props}
-      >
-        {buttonContent}
-      </Comp>
-    </motion.div>
+      {buttonContent}
+    </Comp>
   );
 });
 

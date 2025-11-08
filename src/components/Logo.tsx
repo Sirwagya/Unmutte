@@ -14,9 +14,10 @@ export function Logo({ className = "", showText = true }: LogoProps) {
           width="48"
           height="48"
           viewBox="0 0 48 48"
-          fill="none"
+          fill="colour:black"
           xmlns="http://www.w3.org/2000/svg"
           className="drop-shadow-md"
+          color="black"
         >
           {/* Outer heart shape with wave */}
           <path

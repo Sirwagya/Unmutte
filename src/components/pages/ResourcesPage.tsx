@@ -5,6 +5,7 @@ import { Badge } from "../ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Progress } from "../ui/progress";
 import { Heart, Wind, Phone, BookOpen, ExternalLink, PlayCircle, PauseCircle, Sparkles } from "lucide-react";
+import GradientSparkles from "../icons/GradientSparkles";
 import { motion, AnimatePresence } from "motion/react";
 import SmashStressGame, { type GameResults } from "../SmashStressGame";
 import { toast } from "sonner@2.0.3";
@@ -60,30 +61,43 @@ export function ResourcesPage() {
     };
   }, [breathingActive, breathingPhase, breathingDuration]);
 
+  // India-specific crisis and mental health support resources
   const crisisResources = [
     {
-      name: "National Suicide Prevention Lifeline",
-      number: "988",
-      description: "24/7 free and confidential support",
-      country: "USA",
+      name: "KIRAN Mental Health Helpline",
+      number: "1800-599-0019",
+      description: "24x7 national toll-free helpline for mental health support (Govt. of India)",
+      country: "India",
     },
     {
-      name: "Crisis Text Line",
-      number: "Text HOME to 741741",
-      description: "Free 24/7 crisis support via text",
-      country: "USA",
+      name: "AASRA Suicide Prevention",
+      number: "+91-9820466726",
+      description: "24/7 confidential emotional support and suicide prevention",
+      country: "India",
     },
     {
-      name: "SAMHSA National Helpline",
-      number: "1-800-662-4357",
-      description: "Substance abuse and mental health services",
-      country: "USA",
+      name: "iCALL (TISS) Helpline",
+      number: "+91-9152987821",
+      description: "Professional psychosocial support via phone, email, and chat (Mon-Sat)",
+      country: "India",
     },
     {
-      name: "International Association for Suicide Prevention",
-      number: "Visit iasp.info",
-      description: "Find resources worldwide",
-      country: "Global",
+      name: "Vandrevala Foundation Helpline",
+      number: "+91-9999666555",
+      description: "24/7 mental health & emotional crisis hotline (English/Hindi)",
+      country: "India",
+    },
+    {
+      name: "Childline India (Children's Help)",
+      number: "1098",
+      description: "24/7 emergency helpline for children in distress",
+      country: "India",
+    },
+    {
+      name: "Emergency Services",
+      number: "112",
+      description: "National emergency number (Police/Fire/Ambulance)",
+      country: "India",
     },
   ];
 
@@ -172,7 +186,7 @@ export function ResourcesPage() {
 
           {/* Breathing Exercise */}
           <TabsContent value="breathing">
-            <Card className="border-0 shadow-xl overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-950/20 dark:to-blue-950/20">
+            <Card className="border-0 shadow-xl overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
               <div className="p-8 md:p-12">
                 <motion.div
                   initial={{ opacity: 0, y: -20 }}
@@ -193,9 +207,9 @@ export function ResourcesPage() {
                     >
                       <Wind className="w-10 h-10 text-blue-400" />
                     </motion.div>
-                    <h2 className="text-3xl md:text-4xl font-light text-gray-800 dark:text-white">Guided Breathing</h2>
+                    <h2 className="text-3xl md:text-4xl font-light text-gray-800">Guided Breathing</h2>
                   </div>
-                  <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 font-light">
+                  <p className="text-base md:text-lg text-gray-600 font-light">
                     Find your calm with rhythmic breathing
                   </p>
                 </motion.div>
@@ -374,7 +388,7 @@ export function ResourcesPage() {
                               </motion.p>
                             </div>
                           ) : (
-                            <div className="text-gray-600 dark:text-gray-300 space-y-2">
+                            <div className="text-gray-600 space-y-2">
                               <p className="text-lg md:text-xl font-light">Ready to begin?</p>
                               <p className="text-xs md:text-sm opacity-70">Find a comfortable position</p>
                             </div>
@@ -433,7 +447,7 @@ export function ResourcesPage() {
                       transition={{ delay: 0.5, duration: 0.6 }}
                       className="mt-6 flex flex-wrap items-center justify-center gap-3"
                     >
-                      <span className="text-sm text-gray-600 dark:text-gray-300 font-light">Duration:</span>
+                      <span className="text-sm text-gray-600 font-light">Duration:</span>
                       {[3, 4, 5, 6].map((duration) => (
                         <motion.button
                           key={duration}
@@ -443,7 +457,7 @@ export function ResourcesPage() {
                           className={`px-5 py-2.5 rounded-full text-sm font-light transition-all ${
                             breathingDuration === duration
                               ? "bg-blue-400 text-white shadow-lg"
-                              : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-gray-700 shadow"
+                              : "bg-white text-gray-700 hover:bg-blue-100 shadow"
                           }`}
                           aria-label={`Set breathing duration to ${duration} seconds`}
                         >
@@ -464,7 +478,7 @@ export function ResourcesPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => setShowInstructions(!showInstructions)}
-                      className="text-sm font-light text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                      className="text-sm font-light text-gray-600 hover:text-gray-900"
                       aria-expanded={showInstructions}
                       aria-controls="breathing-instructions"
                     >
@@ -485,20 +499,20 @@ export function ResourcesPage() {
                       transition={{ duration: 0.4 }}
                       className="mt-8 overflow-hidden"
                     >
-                      <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md p-8 rounded-2xl shadow-xl border-2 border-blue-200 dark:border-gray-700">
+                      <div className="bg-white/95 backdrop-blur-md p-8 rounded-2xl shadow-xl border-2 border-blue-200">
                         <div className="grid md:grid-cols-3 gap-6">
                           {/* Inhale */}
                           <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20"
+                            className="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50"
                           >
                             <div className="w-16 h-16 rounded-full bg-blue-400 flex items-center justify-center mx-auto mb-4 shadow-lg">
                               <span className="text-3xl">💨</span>
                             </div>
-                            <h5 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">Inhale</h5>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                            <h5 className="font-semibold mb-2 text-gray-800">Inhale</h5>
+                            <p className="text-sm text-gray-600 font-light leading-relaxed">
                               Breathe in slowly through your nose for {breathingDuration} seconds
                             </p>
                           </motion.div>
@@ -508,13 +522,13 @@ export function ResourcesPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
-                            className="text-center p-6 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100/50 dark:from-purple-950/30 dark:to-purple-900/20"
+                            className="text-center p-6 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100/50"
                           >
                             <div className="w-16 h-16 rounded-full bg-purple-400 flex items-center justify-center mx-auto mb-4 shadow-lg">
                               <span className="text-3xl">⏸️</span>
                             </div>
-                            <h5 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">Hold</h5>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                            <h5 className="font-semibold mb-2 text-gray-800">Hold</h5>
+                            <p className="text-sm text-gray-600 font-light leading-relaxed">
                               Hold your breath gently for {breathingDuration} seconds
                             </p>
                           </motion.div>
@@ -524,13 +538,13 @@ export function ResourcesPage() {
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="text-center p-6 rounded-xl bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/30 dark:to-green-900/20"
+                            className="text-center p-6 rounded-xl bg-gradient-to-br from-green-50 to-green-100/50"
                           >
                             <div className="w-16 h-16 rounded-full bg-green-400 flex items-center justify-center mx-auto mb-4 shadow-lg">
                               <span className="text-3xl">🌬️</span>
                             </div>
-                            <h5 className="font-semibold mb-2 text-gray-800 dark:text-gray-200">Exhale</h5>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                            <h5 className="font-semibold mb-2 text-gray-800">Exhale</h5>
+                            <p className="text-sm text-gray-600 font-light leading-relaxed">
                               Breathe out slowly through your mouth for {breathingDuration} seconds
                             </p>
                           </motion.div>
@@ -540,9 +554,9 @@ export function ResourcesPage() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.4 }}
-                          className="mt-6 p-4 bg-blue-50/50 dark:bg-blue-950/20 rounded-lg text-center"
+                          className="mt-6 p-4 bg-blue-50/50 rounded-lg text-center"
                         >
-                          <p className="text-sm text-gray-600 dark:text-gray-400 font-light">
+                          <p className="text-sm text-gray-600 font-light">
                             💡 Continue for 5-10 minutes or until you feel calm and centered
                           </p>
                         </motion.div>
@@ -556,7 +570,7 @@ export function ResourcesPage() {
 
           {/* Stress Game - Immersive Redesign */}
           <TabsContent value="game" className="overflow-visible">
-            <Card className="border-0 shadow-2xl bg-gradient-to-br from-purple-50/90 via-blue-50/90 to-pink-50/90 dark:from-purple-900/40 dark:via-blue-900/40 dark:to-pink-900/40 overflow-visible">
+            <Card className="border-0 shadow-2xl bg-gradient-to-br from-purple-50/90 via-blue-50/90 to-pink-50/90 overflow-visible">
               <div className="p-4 md:p-8 lg:p-12">
                 {/* Header Section with Breathing Space */}
                 <motion.div
@@ -576,19 +590,19 @@ export function ResourcesPage() {
                     className="inline-block mb-4"
                   >
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 via-blue-400 to-pink-400 flex items-center justify-center shadow-2xl">
-                      <Sparkles className="w-8 h-8 text-white" />
+                      <GradientSparkles className="w-8 h-8" />
                     </div>
                   </motion.div>
                   
-                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400 dark:from-purple-300 dark:via-blue-300 dark:to-pink-300 bg-clip-text text-transparent">
+                  <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-pink-400 bg-clip-text text-transparent">
                     Smash the Stress Game
                   </h2>
                   
-                  <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 font-light italic max-w-2xl mx-auto">
+                  <p className="text-lg md:text-xl text-gray-700 font-light italic max-w-2xl mx-auto">
                     "Release, relax, and reset your mind" 🌸
                   </p>
                   
-                  <p className="text-base text-gray-700 dark:text-gray-300 max-w-xl mx-auto leading-relaxed">
+                  <p className="text-base text-gray-700 max-w-xl mx-auto leading-relaxed">
                     A therapeutic 30-second interactive game designed to help you release emotions and find your calm
                   </p>
                 </motion.div>
@@ -596,10 +610,10 @@ export function ResourcesPage() {
                 {/* Divider */}
                 <div className="relative mb-12">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gradient-to-r from-transparent via-purple-200 to-transparent dark:via-purple-800"></div>
+                    <div className="w-full border-t border-gradient-to-r from-transparent via-purple-200 to-transparent"></div>
                   </div>
                   <div className="relative flex justify-center">
-                    <span className="px-4 text-sm text-gray-500 dark:text-gray-400 bg-purple-50/80 dark:bg-purple-900/30">
+                    <span className="px-4 text-sm text-gray-500 bg-purple-50/80">
                       ✨
                     </span>
                   </div>
@@ -649,7 +663,8 @@ export function ResourcesPage() {
                           animate={{ rotate: 360 }}
                           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                         >
-                          <Sparkles className="w-24 h-24 md:w-28 md:h-28 text-white drop-shadow-2xl" />
+                          {/* Gradient-stroked sparkles for better visibility and vibrance */}
+                          <GradientSparkles className="w-24 h-24 md:w-28 md:h-28 drop-shadow-2xl" />
                         </motion.div>
                         
                         {/* Floating Emotion Bubbles */}
@@ -693,28 +708,28 @@ export function ResourcesPage() {
                         icon: "⚡", 
                         title: "Quick Reset", 
                         desc: "Just 30 seconds",
-                        gradient: "from-yellow-100 to-orange-100 dark:from-yellow-800/50 dark:to-orange-800/50",
+                        gradient: "from-yellow-100 to-orange-100",
                         delay: 0.4
                       },
                       { 
                         icon: "🎯", 
                         title: "Track Progress", 
                         desc: "See your calm score",
-                        gradient: "from-blue-100 to-cyan-100 dark:from-blue-800/50 dark:to-cyan-800/50",
+                        gradient: "from-blue-100 to-cyan-100",
                         delay: 0.5
                       },
                       { 
                         icon: "🎮", 
                         title: "Fun & Safe", 
                         desc: "Playful release",
-                        gradient: "from-purple-100 to-pink-100 dark:from-purple-800/50 dark:to-pink-800/50",
+                        gradient: "from-purple-100 to-pink-100",
                         delay: 0.6
                       },
                       { 
                         icon: "💭", 
                         title: "Mood Check", 
                         desc: "Before & after",
-                        gradient: "from-green-100 to-teal-100 dark:from-green-800/50 dark:to-teal-800/50",
+                        gradient: "from-green-100 to-teal-100",
                         delay: 0.7
                       }
                     ].map((card, i) => (
@@ -728,7 +743,7 @@ export function ResourcesPage() {
                           y: -8,
                           boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)"
                         }}
-                        className={`relative p-6 md:p-7 rounded-2xl bg-gradient-to-br ${card.gradient} backdrop-blur-md border border-white/50 dark:border-gray-600/50 shadow-xl text-center overflow-hidden group cursor-pointer`}
+                        className={`relative p-6 md:p-7 rounded-2xl bg-gradient-to-br ${card.gradient} backdrop-blur-md border border-white/50 shadow-xl text-center overflow-hidden group cursor-pointer`}
                       >
                         {/* Shimmer Effect */}
                         <motion.div
@@ -757,10 +772,10 @@ export function ResourcesPage() {
                         >
                           {card.icon}
                         </motion.p>
-                                                        <p className="text-sm md:text-base font-bold mb-1.5 text-gray-900 dark:text-white">
+                                                        <p className="text-sm md:text-base font-bold mb-1.5 text-gray-900">
                           {card.title}
                         </p>
-                        <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300 font-light">
+                        <p className="text-xs md:text-sm text-gray-700 font-light">
                           {card.desc}
                         </p>
                       </motion.div>
@@ -820,7 +835,7 @@ export function ResourcesPage() {
                             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                             className="flex-shrink-0"
                           >
-                            <Sparkles className="w-6 h-6 md:w-8 md:h-8" />
+                            <GradientSparkles className="w-6 h-6 md:w-8 md:h-8" />
                           </motion.div>
                           <span className="font-bold">Start Smashing Stress</span>
                           <motion.div
@@ -839,9 +854,9 @@ export function ResourcesPage() {
                   </motion.div>
 
                   {/* Divider */}
-                  <div className="relative mb-10">
+                  <div className="relative h-8">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t-2 border-dashed border-purple-200/50 dark:border-purple-700/50"></div>
+                      <div className="w-full border-t-2 border-dashed border-purple-200/50"></div>
                     </div>
                   </div>
 
@@ -850,21 +865,21 @@ export function ResourcesPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1, duration: 0.6 }}
-                    className="max-w-3xl mx-auto"
+                    className="max-w-3xl mx-auto mt-6"
                   >
                     <details className="group" open>
-                      <summary className="flex items-center justify-between p-6 rounded-2xl bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-2 border-purple-200 dark:border-purple-500/50 shadow-lg cursor-pointer list-none hover:shadow-xl transition-all">
+                      <summary className="flex items-center justify-between p-6 rounded-2xl bg-white/95 backdrop-blur-md border-2 border-purple-200 shadow-lg cursor-pointer list-none hover:shadow-xl transition-all">
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center shadow-lg">
-                            <Sparkles className="w-6 h-6 text-white" />
+                            <GradientSparkles className="w-6 h-6" />
                           </div>
-                          <h4 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
+                          <h4 className="text-lg md:text-xl font-bold text-gray-900">
                             How it Works
                           </h4>
                         </div>
                         <motion.div
                           animate={{ rotate: 0 }}
-                          className="text-2xl text-purple-500 dark:text-purple-400 group-open:rotate-180 transition-transform"
+                          className="text-2xl text-purple-500 group-open:rotate-180 transition-transform"
                         >
                           ↓
                         </motion.div>
@@ -874,7 +889,7 @@ export function ResourcesPage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        className="mt-4 p-8 rounded-2xl bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border-2 border-purple-100 dark:border-gray-700 shadow-lg"
+                        className="mt-4 p-8 rounded-2xl bg-white/95 backdrop-blur-sm border-2 border-purple-100 shadow-lg"
                       >
                         <div className="grid md:grid-cols-2 gap-6">
                           {[
@@ -908,16 +923,16 @@ export function ResourcesPage() {
                               initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 1.2 + i * 0.1 }}
-                              className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors group/item"
+                              className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/50 transition-colors group/item"
                             >
                               <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg flex-shrink-0 group-hover/item:scale-110 transition-transform`}>
                                 <span className="text-2xl">{step.emoji}</span>
                               </div>
                               <div>
-                                <p className="font-bold text-gray-900 dark:text-white mb-1">
+                                <p className="font-bold text-gray-900 mb-1">
                                   {step.title}
                                 </p>
-                                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                <p className="text-sm text-gray-700 leading-relaxed">
                                   {step.desc}
                                 </p>
                               </div>
@@ -934,27 +949,27 @@ export function ResourcesPage() {
 
           {/* Crisis Resources */}
           <TabsContent value="crisis">
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20">
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-red-50 to-orange-50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-600 dark:text-red-400">
-                  <Phone className="w-6 h-6" />
-                  Crisis Support
-                </CardTitle>
-                <CardDescription>
-                  If you're in crisis or need immediate support, please reach out to these resources
-                </CardDescription>
+                  <CardTitle className="flex items-center gap-2 text-red-600">
+                    <Phone className="w-6 h-6" />
+                    India Crisis & Mental Health Support
+                  </CardTitle>
+                  <CardDescription>
+                    Confidential helplines across India. If you're in immediate danger or someone is at risk, call <strong>112</strong> (national emergency) right away.
+                  </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
                   {crisisResources.map((resource, index) => (
-                    <Card key={index} className="p-6 border-2 border-red-200 dark:border-red-800">
+                    <Card key={index} className="p-6 border-2 border-red-200">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-grow">
                           <div className="flex items-center gap-2 mb-2">
                             <h4>{resource.name}</h4>
                             <Badge variant="secondary">{resource.country}</Badge>
                           </div>
-                          <p className="text-2xl mb-2 text-red-600 dark:text-red-400">
+                          <p className="text-2xl mb-2 text-red-600">
                             {resource.number}
                           </p>
                           <p className="text-sm text-muted-foreground">{resource.description}</p>
@@ -964,15 +979,13 @@ export function ResourcesPage() {
                   ))}
                 </div>
 
-                <div className="mt-6 p-6 bg-white dark:bg-slate-800 rounded-lg border-2 border-red-300 dark:border-red-700">
-                  <p className="text-center">
-                    <strong className="text-red-600 dark:text-red-400">
-                      Remember:
-                    </strong>{" "}
-                    If you're experiencing a life-threatening emergency, please call your local
-                    emergency services (911 in the US) immediately.
-                  </p>
-                </div>
+                 <div className="mt-6 p-6 bg-white rounded-lg border-2 border-red-300">
+                   <p className="text-center text-sm leading-relaxed">
+                     <strong className="text-red-600">Important:</strong> These helplines provide emotional and mental health support. For
+                     medical emergencies, accidents, violence, or immediate danger, call <strong>112</strong> (India's national emergency number).
+                     For children in distress, dial <strong>1098</strong>. You are not alone—reaching out is a strong first step.
+                   </p>
+                 </div>
               </CardContent>
             </Card>
           </TabsContent>

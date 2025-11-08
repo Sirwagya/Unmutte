@@ -74,7 +74,7 @@ export function WelcomeModal({ onClose }: WelcomeModalProps) {
         >
           <DialogHeader>
             <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${currentStep.color} flex items-center justify-center mx-auto mb-4`}>
-              <Icon className="w-10 h-10 text-white" />
+              <Icon className="w-10 h-10 text-gray-900 fill-gray-900" />
             </div>
             <DialogTitle className="text-center text-2xl">{currentStep.title}</DialogTitle>
             <DialogDescription className="text-center text-base pt-2">

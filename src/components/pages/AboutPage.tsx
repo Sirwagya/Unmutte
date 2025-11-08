@@ -24,25 +24,25 @@ export function AboutPage() {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1 bg-[rgba(41,39,39,0)]">
-                <h2 className="mb-6 text-[24px] font-bold not-italic no-underline text-gray-900 dark:text-white">Our Story</h2>
+                <h2 className="mb-6 text-[24px] font-bold not-italic no-underline text-gray-900">Our Story</h2>
                 <div className="space-y-4 text-muted-foreground bg-[rgba(0,0,0,0)]">
-                  <p className="text-gray-900 dark:text-white font-bold font-normal">
+                  <p className="text-gray-900 font-bold font-normal">
                     Unmutte was born from a simple yet powerful realization: too many people
                     feel unheard, judged, or alone with their emotions. In a world that's more
                     connected than ever, genuine emotional support remains surprisingly hard to find.
                   </p>
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-gray-900">
                     We believe that everyone deserves a safe space to express themselves freely,
                     without fear of judgment or stigma. That's why we created Unmutte — a platform
                     that combines the instant availability of AI with the irreplaceable warmth of
                     human connection.
                   </p>
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-gray-900">
                     Our hybrid approach means you can start with AI support anytime, day or night,
                     and seamlessly transition to a real human listener when you're ready for that
                     deeper connection. Whether through text, voice, or video, we're here to listen.
                   </p>
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-gray-900">
                     Unmutte isn't just a platform — it's a movement toward emotional openness,
                     authenticity, and healing. Because when you find the courage to speak your truth,
                     beautiful things happen.
@@ -69,24 +69,24 @@ export function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 gradient-soft p-8 rounded-2xl bg-[rgba(15,15,15,0)]">
-              <Card className="p-10 border-0 bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] shadow-lg">
+              <Card className="p-10 border-0 bg-white#1E1E2E]#2A2A3A] shadow-lg">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#B088F9] to-[#D8B4FE] flex items-center justify-center mb-6 bg-[rgba(0,0,0,0.02)]">
                   <Target className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="mb-4 text-gray-900 dark:text-white font-bold text-[20px]">Our Mission</h3>
-                <p className="text-gray-900 dark:text-white leading-relaxed">
+                <h3 className="mb-4 text-gray-900 font-bold text-[20px]">Our Mission</h3>
+                <p className="text-gray-900 leading-relaxed">
                   To empower people to express their emotions freely and feel truly heard,
                   by providing a safe, judgment-free space that combines empathetic AI
                   technology with authentic human connection.
                 </p>
               </Card>
 
-              <Card className="p-10 border-0 bg-[rgb(251,251,251)] dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] shadow-lg">
+              <Card className="p-10 border-0 bg-[rgb(251,251,251)]#1E1E2E]#2A2A3A] shadow-lg">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F8C8DC] to-[#A8E6CF] flex items-center justify-center mb-6 bg-[rgba(0,0,0,0.08)]">
                   <Eye className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="mb-4 text-gray-900 dark:text-white font-bold text-[20px]">Our Vision</h3>
-                <p className="text-gray-900 dark:text-white leading-relaxed">
+                <h3 className="mb-4 text-gray-900 font-bold text-[20px]">Our Vision</h3>
+                <p className="text-gray-900 leading-relaxed">
                   A world where emotional wellness is accessible to everyone, where seeking
                   support is celebrated, and where technology and human compassion work
                   together to create meaningful change.
@@ -162,13 +162,13 @@ export function AboutPage() {
               Unmutte is designed by a diverse team of mental health advocates, AI researchers,
               and compassionate technologists who believe in the power of being heard.
             </p>
-            <Card className="p-8 bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] border-0 shadow-lg">
-              <p className="text-gray-700 dark:text-muted-foreground italic">
+            <Card className="p-8 bg-white#1E1E2E]#2A2A3A] border-0 shadow-lg">
+              <p className="text-gray-700 italic">
                 "We're not just building technology — we're creating a movement toward
                 emotional openness and authentic human connection. Every feature, every interaction,
                 is designed with one goal in mind: helping you feel truly heard."
               </p>
-              <p className="mt-4 text-[#7CB9E8] dark:text-primary">— The Unmutte Team</p>
+              <p className="mt-4 text-[#7CB9E8]">— The Unmutte Team</p>
             </Card>
           </div>
         </div>

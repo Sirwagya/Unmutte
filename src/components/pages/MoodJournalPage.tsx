@@ -511,7 +511,7 @@ export function MoodJournalPage() {
   const stats = calculateStats();
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black py-16">
+    <div className="min-h-screen bg-white py-16">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <motion.div
@@ -522,8 +522,8 @@ export function MoodJournalPage() {
           <div className="inline-flex items-center gap-3 mb-4">
             <BookOpen className="w-12 h-12 text-primary" />
           </div>
-          <h1 className="mb-4 text-gray-900 dark:text-white">Mood Journal</h1>
-          <p className="text-gray-600 dark:text-muted-foreground max-w-2xl mx-auto">
+          <h1 className="mb-4 text-gray-900">Mood Journal</h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Track your emotional journey. Writing helps you process feelings and identify patterns in your emotional wellbeing.
           </p>
         </motion.div>
@@ -677,7 +677,7 @@ export function MoodJournalPage() {
                               disabled={!recognition}
                               className={`p-3 rounded-full transition-all shadow-lg relative ${
                                 !recognition
-                                  ? "bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed"
+                                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                                   : isRecording
                                   ? "bg-red-500 hover:bg-red-600 text-white shadow-red-500/50 animate-pulse"
                                   : "bg-gradient-to-br from-[#7CB9E8] to-[#BFA2DB] hover:from-[#6AA8D7] hover:to-[#AE91CA] text-white"
@@ -797,9 +797,9 @@ export function MoodJournalPage() {
                       </div>
                       <p className="text-sm text-muted-foreground mb-1">Mood Trend</p>
                       <p className={`text-lg capitalize ${
-                        stats.trend === 'improving' ? 'text-green-600 dark:text-green-400' :
-                        stats.trend === 'declining' ? 'text-orange-600 dark:text-orange-400' :
-                        'text-blue-600 dark:text-blue-400'
+                        stats.trend === 'improving' ? 'text-green-600' :
+                        stats.trend === 'declining' ? 'text-orange-600' :
+                        'text-blue-600'
                       }`}>
                         {stats.trend}
                       </p>
@@ -893,14 +893,14 @@ export function MoodJournalPage() {
 
                 {/* Improvement Message */}
                 {stats.trend === 'improving' && (
-                  <div className="mt-6 p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-lg">
+                  <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                     <div className="flex items-start gap-3">
-                      <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
+                      <TrendingUp className="w-5 h-5 text-green-600 mt-0.5" />
                       <div>
-                        <p className="text-green-900 dark:text-green-100 mb-1">
+                        <p className="text-green-900 mb-1">
                           Great progress! 🎉
                         </p>
-                        <p className="text-sm text-green-700 dark:text-green-300">
+                        <p className="text-sm text-green-700">
                           Your mood has been trending upward over the past week. Keep up the great work on your emotional wellness journey!
                         </p>
                       </div>
@@ -909,14 +909,14 @@ export function MoodJournalPage() {
                 )}
 
                 {stats.streak >= 7 && (
-                  <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 rounded-lg">
+                  <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-start gap-3">
-                      <Activity className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                      <Activity className="w-5 h-5 text-blue-600 mt-0.5" />
                       <div>
-                        <p className="text-blue-900 dark:text-blue-100 mb-1">
+                        <p className="text-blue-900 mb-1">
                           Amazing streak! 🔥
                         </p>
-                        <p className="text-sm text-blue-700 dark:text-blue-300">
+                        <p className="text-sm text-blue-700">
                           You've journaled for {stats.streak} days in a row! Regular journaling helps build emotional awareness and resilience.
                         </p>
                       </div>

@@ -56,16 +56,16 @@ export function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0E0E16]">
+    <div className="min-h-screen bg-white#0E0E16]">
       <Toaster />
 
       {/* Hero */}
-      <section className="py-20 bg-white dark:bg-black">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-primary text-white">Get in Touch</Badge>
-            <h1 className="mb-6 text-gray-900 dark:text-white">We'd Love to Hear From You</h1>
-            <p className="text-xl text-gray-600 dark:text-white/80">
+            <h1 className="mb-6 text-gray-900">We'd Love to Hear From You</h1>
+            <p className="text-xl text-gray-600">
               Whether you have questions, feedback, or want to join our community of listeners,
               we're here to connect.
             </p>
@@ -74,12 +74,12 @@ export function ContactPage() {
       </section>
 
       {/* Early Access Form */}
-      <section className="py-20 bg-white dark:bg-black">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <Card className="p-8 md:p-12 border-0 shadow-2xl bg-gradient-to-r from-[#7CB9E8] via-[#BFA2DB] to-[#F8C8DC]">
               <div className="text-center mb-8 text-white">
-                <Heart className="w-12 h-12 mx-auto mb-4 fill-white" />
+                <Heart className="w-12 h-12 mx-auto mb-4 text-gray-900 fill-gray-900" />
                 <h2 className="mb-4 text-white">Join the Unmutte Community</h2>
                 <p className="text-white/90">
                   Be among the first to experience the platform when we launch.
@@ -93,7 +93,7 @@ export function ContactPage() {
                     <Input
                       type="text"
                       placeholder="Your Name"
-                      className="bg-white dark:bg-[#2A2A3A] border-border text-gray-900 dark:text-white"
+                      className="bg-white#2A2A3A] border-border text-gray-900"
                       required
                     />
                   </div>
@@ -101,7 +101,7 @@ export function ContactPage() {
                     <Input
                       type="email"
                       placeholder="Your Email"
-                      className="bg-white dark:bg-[#2A2A3A] border-border text-gray-900 dark:text-white"
+                      className="bg-white#2A2A3A] border-border text-gray-900"
                       required
                     />
                   </div>
@@ -126,7 +126,7 @@ export function ContactPage() {
               <div>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F8C8DC] to-[#A8E6CF] flex items-center justify-center">
-                    <Headphones className="w-8 h-8 text-white" />
+                    <Headphones className="w-8 h-8 text-gray-900 fill-gray-900" />
                   </div>
                   <div>
                     <h2>Become a Volunteer Listener</h2>
@@ -182,7 +182,7 @@ export function ContactPage() {
                 </div>
               </div>
 
-              <Card className="p-8 border-0 shadow-xl bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+              <Card className="p-8 border-0 shadow-xl bg-white#1C1C2A]#2A2A3A]">
                 <h3 className="mb-6">Listener Application</h3>
                 <form onSubmit={handleListenerSubmit} className="space-y-6">
                   <div>
@@ -346,19 +346,19 @@ export function ContactPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="p-8 text-center border-0 shadow-lg bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+              <Card className="p-8 text-center border-0 shadow-lg bg-white#1C1C2A]#2A2A3A]">
                 <Mail className="w-10 h-10 text-primary mx-auto mb-4" />
                 <h4 className="mb-2">Email Us</h4>
                 <p className="text-sm text-muted-foreground">support@unmutte.com</p>
               </Card>
 
-              <Card className="p-8 text-center border-0 shadow-lg bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+              <Card className="p-8 text-center border-0 shadow-lg bg-white#1C1C2A]#2A2A3A]">
                 <Users className="w-10 h-10 text-secondary mx-auto mb-4" />
                 <h4 className="mb-2">Join Community</h4>
                 <p className="text-sm text-muted-foreground">50,000+ active users</p>
               </Card>
 
-              <Card className="p-8 text-center border-0 shadow-lg bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+              <Card className="p-8 text-center border-0 shadow-lg bg-white#1C1C2A]#2A2A3A]">
                 <Heart className="w-10 h-10 text-accent mx-auto mb-4" />
                 <h4 className="mb-2">Response Time</h4>
                 <p className="text-sm text-muted-foreground">Within 24 hours</p>

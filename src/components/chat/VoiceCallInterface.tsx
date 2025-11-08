@@ -70,10 +70,10 @@ export function VoiceCallInterface({
       exit={{ scale: 0.95, opacity: 0 }}
       className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
     >
-      <Card className="w-full max-w-md p-8 shadow-2xl bg-white dark:bg-black border-2">
+      <Card className="w-full max-w-md p-8 shadow-2xl bg-white border-2">
         {/* Status */}
         <div className="text-center mb-8">
-          <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 dark:bg-white/20 dark:text-white dark:border-white/30">
+          <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
             {callStatus === "connecting" ? "Connecting..." : "Voice Call"}
           </Badge>
         </div>
@@ -90,7 +90,7 @@ export function VoiceCallInterface({
             }}
             className="relative"
           >
-            <Avatar className="w-32 h-32 border-4 border-gray-200 dark:border-white/30">
+            <Avatar className="w-32 h-32 border-4 border-gray-200">
               <AvatarFallback className="bg-gradient-to-br from-[#F8C8DC] to-[#A8E6CF] text-white text-3xl">
                 {listenerName.charAt(9)}
               </AvatarFallback>
@@ -109,13 +109,13 @@ export function VoiceCallInterface({
 
         {/* Info */}
         <div className="text-center mb-8">
-          <h2 className="mb-2 text-gray-900 dark:text-white">{listenerName}</h2>
-          <p className="text-gray-600 dark:text-white/80">Anxiety & Stress Specialist</p>
+          <h2 className="mb-2 text-gray-900">{listenerName}</h2>
+          <p className="text-gray-600">Anxiety & Stress Specialist</p>
           {callStatus === "connected" && (
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-2xl mt-4 text-gray-700 dark:text-white/90"
+              className="text-2xl mt-4 text-gray-700"
             >
               {formatDuration(callDuration)}
             </motion.p>
@@ -127,11 +127,11 @@ export function VoiceCallInterface({
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 p-4 bg-gray-100 dark:bg-white/10 backdrop-blur rounded-lg"
+            className="mb-8 p-4 bg-gray-100 backdrop-blur rounded-lg"
           >
             <div className="flex items-center gap-3 mb-2">
-              <Volume2 className="w-5 h-5 text-gray-700 dark:text-white" />
-              <span className="text-sm text-gray-600 dark:text-white/90">Volume</span>
+              <Volume2 className="w-5 h-5 text-gray-700" />
+              <span className="text-sm text-gray-600">Volume</span>
             </div>
             <Slider
               value={volume}
@@ -182,7 +182,7 @@ export function VoiceCallInterface({
         </Button>
 
         {/* Info text */}
-        <p className="text-center text-sm text-gray-500 dark:text-white/70 mt-6">
+        <p className="text-center text-sm text-gray-500 mt-6">
           This is a simulated call. In production, this would use WebRTC for real-time audio.
         </p>
       </Card>

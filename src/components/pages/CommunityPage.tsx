@@ -86,16 +86,16 @@ export function CommunityPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0E0E16]">
+    <div className="min-h-screen bg-white#0E0E16]">
       <Toaster />
 
       {/* Hero */}
-      <section className="py-20 bg-white dark:bg-black">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-primary text-white">Community</Badge>
-            <h1 className="mb-6 text-gray-900 dark:text-white">You're Not Alone</h1>
-            <p className="text-xl text-gray-600 dark:text-muted-foreground">
+            <h1 className="mb-6 text-gray-900">You're Not Alone</h1>
+            <p className="text-xl text-gray-600">
               Real stories from real people finding their voice and healing together.
               Your story matters, and sharing it might help someone else feel less alone.
             </p>
@@ -104,26 +104,26 @@ export function CommunityPage() {
       </section>
 
       {/* Community Stories */}
-      <section className="py-20 bg-gray-50 dark:bg-black">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="mb-4 text-gray-900 dark:text-white">Community Stories</h2>
-              <p className="text-lg text-gray-600 dark:text-muted-foreground">
+              <h2 className="mb-4 text-gray-900">Community Stories</h2>
+              <p className="text-lg text-gray-600">
                 Anonymous voices sharing their journey to emotional wellness.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {communityStories.map((story, index) => (
-                <Card key={index} className="p-6 border border-purple-100 dark:border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-white dark:bg-[#1E1E2E]">
+                <Card key={index} className="p-6 border border-purple-100 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-white#1E1E2E]">
                   <Quote className="w-8 h-8 text-primary/30 mb-4" />
-                  <p className="text-gray-800 dark:text-foreground mb-6 flex-grow italic leading-relaxed">
+                  <p className="text-gray-800 mb-6 flex-grow italic leading-relaxed">
                     "{story.quote}"
                   </p>
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                     <Badge variant="secondary">{story.category}</Badge>
-                    <div className="flex items-center gap-2 text-gray-500 dark:text-muted-foreground">
+                    <div className="flex items-center gap-2 text-gray-500">
                       <Heart className="w-4 h-4" />
                       <span className="text-sm">{story.likes}</span>
                     </div>
@@ -139,11 +139,11 @@ export function CommunityPage() {
       <section className="py-20 gradient-soft">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
-            <Card className="p-8 md:p-12 border-0 shadow-2xl bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+            <Card className="p-8 md:p-12 border-0 shadow-2xl bg-white#1C1C2A]#2A2A3A]">
               <div className="text-center mb-8">
                 <MessageCircle className="w-12 h-12 text-primary mx-auto mb-4" />
-                <h2 className="mb-4 text-gray-900 dark:text-white">Share Your Experience</h2>
-                <p className="text-gray-700 dark:text-muted-foreground">
+                <h2 className="mb-4 text-gray-900">Share Your Experience</h2>
+                <p className="text-gray-700">
                   Your story could inspire someone else to take their first step toward healing.
                   Share anonymously and help build a supportive community.
                 </p>
@@ -151,15 +151,15 @@ export function CommunityPage() {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="bg-[rgba(77,69,69,0)]">
-                  <Label htmlFor="story" className="text-gray-900 dark:text-white">Your Story (Optional & Anonymous)</Label>
+                  <Label htmlFor="story" className="text-gray-900">Your Story (Optional & Anonymous)</Label>
                   <Textarea
                     id="story"
                     placeholder="Share your Unmutte experience, how it helped you, or a message for others on their journey..."
                     value={story}
                     onChange={(e) => setStory(e.target.value)}
-                    className="min-h-[200px] mt-2 resize-none rounded-xl border-2 border-gray-900 dark:border-border"
+                    className="min-h-[200px] mt-2 resize-none rounded-xl border-2 border-gray-900"
                   />
-                  <p className="text-sm text-gray-600 dark:text-muted-foreground mt-2">
+                  <p className="text-sm text-gray-600 mt-2">
                     Your story will be shared anonymously. No personal information is collected.
                   </p>
                 </div>

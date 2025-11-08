@@ -583,7 +583,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
         </ScrollArea>
 
         {/* Input */}
-        <div className="p-4 border-t bg-white dark:bg-slate-900">
+        <div className="p-4 border-t bg-white">
           {isTranscribing && (
             <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
               <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
@@ -618,10 +618,10 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
                   {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                 </Button>
                 {micPermission === 'denied' && (
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-slate-900" title="Microphone blocked" />
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" title="Microphone blocked" />
                 )}
                 {micPermission === 'granted' && !isRecording && (
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-slate-900" title="Microphone ready" />
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white" title="Microphone ready" />
                 )}
               </div>
               <Button
@@ -648,7 +648,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
               <>
                 Press Enter to send • Shift + Enter for new line
                 {micPermission === 'granted' ? (
-                  <span className="text-green-600 dark:text-green-400"> • 🎤 Voice ready</span>
+                  <span className="text-green-600"> • 🎤 Voice ready</span>
                 ) : (
                   <span> • Click mic to enable voice</span>
                 )}

@@ -55,10 +55,10 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-white dark:bg-transparent"
+      className="min-h-screen bg-white"
     >
       {/* Hero Section - Full Width Centered */}
-      <section className="bg-white dark:bg-[#0E0E16] py-20 md:py-32 relative overflow-hidden">
+      <section className="bg-white#0E0E16] py-20 md:py-32 relative overflow-hidden">
         {/* 3D Animated Background Elements */}
         {!prefersReducedMotion && (
           <div className="absolute inset-0 pointer-events-none">
@@ -428,7 +428,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
               </motion.h1>
 
               <motion.p
-                className="text-xl md:text-2xl italic text-gray-700 dark:text-[#E3E6F0] mb-8"
+                className="text-xl md:text-2xl italic text-gray-700#E3E6F0] mb-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 1 }}
@@ -437,7 +437,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
               </motion.p>
 
               <motion.p
-                className="text-lg md:text-xl text-gray-600 dark:text-[#BFC3D1] mb-12 leading-relaxed max-w-3xl mx-auto"
+                className="text-lg md:text-xl text-gray-600#BFC3D1] mb-12 leading-relaxed max-w-3xl mx-auto"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 1.2 }}
@@ -500,7 +500,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                 viewport={{ once: true }}
                 whileHover={!prefersReducedMotion ? { y: -10 } : {}}
               >
-                <Card className="p-8 text-center border-0 shadow-lg hover:shadow-2xl transition-all bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] interactive-card">
+                <Card className="p-8 text-center border-0 shadow-lg hover:shadow-2xl transition-all bg-white#1E1E2E]#2A2A3A] interactive-card">
                   <motion.div
                     className="w-20 h-20 rounded-full bg-gradient-to-br from-[#B088F9] to-[#D8B4FE] flex items-center justify-center mb-6 mx-auto shadow-[0_0_20px_rgba(176,136,249,0.4)]"
                     whileHover={
@@ -512,16 +512,16 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                   >
                     <Sparkles className="w-10 h-10 text-white" />
                   </motion.div>
-                  <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">
+                  <h3 className="mb-3 text-gray-900#FFFFFF]">
                     AI Listener
                   </h3>
-                  <p className="text-gray-600 dark:text-[#BFC3D1] mb-4">
+                  <p className="text-gray-600#BFC3D1] mb-4">
                     Instant empathy, available 24/7
                   </p>
                   <Button
                     onClick={handleStartTalking}
                     variant="outline"
-                    className="border-[#7CB9E8] text-[#7CB9E8] dark:border-[#BCA7FF] dark:text-[#BCA7FF] hover:bg-gradient-to-r hover:from-[#B088F9] hover:to-[#D8B4FE] hover:text-white"
+                    className="border-[#7CB9E8] text-[#7CB9E8]#BCA7FF]#BCA7FF] hover:bg-gradient-to-r hover:from-[#B088F9] hover:to-[#D8B4FE] hover:text-white"
                   >
                     Try AI Chat
                   </Button>
@@ -536,7 +536,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                 viewport={{ once: true }}
                 whileHover={!prefersReducedMotion ? { y: -10 } : {}}
               >
-                <Card className="p-8 text-center border-2 border-[#B088F9] shadow-xl hover:shadow-2xl shadow-[0_8px_40px_rgba(176,136,249,0.3)] bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] relative overflow-hidden transition-all interactive-card">
+                <Card className="p-8 text-center border-2 border-[#B088F9] shadow-xl hover:shadow-2xl shadow-[0_8px_40px_rgba(176,136,249,0.3)] bg-white#1E1E2E]#2A2A3A] relative overflow-hidden transition-all interactive-card">
                   <motion.div
                     animate={
                       !prefersReducedMotion
@@ -616,10 +616,10 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                       <Heart className="w-8 h-8 text-white fill-white" />
                     </motion.div>
                   </div>
-                  <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">
+                  <h3 className="mb-3 text-gray-900#FFFFFF]">
                     Hybrid Support
                   </h3>
-                  <p className="text-gray-600 dark:text-[#BFC3D1] mb-4">
+                  <p className="text-gray-600#BFC3D1] mb-4">
                     Start with AI, upgrade to human
                   </p>
                   <Button
@@ -639,7 +639,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                 viewport={{ once: true }}
                 whileHover={!prefersReducedMotion ? { y: -10 } : {}}
               >
-                <Card className="p-8 text-center border-0 shadow-lg hover:shadow-2xl transition-all bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] interactive-card">
+                <Card className="p-8 text-center border-0 shadow-lg hover:shadow-2xl transition-all bg-white#1E1E2E]#2A2A3A] interactive-card">
                   <motion.div
                     className="w-20 h-20 rounded-full bg-gradient-to-br from-[#F8C8DC] to-[#9BE4D8] flex items-center justify-center mb-6 mx-auto"
                     whileHover={
@@ -651,16 +651,16 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                   >
                     <Users className="w-10 h-10 text-white" />
                   </motion.div>
-                  <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">
+                  <h3 className="mb-3 text-gray-900#FFFFFF]">
                     Human Listener
                   </h3>
-                  <p className="text-gray-600 dark:text-[#BFC3D1] mb-4">
+                  <p className="text-gray-600#BFC3D1] mb-4">
                     Real connection, genuine care
                   </p>
                   <Button
                     onClick={() => onNavigate("connect")}
                     variant="outline"
-                    className="border-2 border-[#7CB9E8] text-[#7CB9E8] dark:border-[#BFA2DB] dark:text-[#BFA2DB] hover:bg-gradient-to-r hover:from-[#BFA2DB] hover:to-[#F8C8DC] hover:text-white hover:border-transparent font-semibold transition-all overflow-visible"
+                    className="border-2 border-[#7CB9E8] text-[#7CB9E8]#BFA2DB]#BFA2DB] hover:bg-gradient-to-r hover:from-[#BFA2DB] hover:to-[#F8C8DC] hover:text-white hover:border-transparent font-semibold transition-all overflow-visible"
                   >
                     Connect Now
                   </Button>
@@ -736,7 +736,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                       : {}
                   }
                 >
-                  <Card className="p-8 hover:shadow-2xl transition-all duration-300 border-0 bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] h-full interactive-card">
+                  <Card className="p-8 hover:shadow-2xl transition-all duration-300 border-0 bg-white#1E1E2E]#2A2A3A] h-full interactive-card">
                     <motion.div
                       className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6`}
                       whileHover={
@@ -779,14 +779,14 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <Card className="p-8 border border-purple-100 dark:border-0 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A]">
+            <Card className="p-8 border border-purple-100 shadow-lg hover:shadow-xl transition-shadow bg-white#1E1E2E]#2A2A3A]">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#B088F9] to-[#D8B4FE] flex items-center justify-center mb-6">
                 <BookOpen className="w-8 h-8 text-white" />
               </div>
-              <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">
+              <h3 className="mb-3 text-gray-900#FFFFFF]">
                 Mood Journal
               </h3>
-              <p className="text-gray-600 dark:text-[#BFC3D1] mb-6">
+              <p className="text-gray-600#BFC3D1] mb-6">
                 Write freely about your feelings and experiences. Track
                 your emotional journey with our private, secure journal.
               </p>
@@ -799,14 +799,14 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
               </Button>
             </Card>
 
-            <Card className="p-8 border border-pink-100 dark:border-0 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A]">
+            <Card className="p-8 border border-pink-100 shadow-lg hover:shadow-xl transition-shadow bg-white#1E1E2E]#2A2A3A]">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F8C8DC] to-[#9BE4D8] flex items-center justify-center mb-6">
                 <Activity className="w-8 h-8 text-white" />
               </div>
-              <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">
+              <h3 className="mb-3 text-gray-900#FFFFFF]">
                 Mood Tracker
               </h3>
-              <p className="text-gray-600 dark:text-[#BFC3D1] mb-6">
+              <p className="text-gray-600#BFC3D1] mb-6">
                 Log your daily mood and visualize patterns over time.
                 Discover insights about your emotional wellbeing.
               </p>
@@ -823,13 +823,13 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white dark:bg-black">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="mb-4 text-gray-900 dark:text-white">
+            <h2 className="mb-4 text-gray-900">
               People Are Finding Their Voice
             </h2>
-            <p className="text-lg text-gray-600 dark:text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Join thousands who have found comfort and connection
               through Unmutte.
             </p>
@@ -839,7 +839,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
             {testimonials.map((testimonial, index) => (
               <Card
                 key={index}
-                className="p-8 border border-blue-100 dark:border-0 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-[#1E1E2E]"
+                className="p-8 border border-blue-100 shadow-lg hover:shadow-xl transition-shadow bg-white#1E1E2E]"
               >
                 <div className="flex gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -849,10 +849,10 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                     />
                   ))}
                 </div>
-                <p className="text-gray-800 dark:text-foreground mb-6 italic">
+                <p className="text-gray-800 mb-6 italic">
                   "{testimonial.quote}"
                 </p>
-                <p className="text-sm text-gray-500 dark:text-muted-foreground">
+                <p className="text-sm text-gray-500">
                   — {testimonial.author}
                 </p>
               </Card>
@@ -862,40 +862,40 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
       </section>
 
       {/* Quick Tips */}
-      <section className="py-16 bg-white dark:bg-black">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <Card className="p-8 border border-purple-100 dark:border-0 shadow-lg bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A]">
-              <h3 className="text-center mb-6 text-gray-900 dark:text-[#FFFFFF]">
+            <Card className="p-8 border border-purple-100 shadow-lg bg-white#1E1E2E]#2A2A3A]">
+              <h3 className="text-center mb-6 text-gray-900#FFFFFF]">
                 Quick Tips for Getting Started
               </h3>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-3xl mb-3">💬</div>
-                  <h4 className="mb-2 text-gray-900 dark:text-[#FFFFFF]">
+                  <h4 className="mb-2 text-gray-900#FFFFFF]">
                     Start Simple
                   </h4>
-                  <p className="text-sm text-gray-600 dark:text-[#BFC3D1]">
+                  <p className="text-sm text-gray-600#BFC3D1]">
                     Begin with AI chat to organize your thoughts before
                     connecting with a human listener
                   </p>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl mb-3">📓</div>
-                  <h4 className="mb-2 text-gray-900 dark:text-[#FFFFFF]">
+                  <h4 className="mb-2 text-gray-900#FFFFFF]">
                     Journal Daily
                   </h4>
-                  <p className="text-sm text-gray-600 dark:text-[#BFC3D1]">
+                  <p className="text-sm text-gray-600#BFC3D1]">
                     Write a few sentences each day to track your
                     emotional journey over time
                   </p>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl mb-3">📊</div>
-                  <h4 className="mb-2 text-gray-900 dark:text-[#FFFFFF]">
+                  <h4 className="mb-2 text-gray-900#FFFFFF]">
                     Track Patterns
                   </h4>
-                  <p className="text-sm text-gray-600 dark:text-[#BFC3D1]">
+                  <p className="text-sm text-gray-600#BFC3D1]">
                     Use mood tracker to identify what affects your
                     wellbeing most
                   </p>
@@ -907,7 +907,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-white dark:bg-black">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -916,10 +916,10 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto"
           >
-            <h2 className="mb-6 text-gray-900 dark:text-white">
+            <h2 className="mb-6 text-gray-900">
               Join the Unmutte Community
             </h2>
-            <p className="text-xl mb-8 text-gray-700 dark:text-white/90">
+            <p className="text-xl mb-8 text-gray-700">
               Your feelings matter. Your voice deserves to be heard.
               Start your journey to emotional freedom today.
             </p>
@@ -935,7 +935,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                 size="lg"
                 variant="outline"
                 onClick={() => onNavigate("journal")}
-                className="bg-transparent text-gray-900 dark:text-white border-2 border-gray-300 dark:border-white/30 hover:bg-gray-100 dark:hover:bg-white/10 hover:border-gray-400 dark:hover:border-white/50 transition-all text-lg px-10 py-6 overflow-visible"
+                className="bg-transparent text-gray-900 border-2 border-gray-300 hover:bg-gray-100 hover:border-gray-400 transition-all text-lg px-10 py-6 overflow-visible"
               >
                 Start Journaling
               </Button>

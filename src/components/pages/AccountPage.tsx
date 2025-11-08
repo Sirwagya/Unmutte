@@ -763,14 +763,14 @@ export function AccountPage({ isLoggedIn, onLogin, onLogout }: AccountPageProps)
                       );
                     })}
                   </div>
-                  <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 rounded-lg">
+                  <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-start gap-3">
-                      <Star className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+                      <Star className="w-5 h-5 text-blue-600 mt-0.5" />
                       <div>
-                        <p className="text-blue-900 dark:text-blue-100 mb-1">
+                        <p className="text-blue-900 mb-1">
                           How to earn more coins
                         </p>
-                        <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                        <ul className="text-sm text-blue-700 space-y-1">
                           <li>• Write journal entries (+5 coins each)</li>
                           <li>• Track your mood (+3 coins each)</li>
                           <li>• Claim daily bonus (+20 coins per day)</li>

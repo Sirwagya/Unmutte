@@ -1,7 +1,6 @@
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
 import {
-  Bot,
   Users,
   Video,
   Phone,
@@ -15,18 +14,19 @@ import {
   Zap,
   CheckCircle2,
 } from "lucide-react";
+import CustomBotIcon from "../icons/CustomBotIcon";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 export function FeaturesPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0E0E16]">
+    <div className="min-h-screen bg-white#0E0E16]">
       {/* Hero */}
-      <section className="py-20 bg-white dark:bg-black">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-primary text-white">Features</Badge>
-            <h1 className="mb-6 text-gray-900 dark:text-white">Everything You Need to Feel Heard</h1>
-            <p className="text-xl text-gray-600 dark:text-muted-foreground">
+            <h1 className="mb-6 text-gray-900">Everything You Need to Feel Heard</h1>
+            <p className="text-xl text-gray-600">
               Powerful tools and thoughtful features designed to support your emotional wellbeing journey.
             </p>
           </div>
@@ -34,7 +34,7 @@ export function FeaturesPage() {
       </section>
 
       {/* Main Features Tabs */}
-      <section className="py-20 bg-gray-50 dark:bg-black">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <Tabs defaultValue="ai" className="w-full">
@@ -50,15 +50,15 @@ export function FeaturesPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CB9E8] to-[#BFA2DB] flex items-center justify-center">
-                        <Bot className="w-8 h-8 text-white" />
+                        <CustomBotIcon size={32} color="#ffffff" secondaryColor="#ffffff" />
                       </div>
                       <div>
-                        <h2 className="text-gray-900 dark:text-white">AI-Powered Empathy</h2>
-                        <p className="text-gray-500 dark:text-muted-foreground">Powered by GPT-4.1</p>
+                        <h2 className="text-gray-900 font-semibold tracking-tight">AI-Powered Empathy</h2>
+                        <p className="text-gray-600 text-sm">Powered by GPT-4.1</p>
                       </div>
                     </div>
                     
-                    <p className="text-lg text-gray-600 dark:text-muted-foreground mb-6">
+                    <p className="text-lg text-gray-600 mb-6">
                       Our advanced AI listener provides instant, empathetic responses whenever you need
                       someone to talk to — day or night.
                     </p>
@@ -106,19 +106,19 @@ export function FeaturesPage() {
                     </div>
                   </div>
 
-                  <Card className="p-8 border-0 shadow-2xl bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+                  <Card className="p-8 border-0 shadow-2xl bg-white#1C1C2A]#2A2A3A]">
                     <div className="space-y-4">
-                      <div className="bg-gray-50 dark:bg-[#2A2A3A] p-4 rounded-xl shadow-sm border border-gray-200 dark:border-border">
-                        <p className="text-sm text-gray-600 dark:text-muted-foreground mb-1">You</p>
-                        <p className="text-gray-900 dark:text-foreground">I'm feeling really anxious about tomorrow's presentation...</p>
+                      <div className="bg-gray-50#2A2A3A] p-4 rounded-xl shadow-sm border border-gray-200">
+                        <p className="text-sm text-gray-600 mb-1">You</p>
+                        <p className="text-gray-900">I'm feeling really anxious about tomorrow's presentation...</p>
                       </div>
                       <div className="bg-gradient-to-br from-[#7CB9E8] via-[#BFA2DB] to-[#F8C8DC] p-4 rounded-xl shadow-sm text-white">
                         <p className="text-sm mb-1 opacity-90">AI Listener</p>
                         <p>I hear you. Feeling anxious before a big presentation is completely normal. Would you like to talk about what's making you most nervous? Sometimes breaking it down helps.</p>
                       </div>
-                      <div className="bg-gray-50 dark:bg-[#2A2A3A] p-4 rounded-xl shadow-sm border border-gray-200 dark:border-border">
-                        <p className="text-sm text-gray-600 dark:text-muted-foreground mb-1">You</p>
-                        <p className="text-gray-900 dark:text-foreground">I'm worried I'll forget what to say or mess up in front of everyone...</p>
+                      <div className="bg-gray-50#2A2A3A] p-4 rounded-xl shadow-sm border border-gray-200">
+                        <p className="text-sm text-gray-600 mb-1">You</p>
+                        <p className="text-gray-900">I'm worried I'll forget what to say or mess up in front of everyone...</p>
                       </div>
                     </div>
                   </Card>
@@ -131,7 +131,7 @@ export function FeaturesPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F8C8DC] to-[#A8E6CF] flex items-center justify-center">
-                        <Users className="w-8 h-8 text-white" />
+                        <Users className="w-8 h-8 text-white fill-white" />
                       </div>
                       <div>
                         <h2>Real Human Connection</h2>
@@ -228,7 +228,7 @@ export function FeaturesPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7CB9E8] to-[#A8E6CF] flex items-center justify-center">
-                        <Video className="w-8 h-8 text-white" />
+                        <Video className="w-8 h-8 text-white fill-white" />
                       </div>
                       <div>
                         <h2>Live Voice & Video Calls</h2>
@@ -285,49 +285,49 @@ export function FeaturesPage() {
                   </div>
 
                   <div className="space-y-6">
-                    <Card className="p-6 border-0 shadow-xl bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+                    <Card className="p-6 border-0 shadow-xl bg-white#1C1C2A]#2A2A3A]">
                       <div className="flex items-center gap-4 mb-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#B088F9] to-[#BFA2DB] flex items-center justify-center">
                           <Phone className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-gray-900 dark:text-white">Voice Call</h4>
-                          <p className="text-sm text-gray-600 dark:text-muted-foreground">Audio only</p>
+                          <h4 className="text-gray-900">Voice Call</h4>
+                          <p className="text-sm text-gray-600">Audio only</p>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-700 dark:text-muted-foreground">
+                      <p className="text-sm text-gray-700">
                         Perfect for when you want to talk things through without the pressure
                         of video. Just you and a caring voice.
                       </p>
                     </Card>
 
-                    <Card className="p-6 border-0 shadow-xl bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+                    <Card className="p-6 border-0 shadow-xl bg-white#1C1C2A]#2A2A3A]">
                       <div className="flex items-center gap-4 mb-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F8C8DC] to-[#9BE4D8] flex items-center justify-center">
                           <Video className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-gray-900 dark:text-white">Video Call</h4>
-                          <p className="text-sm text-gray-600 dark:text-muted-foreground">Face-to-face</p>
+                          <h4 className="text-gray-900">Video Call</h4>
+                          <p className="text-sm text-gray-600">Face-to-face</p>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-700 dark:text-muted-foreground">
+                      <p className="text-sm text-gray-700">
                         Experience the warmth of a face-to-face conversation. See genuine
                         empathy and feel truly connected.
                       </p>
                     </Card>
 
-                    <Card className="p-6 border-0 shadow-xl bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+                    <Card className="p-6 border-0 shadow-xl bg-white#1C1C2A]#2A2A3A]">
                       <div className="flex items-center gap-4 mb-4">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#8EA7E9] to-[#9BE4D8] flex items-center justify-center">
                           <MessageSquare className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-gray-900 dark:text-white">Hybrid Mode</h4>
-                          <p className="text-sm text-gray-600 dark:text-muted-foreground">Chat + Call</p>
+                          <h4 className="text-gray-900">Hybrid Mode</h4>
+                          <p className="text-sm text-gray-600">Chat + Call</p>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-700 dark:text-muted-foreground">
+                      <p className="text-sm text-gray-700">
                         Start with chat, then upgrade to voice or video when you feel
                         comfortable. Total flexibility.
                       </p>

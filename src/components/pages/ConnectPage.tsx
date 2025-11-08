@@ -1,3 +1,5 @@
+import { X, MessageCircle, Sparkles } from "lucide-react";
+import CustomBotIcon from "../icons/CustomBotIcon";
 import { useState, useEffect } from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
@@ -10,18 +12,7 @@ import { VoiceCallInterface } from "../chat/VoiceCallInterface";
 import { CheckoutPage } from "../CheckoutPage";
 import { AgeConsentModal } from "../AgeConsentModal";
 import { motion } from "motion/react";
-import {
-  Bot,
-  Video,
-  Phone,
-  MessageSquare,
-  Clock,
-  Star,
-  Shield,
-  Calendar,
-  Zap,
-  CheckCircle2,
-} from "lucide-react";
+import { Video, Phone, MessageSquare, Clock, Star, Shield, Calendar, Zap, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner@2.0.3";
 import { Toaster } from "../ui/sonner";
 
@@ -169,7 +160,7 @@ export function ConnectPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0E0E16]">
+    <div className="min-h-screen bg-white#0E0E16]">
       <Toaster />
 
       {/* Age Consent Modal - Shows FIRST before payment */}
@@ -204,11 +195,11 @@ export function ConnectPage() {
       )}
 
       {/* Hero */}
-      <section className="py-20 bg-white dark:bg-black">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <motion.h1 
-              className="mb-6 text-gray-900 dark:text-white"
+              className="mb-6 text-gray-900"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -216,7 +207,7 @@ export function ConnectPage() {
               Ready to Be Heard?
             </motion.h1>
             <motion.p 
-              className="text-xl text-gray-600 dark:text-white/90 mb-8"
+              className="text-xl text-gray-600 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -233,7 +224,7 @@ export function ConnectPage() {
                   transition={{ delay: index * 0.1 + 0.5 }}
                   whileHover={{ scale: 1.1 }}
                 >
-                  <Badge className="bg-primary/10 text-primary border-primary/20 dark:bg-white/20 dark:text-white dark:border-white/30 backdrop-blur-sm">
+                  <Badge className="bg-primary/10 text-primary border-primary/20 backdrop-blur-sm">
                     {text}
                   </Badge>
                 </motion.div>
@@ -244,10 +235,10 @@ export function ConnectPage() {
       </section>
 
       {/* Quick Start Options */}
-      <section className="py-20 bg-white dark:bg-black">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-center mb-12 text-gray-900 dark:text-white">Choose Your Connection</h2>
+            <h2 className="text-center mb-12 text-gray-900">Choose Your Connection</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* AI Only */}
@@ -258,14 +249,14 @@ export function ConnectPage() {
                 viewport={{ once: true }}
                 whileHover={{ y: -10, scale: 1.02 }}
               >
-                <Card className="p-8 border-2 hover:border-primary transition-all duration-300 hover:shadow-2xl cursor-pointer interactive-card bg-white dark:bg-[#1E1E2E] h-full">
+                <Card className="p-8 border-2 hover:border-primary transition-all duration-300 hover:shadow-2xl cursor-pointer interactive-card bg-white#1E1E2E] h-full">
                   <div className="text-center flex flex-col h-full">
                     <motion.div 
                       className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7CB9E8] to-[#BFA2DB] flex items-center justify-center mx-auto mb-6"
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.6 }}
-                    >
-                      <Bot className="w-10 h-10 text-white" />
+                      >
+                        <CustomBotIcon size={40} color="#111827" secondaryColor="#CBD5E1" />
                     </motion.div>
                   <h3 className="mb-3">AI Listener</h3>
                   <div className="mb-4">
@@ -317,7 +308,7 @@ export function ConnectPage() {
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      <Phone className="w-10 h-10 text-white" />
+                      <Phone className="w-10 h-10 text-gray-900 fill-gray-900" />
                     </motion.div>
                   <h3 className="mb-3">Voice Call</h3>
                   <div className="mb-4">
@@ -366,7 +357,7 @@ export function ConnectPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {humanListeners.map((listener) => (
-                <Card key={listener.id} className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-gradient-to-br dark:from-[#1C1C2A] dark:to-[#2A2A3A]">
+                <Card key={listener.id} className="p-6 border-0 shadow-lg hover:shadow-xl transition-shadow bg-white#1C1C2A]#2A2A3A]">
                   <div className="flex items-start gap-4">
                     <Avatar className="w-16 h-16 border-2 border-primary">
                       <AvatarFallback className="bg-gradient-to-br from-[#7CB9E8] to-[#BFA2DB] text-white text-lg">
@@ -377,8 +368,8 @@ export function ConnectPage() {
                     <div className="flex-grow">
                       <div className="flex items-start justify-between mb-2">
                         <div>
-                          <h4 className="mb-1 text-gray-900 dark:text-white">{listener.name}</h4>
-                          <p className="text-sm text-gray-600 dark:text-muted-foreground">{listener.specialty}</p>
+                          <h4 className="mb-1 text-gray-900">{listener.name}</h4>
+                          <p className="text-sm text-gray-600">{listener.specialty}</p>
                         </div>
                         {listener.available && (
                           <Badge className="bg-green-500 text-white">
@@ -387,7 +378,7 @@ export function ConnectPage() {
                         )}
                       </div>
                       
-                      <div className="flex items-center gap-4 mb-3 text-sm text-gray-600 dark:text-muted-foreground">
+                      <div className="flex items-center gap-4 mb-3 text-sm text-gray-600">
                         <div className="flex items-center gap-1">
                           <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                           <span>{listener.rating}</span>

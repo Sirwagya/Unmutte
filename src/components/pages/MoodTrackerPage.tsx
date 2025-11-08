@@ -735,7 +735,7 @@ export function MoodTrackerPage() {
                           content={({ active, payload }) => {
                             if (active && payload && payload.length) {
                               return (
-                                <div className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow-lg border">
+                                <div className="bg-white p-3 rounded-lg shadow-lg border">
                                   <p className="text-sm">{payload[0].payload.date}</p>
                                   <p className="font-semibold" style={{ color: payload[0].color }}>
                                     Mood: {payload[0].payload.moodLabel}

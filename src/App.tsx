@@ -1,25 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { QuickAccessFAB } from "./components/QuickAccessFAB";
 import { WelcomeModal } from "./components/WelcomeModal";
 import { AIChatInterface } from "./components/chat/AIChatInterface";
 import { VoiceCallInterface } from "./components/chat/VoiceCallInterface";
-import SmashStressGame, {
-  type GameResults,
-} from "./components/SmashStressGame";
-import { toast } from "sonner@2.0.3";
-import { HomePage } from "./components/pages/HomePage";
-import { AboutPage } from "./components/pages/AboutPage";
-import { FeaturesPage } from "./components/pages/FeaturesPage";
-import { MoodJournalPage } from "./components/pages/MoodJournalPage";
-import { MoodTrackerPage } from "./components/pages/MoodTrackerPage";
-import { ResourcesPage } from "./components/pages/ResourcesPage";
-import { CommunityPage } from "./components/pages/CommunityPage";
-import { ConnectPage } from "./components/pages/ConnectPage";
-import { ContactPage } from "./components/pages/ContactPage";
-import { AccountPage } from "./components/pages/AccountPage";
+import { useDarkMode } from "./hooks/useDarkMode";
 import { Toaster } from "./components/ui/sonner";
+
+const HomePage = lazy(() =>
+  import("./components/pages/HomePage").then((module) => ({
+    default: module.HomePage,
+  }))
+);
+const AboutPage = lazy(() => import("./components/pages/AboutPage"));
+const FeaturesPage = lazy(() => import("./components/pages/FeaturesPage"));
+const MoodJournalPage = lazy(() =>
+  import("./components/pages/MoodJournalPage")
+);
+const MoodTrackerPage = lazy(() =>
+  import("./components/pages/MoodTrackerPage")
+);
+const ResourcesPage = lazy(() => import("./components/pages/ResourcesPage"));
+const CommunityPage = lazy(() => import("./components/pages/CommunityPage"));
+const ConnectPage = lazy(() => import("./components/pages/ConnectPage"));
+const ContactPage = lazy(() => import("./components/pages/ContactPage"));
+const AccountPage = lazy(() => import("./components/pages/AccountPage"));
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -31,36 +37,10 @@ export default function App() {
   const [showStressGame, setShowStressGame] = useState(false);
   const isHighRisk =
     localStorage.getItem("unmutte_high_risk") === "true";
+  const { isDarkMode, toggleTheme } = useDarkMode();
 
-  // Handle theme mode
   useEffect(() => {
-    const savedTheme = localStorage.getItem("unmutte_theme");
-    if (savedTheme === "light") {
-      setIsDarkMode(false);
-      document.documentElement.classList.remove("dark");
-    } else {
-      setIsDarkMode(true);
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("unmutte_theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("unmutte_theme", "light");
-    }
-  };
-
-  // Check if user is logged in on mount
-  useEffect(() => {
-    const userEmail = localStorage.getItem(
-      "unmutte_user_email",
-    );
+    const userEmail = localStorage.getItem("unmutte_user_email");
     if (userEmail) {
       setIsLoggedIn(true);
     }
@@ -185,7 +165,9 @@ export default function App() {
         onToggleTheme={toggleTheme}
       />
 
-      <main className="flex-grow">{renderPage()}</main>
+      <main className="flex-grow">
+        <Suspense fallback={<div>Loading...</div>}>{renderPage()}</Suspense>
+      </main>
 
       <Footer onNavigate={handleNavigate} />
 

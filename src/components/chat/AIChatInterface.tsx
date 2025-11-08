@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect, type KeyboardEvent } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeSanitize from "rehype-sanitize";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
@@ -188,13 +191,14 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
 
     // Timeout guard so hung requests don't block future sends
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000); // 12s
+    const timeout = setTimeout(() => controller.abort(), 20000); // up to 20s for streaming
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal,
       body: JSON.stringify({ prompt, history: mapped }),
     }).finally(() => clearTimeout(timeout));
+
     if (!res.ok) {
       const detailText = await res.text().catch(() => '');
       let detailJson: any = undefined;
@@ -211,8 +215,83 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
       err.__statusText = apiError?.status;
       throw err;
     }
-    const data = await res.json();
-    return data;
+
+    // If JSON, return directly (Netlify function path)
+    const contentType = res.headers.get('Content-Type') || res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      return await res.json();
+    }
+
+    // Otherwise, handle streaming (Vercel function path)
+    const reader = res.body?.getReader();
+    if (!reader) {
+      // Fallback: try text then parse something useful
+      const txt = await res.text();
+      try { return JSON.parse(txt); } catch { return { text: txt } }
+    }
+
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+    let fullText = '';
+    let provider: string | undefined;
+    let model: string | undefined;
+
+    const extractAndAppend = (obj: any) => {
+      // Header line from our proxy may contain provider/model
+      if (!provider && typeof obj?.provider === 'string') provider = obj.provider;
+      if (!model && typeof obj?.model === 'string') model = obj.model;
+
+      // Try Gemini formats
+      const geminiPart = obj?.candidates?.[0]?.content?.parts?.[0]?.text
+        ?? obj?.candidates?.[0]?.delta?.content?.[0]?.text;
+      if (typeof geminiPart === 'string') {
+        fullText += geminiPart;
+        return;
+      }
+      // Try NVIDIA/OpenAI-like formats
+      const nvidiaDelta = obj?.choices?.[0]?.delta?.content
+        ?? obj?.choices?.[0]?.message?.content;
+      if (typeof nvidiaDelta === 'string') {
+        fullText += nvidiaDelta;
+        return;
+      }
+    };
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let idx;
+      while ((idx = buffer.indexOf('\n')) !== -1) {
+        const line = buffer.slice(0, idx).trim();
+        buffer = buffer.slice(idx + 1);
+        if (!line) continue;
+        const normalized = line.startsWith('data:') ? line.replace(/^data:\s*/, '') : line;
+        if (normalized === '[DONE]' || normalized === 'data: [DONE]') continue;
+        try {
+          const obj = JSON.parse(normalized);
+          extractAndAppend(obj);
+        } catch {
+          // Heuristic: try to pull "text":"..." substrings
+          const matches = normalized.match(/\"text\"\s*:\s*\"([^\"]*)\"/g);
+          if (matches) {
+            for (const m of matches) {
+              const part = m.replace(/.*\"text\"\s*:\s*\"/, '').replace(/\"$/, '');
+              fullText += part;
+            }
+          }
+        }
+      }
+    }
+
+    // Flush any remaining buffer
+    const tail = buffer.trim();
+    if (tail) {
+      const normalized = tail.startsWith('data:') ? tail.replace(/^data:\s*/, '') : tail;
+      try { extractAndAppend(JSON.parse(normalized)); } catch {}
+    }
+
+    return { text: fullText.trim(), provider, model };
   }
 
   const handleSendMessage = async () => {
@@ -543,7 +622,46 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
                           : "bg-muted"
                       }`}
                     >
-                      <p className="text-sm leading-relaxed break-words">{message.text}</p>
+                      {message.sender === "ai" ? (
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          rehypePlugins={[rehypeSanitize]}
+                          components={{
+                            a: ({ node, ...props }) => (
+                              <a
+                                {...props}
+                                className="underline underline-offset-2 text-blue-600 hover:text-blue-700"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              />
+                            ),
+                            code: (codeProps) => {
+                              const { className, children, ...rest } = codeProps as any;
+                              const isInline = !String(children).includes('\n');
+                              return (
+                                <code
+                                  {...rest}
+                                  className={`${className || ''} ${isInline ? 'px-1 py-0.5 rounded bg-black/10' : 'block p-3 rounded bg-black/10 overflow-x-auto whitespace-pre-wrap'}`}
+                                >
+                                  {children}
+                                </code>
+                              );
+                            },
+                            p: (props) => <p className="text-sm leading-relaxed break-words whitespace-pre-wrap" {...props} />,
+                            ul: (props) => <ul className="list-disc pl-5 space-y-1" {...props} />,
+                            ol: (props) => <ol className="list-decimal pl-5 space-y-1" {...props} />,
+                            li: (props) => <li className="text-sm leading-relaxed" {...props} />,
+                            blockquote: (props) => <blockquote className="border-l-4 pl-3 italic opacity-80" {...props} />,
+                            h1: (props) => <h1 className="text-base font-semibold mb-2" {...props} />,
+                            h2: (props) => <h2 className="text-base font-semibold mb-2" {...props} />,
+                            h3: (props) => <h3 className="text-base font-semibold mb-2" {...props} />,
+                          }}
+                        >
+                          {message.text}
+                        </ReactMarkdown>
+                      ) : (
+                        <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">{message.text}</p>
+                      )}
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 px-1">
                       {message.timestamp.toLocaleTimeString([], {

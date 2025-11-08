@@ -197,8 +197,8 @@ export default function SmashStressGame({
 
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center bg-black/90 backdrop-blur-md" 
-      style={{ zIndex: 999999 }}
+      className="fixed inset-0 flex items-center justify-center bg-black/95 backdrop-blur-xl"
+      style={{ zIndex: 9999 }}
     >
       <AnimatePresence mode="wait" initial={false}>
         {gameState === "intro" && (
@@ -272,8 +272,7 @@ export default function SmashStressGame({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="relative w-full h-full bg-gradient-to-br from-purple-100/90 via-blue-100/90 to-pink-100/90 dark:from-gray-900/90 dark:via-gray-800/90 dark:to-gray-900/90"
-            style={{ zIndex: 999999 }}
+            className="relative w-full h-full bg-gradient-to-br from-purple-100 via-blue-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
           >
             {/* Header */}
             <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md z-10 border-b-2 border-purple-200 dark:border-purple-500/50">

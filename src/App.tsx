@@ -28,6 +28,7 @@ export default function App() {
   >("none");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [showStressGame, setShowStressGame] = useState(false);
   const isHighRisk =
     localStorage.getItem("unmutte_high_risk") === "true";
 
@@ -78,8 +79,20 @@ export default function App() {
     setActiveInterface("voice");
   };
 
+  const handleStartGame = () => {
+    setShowStressGame(true);
+  };
+
   const handleCloseInterface = () => {
     setActiveInterface("none");
+  };
+
+  const handleGameComplete = (results: GameResults) => {
+    console.log("Game results:", results);
+    toast.success(
+      `Great job! You popped ${results.totalPops} bubbles! 🎉`,
+    );
+    setShowStressGame(false);
   };
 
   const handleLogin = (email: string) => {
@@ -154,6 +167,15 @@ export default function App() {
         />
       )}
 
+      {showStressGame && (
+        <SmashStressGame
+          isOpen={showStressGame}
+          onClose={() => setShowStressGame(false)}
+          onComplete={handleGameComplete}
+          isHighRisk={isHighRisk}
+        />
+      )}
+
       <Navigation
         currentPage={currentPage}
         onNavigate={handleNavigate}
@@ -169,10 +191,12 @@ export default function App() {
 
       {/* Quick Access FAB - only show when not in connect page and no active interface */}
       {currentPage !== "connect" &&
-        activeInterface === "none" && (
+        activeInterface === "none" &&
+        !showStressGame && (
           <QuickAccessFAB
             onStartChat={handleStartChat}
             onStartVoice={handleStartVoice}
+            onStartGame={handleStartGame}
           />
         )}
 

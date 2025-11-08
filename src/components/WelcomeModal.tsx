@@ -63,7 +63,11 @@ export function WelcomeModal({ onClose }: WelcomeModalProps) {
   const Icon = currentStep.icon;
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      if (!open) {
+        handleClose();
+      }
+    }}>
       <DialogContent className="max-w-md">
         <motion.div
           key={step}

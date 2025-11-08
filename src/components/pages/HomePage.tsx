@@ -170,7 +170,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
           </div>
         )}
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 relative z-0">
           <div className="max-w-5xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}

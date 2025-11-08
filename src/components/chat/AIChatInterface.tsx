@@ -432,22 +432,29 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
 
   return (
     <>
-      {/* Backdrop */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-        onClick={() => setShowFeedback(true)}
-      />
-      
-      {/* Chat Window */}
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0, y: 20 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        className="fixed inset-4 md:inset-auto md:bottom-4 md:right-4 md:w-[450px] md:h-[700px] z-50"
-      >
+      <AnimatePresence mode="wait">
+        {!showFeedback && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowFeedback(true);
+              }}
+            />
+            
+            {/* Chat Window */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="fixed inset-4 md:inset-auto md:bottom-4 md:right-4 md:w-[450px] md:h-[700px] z-50"
+              onClick={(e) => e.stopPropagation()}
+            >
         <Card className="h-full flex flex-col shadow-2xl border-2 border-primary/20 p-0 overflow-hidden">
         {/* Header */}
         <div className="gradient-sky-lavender p-4 flex items-center justify-between text-white">
@@ -658,6 +665,9 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
         </div>
       </Card>
       </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Post-Session Feedback Modal */}
       <PostSessionFeedbackModal

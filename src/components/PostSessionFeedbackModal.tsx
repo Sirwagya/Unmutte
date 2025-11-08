@@ -191,8 +191,23 @@ export function PostSessionFeedbackModal({
 
   if (showThankYou) {
     return (
-      <Dialog open={isOpen}>
-        <DialogContent className="sm:max-w-[500px]" hideClose>
+      <Dialog open={isOpen} onOpenChange={(open) => {
+        if (!open) {
+          const feedbackData: FeedbackData = {
+            currentMood: answers.currentMood as number,
+            comparisonToPrevious: answers.comparisonToPrevious as string,
+            helpfulness: answers.helpfulness as string,
+            stressRelease: answers.stressRelease as string,
+            energyLevel: answers.energyLevel as string,
+            sleepQuality: answers.sleepQuality as string,
+            selfHarmThoughts: answers.selfHarmThoughts as string,
+            wantFollowUp: answers.wantFollowUp as string,
+            timestamp: new Date().toISOString()
+          };
+          onComplete(feedbackData);
+        }
+      }}>
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader className="sr-only">
             <DialogTitle>Thank You</DialogTitle>
             <DialogDescription>Feedback submitted successfully</DialogDescription>
@@ -214,8 +229,12 @@ export function PostSessionFeedbackModal({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" hideClose>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      if (!open) {
+        onClose();
+      }
+    }}>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
             <Heart className="w-5 h-5 text-primary" />

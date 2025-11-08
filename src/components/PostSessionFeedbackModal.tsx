@@ -257,7 +257,7 @@ export function PostSessionFeedbackModal({
 
           {/* Question */}
           <div className="space-y-6">
-            <div className="flex items-start gap-4 p-6 bg-gradient-to-br from-[#7CB9E8]/10 to-[#BFA2DB]/10 rounded-lg">
+            <div className="flex items-start gap-4 p-6 rounded-lg border bg-white shadow-sm">
               <QuestionIcon className="w-6 h-6 text-primary shrink-0 mt-1" />
               <div className="flex-1">
                 <h3 className="mb-2">{currentQ.question}</h3>

@@ -10,8 +10,8 @@ Test each feature before going live to ensure everything works perfectly.
 
 - [ ] Page loads without errors
 - [ ] Hero section displays correctly
-- [ ] "Start Talking Now" button opens AI chat
-- [ ] "Learn More" button navigates to About page
+- [ ] "Start a conversation" button opens AI chat
+- [ ] "How it works" button navigates to About page
 - [ ] All feature cards display correctly
 - [ ] Testimonials section loads
 - [ ] Quick Tips section shows

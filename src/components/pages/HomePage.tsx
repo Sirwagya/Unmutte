@@ -456,17 +456,19 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                 <Button
                   size="lg"
                   onClick={handleStartTalking}
+                  aria-label="Start a conversation with the AI listener"
                   className="gradient-sky-lavender border-0 text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all"
                 >
-                  Start Talking Now
+                  Start a conversation
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
                   onClick={() => onNavigate("about")}
+                  aria-label="Learn how Unmutte works"
                   className="text-lg px-10 py-6 border-2"
                 >
-                  Learn More
+                  How it works
                 </Button>
               </motion.div>
             </motion.div>

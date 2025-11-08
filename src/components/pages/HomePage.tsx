@@ -52,518 +52,171 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
     <div className="min-h-screen bg-white dark:bg-transparent">
       {/* Hero Section - Full Width Centered */}
       <section className="bg-white dark:bg-[#0E0E16] py-20 md:py-32 relative overflow-hidden">
-        {/* 3D Animated Background Elements */}
+        {/* Simplified Animated Background Elements */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* Floating Circles */}
           <motion.div
-            className="absolute w-64 h-64 rounded-full bg-gradient-to-br from-[#7CB9E8]/10 to-[#BFA2DB]/10 blur-3xl"
+            className="absolute w-96 h-96 rounded-full bg-gradient-to-br from-[#7CB9E8]/10 to-[#BFA2DB]/10 blur-3xl"
             animate={{
               x: [0, 100, 0],
               y: [0, -50, 0],
-              scale: [1, 1.2, 1],
+              scale: [1, 1.1, 1],
             }}
             transition={{
-              duration: 20,
+              duration: 30,
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            style={{ top: "10%", left: "5%" }}
+            style={{ top: "15%", left: "10%" }}
           />
           <motion.div
             className="absolute w-96 h-96 rounded-full bg-gradient-to-br from-[#F8C8DC]/10 to-[#A8E6CF]/10 blur-3xl"
             animate={{
               x: [0, -80, 0],
               y: [0, 60, 0],
-              scale: [1, 1.3, 1],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            style={{ top: "20%", right: "5%" }}
-          />
-          <motion.div
-            className="absolute w-72 h-72 rounded-full bg-gradient-to-br from-[#BFA2DB]/10 to-[#7CB9E8]/10 blur-3xl"
-            animate={{
-              x: [0, 60, 0],
-              y: [0, -80, 0],
               scale: [1, 1.1, 1],
             }}
             transition={{
-              duration: 22,
+              duration: 35,
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            style={{ bottom: "10%", left: "15%" }}
+            style={{ bottom: "15%", right: "10%" }}
           />
-          
-          {/* Floating Hearts */}
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={`heart-${i}`}
-              className="absolute"
-              initial={{
-                opacity: 0,
-                x: Math.random() * window.innerWidth,
-                y: window.innerHeight + 50,
-              }}
-              animate={{
-                opacity: [0, 0.6, 0],
-                y: -100,
-                x: Math.random() * window.innerWidth,
-              }}
-              transition={{
-                duration: 15 + Math.random() * 10,
-                repeat: Infinity,
-                delay: i * 2,
-                ease: "linear",
-              }}
-            >
-              <Heart 
-                className="text-[#F8C8DC]" 
-                style={{ 
-                  width: 20 + Math.random() * 30,
-                  height: 20 + Math.random() * 30,
-                }} 
-                fill="currentColor"
-              />
-            </motion.div>
-          ))}
-          
-          {/* Sparkles */}
-          {[...Array(12)].map((_, i) => (
-            <motion.div
-              key={`sparkle-${i}`}
-              className="absolute"
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1.5, 0],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                delay: i * 0.5,
-              }}
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-              }}
-            >
-              <Sparkles 
-                className="text-[#7CB9E8]" 
-                style={{ 
-                  width: 15 + Math.random() * 20,
-                  height: 15 + Math.random() * 20,
-                }} 
-              />
-            </motion.div>
-          ))}
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <motion.h1 
-                className="text-5xl md:text-7xl lg:text-8xl mb-8 leading-tight relative"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-              >
-                {/* Animated Background Glow */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-[#7CB9E8]/20 via-[#BFA2DB]/20 to-[#F8C8DC]/20 blur-3xl"
-                  animate={{
-                    opacity: [0.3, 0.6, 0.3],
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-                
-                {/* Sweeping Shimmer Effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                  style={{
-                    maskImage: 'linear-gradient(to right, transparent, white, transparent)',
-                    WebkitMaskImage: 'linear-gradient(to right, transparent, white, transparent)',
-                  }}
-                  animate={{
-                    x: ['-200%', '200%'],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    repeatDelay: 2,
-                    ease: "easeInOut",
-                  }}
-                />
-                
-                {/* "Where" - Fade and slide from left */}
-                <motion.span
-                  className="inline-block"
-                  initial={{ opacity: 0, x: -50, rotateX: 90 }}
-                  animate={{ opacity: 1, x: 0, rotateX: 0 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.2,
-                    type: "spring",
-                    stiffness: 80
-                  }}
-                >
-                  <motion.span
-                    className="inline-block"
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 0,
-                    }}
-                  >
-                    Where
-                  </motion.span>
-                </motion.span>
-                {" "}
-                
-                {/* "Feelings" - Multiple colors wave through */}
-                <motion.span
-                  className="inline-block relative"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.5,
-                    type: "spring",
-                    stiffness: 100
-                  }}
-                >
-                  <motion.span
-                    className="inline-block bg-gradient-to-r from-[#7CB9E8] via-[#BFA2DB] to-[#F8C8DC] bg-clip-text text-transparent"
-                    animate={{ 
-                      y: [0, -8, 0],
-                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                    }}
-                    transition={{
-                      y: {
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0.3,
-                      },
-                      backgroundPosition: {
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }
-                    }}
-                    style={{
-                      backgroundSize: '200% 200%',
-                    }}
-                  >
-                    Feelings
-                  </motion.span>
-                </motion.span>
-                {" "}
-                
-                {/* "Find" - Rotate in */}
-                <motion.span
-                  className="inline-block"
-                  initial={{ opacity: 0, rotateY: 180 }}
-                  animate={{ opacity: 1, rotateY: 0 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.8,
-                    type: "spring",
-                    stiffness: 80
-                  }}
-                >
-                  <motion.span
-                    className="inline-block"
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 0.6,
-                    }}
-                  >
-                    Find
-                  </motion.span>
-                </motion.span>
-                {" "}
-                
-                {/* "Freedom" - Grand entrance with particles */}
-                <motion.span 
-                  className="inline-block relative"
-                  initial={{ opacity: 0, scale: 0, rotate: -180 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  transition={{ 
-                    duration: 1.2, 
-                    delay: 1.1,
-                    type: "spring",
-                    stiffness: 60
-                  }}
-                >
-                  {/* Particle effects around Freedom */}
-                  {[...Array(12)].map((_, i) => (
-                    <motion.div
-                      key={`particle-${i}`}
-                      className="absolute w-1 h-1 md:w-2 md:h-2 rounded-full"
-                      style={{
-                        background: `linear-gradient(135deg, ${
-                          i % 3 === 0 ? '#7CB9E8' : i % 3 === 1 ? '#BFA2DB' : '#F8C8DC'
-                        }, ${i % 2 === 0 ? '#A8E6CF' : '#F8C8DC'})`,
-                        left: '50%',
-                        top: '50%',
-                      }}
-                      animate={{
-                        x: [0, Math.cos(i * 30 * Math.PI / 180) * 60],
-                        y: [0, Math.sin(i * 30 * Math.PI / 180) * 60],
-                        opacity: [0, 1, 0],
-                        scale: [0, 1.5, 0],
-                      }}
-                      transition={{
-                        duration: 2.5,
-                        repeat: Infinity,
-                        delay: 1.5 + i * 0.1,
-                        ease: "easeOut",
-                      }}
-                    />
-                  ))}
-                  
-                  <motion.span
-                    className="inline-block bg-gradient-to-r from-[#7CB9E8] via-[#BFA2DB] to-[#F8C8DC] bg-clip-text text-transparent relative"
-                    style={{
-                      backgroundSize: '200% 200%',
-                    }}
-                    animate={{
-                      y: [0, -10, 0],
-                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                      filter: [
-                        'drop-shadow(0 0 20px rgba(124, 185, 232, 0.5))',
-                        'drop-shadow(0 0 40px rgba(191, 162, 219, 0.8))',
-                        'drop-shadow(0 0 60px rgba(248, 200, 220, 0.6))',
-                        'drop-shadow(0 0 40px rgba(168, 230, 207, 0.7))',
-                        'drop-shadow(0 0 20px rgba(124, 185, 232, 0.5))',
-                      ],
-                      scale: [1, 1.05, 1],
-                    }}
-                    transition={{
-                      y: {
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0.9,
-                      },
-                      backgroundPosition: {
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "linear",
-                      },
-                      filter: {
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      },
-                      scale: {
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }
-                    }}
-                  >
-                    Freedom
-                  </motion.span>
-                </motion.span>
-              </motion.h1>
+              <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-gray-900 dark:text-white">
+                Where Feelings Find Freedom
+              </h1>
 
-              <motion.p 
-                className="text-xl md:text-2xl italic text-gray-700 dark:text-[#E3E6F0] mb-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1 }}
-              >
-                "You don't have to stay silent anymore."
-              </motion.p>
+              <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
+                A safe, judgment-free space to share your thoughts and feelings openly.
+                Connect with AI or real listeners, anytime.
+              </p>
 
-              <motion.p 
-                className="text-lg md:text-xl text-gray-600 dark:text-[#BFC3D1] mb-12 leading-relaxed max-w-3xl mx-auto"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1.2 }}
-              >
-                A safe, judgment-free space where you can share your thoughts and feelings openly. 
-                Get instant empathy from AI or connect with real human listeners.
-              </motion.p>
-
-              <motion.div 
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1.4 }}
-              >
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   size="lg"
                   onClick={handleStartTalking}
-                  className="gradient-sky-lavender border-0 text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all"
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all rounded-full"
                 >
-                  Start Talking Now
+                  <Sparkles className="mr-2 h-5 w-5" /> Start Talking Now
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
                   onClick={() => onNavigate("about")}
-                  className="text-lg px-10 py-6 border-2"
+                  className="text-lg px-8 py-6 border-2 rounded-full text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   Learn More
                 </Button>
-              </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* How Unmutte Helps You Section */}
-      <section className="py-16 bg-gradient-soft">
+      <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="text-center mb-12"
+              className="text-center mb-16"
             >
-              <h2 className="mb-4">How Unmutte Helps You</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                A unique blend of AI technology and human compassion
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+                How Unmutte Helps You
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                A unique blend of AI technology and human compassion, providing support that fits your needs.
               </p>
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* AI Side */}
+              {/* AI Listener Card */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -8, scale: 1.02 }}
               >
-                <Card className="p-8 text-center border-0 shadow-lg hover:shadow-2xl transition-all bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] interactive-card">
-                  <motion.div 
-                    className="w-20 h-20 rounded-full bg-gradient-to-br from-[#B088F9] to-[#D8B4FE] flex items-center justify-center mb-6 mx-auto shadow-[0_0_20px_rgba(176,136,249,0.4)]"
-                    whileHover={{ scale: 1.1, rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
+                <Card className="p-8 text-center bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full flex flex-col">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 flex items-center justify-center mb-6 mx-auto">
                     <Sparkles className="w-10 h-10 text-white" />
-                  </motion.div>
-                  <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">AI Listener</h3>
-                  <p className="text-gray-600 dark:text-[#BFC3D1] mb-4">
-                    Instant empathy, available 24/7
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">AI Listener</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">
+                    Instant, confidential, and available 24/7. Perfect for when you need to talk right away.
                   </p>
                   <Button
                     onClick={handleStartTalking}
                     variant="outline"
-                    className="border-[#7CB9E8] text-[#7CB9E8] dark:border-[#BCA7FF] dark:text-[#BCA7FF] hover:bg-gradient-to-r hover:from-[#B088F9] hover:to-[#D8B4FE] hover:text-white"
+                    className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white rounded-full"
                   >
                     Try AI Chat
                   </Button>
                 </Card>
               </motion.div>
 
-              {/* Hybrid */}
+              {/* Hybrid Support Card */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -8, scale: 1.02 }}
               >
-                <Card className="p-8 text-center border-2 border-[#B088F9] shadow-xl hover:shadow-2xl shadow-[0_8px_40px_rgba(176,136,249,0.3)] bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] relative overflow-hidden transition-all interactive-card">
-                  <motion.div
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <Badge className="absolute top-4 right-4 bg-gradient-to-r from-[#B088F9] to-[#D8B4FE] text-white">Popular</Badge>
-                  </motion.div>
-                  <div className="flex items-center justify-center gap-3 mb-6">
-                    <motion.div 
-                      className="w-16 h-16 rounded-full bg-gradient-to-br from-[#B088F9] to-[#D8B4FE] flex items-center justify-center"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    >
+                <Card className="p-8 text-center bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full flex flex-col border-2 border-purple-500 relative">
+                  <Badge className="absolute top-4 right-4 bg-purple-500 text-white">Popular</Badge>
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center mb-6 mx-auto">
+                    <div className="flex items-center justify-center gap-2">
                       <Sparkles className="w-8 h-8 text-white" />
-                    </motion.div>
-                    <div className="flex flex-col gap-1">
-                      <motion.div 
-                        className="w-2 h-2 rounded-full bg-[#B088F9]"
-                        animate={{ scale: [1, 1.5, 1] }}
-                        transition={{ duration: 1, repeat: Infinity, delay: 0 }}
-                      />
-                      <motion.div 
-                        className="w-2 h-2 rounded-full bg-[#BFA2DB]"
-                        animate={{ scale: [1, 1.5, 1] }}
-                        transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
-                      />
-                      <motion.div 
-                        className="w-2 h-2 rounded-full bg-[#F8C8DC]"
-                        animate={{ scale: [1, 1.5, 1] }}
-                        transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
-                      />
-                    </div>
-                    <motion.div 
-                      className="w-16 h-16 rounded-full bg-gradient-to-br from-[#F8C8DC] to-[#9BE4D8] flex items-center justify-center"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
                       <Heart className="w-8 h-8 text-white fill-white" />
-                    </motion.div>
+                    </div>
                   </div>
-                  <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">Hybrid Support</h3>
-                  <p className="text-gray-600 dark:text-[#BFC3D1] mb-4">
-                    Start with AI, upgrade to human
+                  <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">Hybrid Support</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">
+                    The best of both worlds. Start with our AI and seamlessly transition to a human listener if you need to.
                   </p>
                   <Button
                     onClick={() => onNavigate("connect")}
-                    className="gradient-sky-lavender border-0 w-full"
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-full rounded-full"
                   >
                     Get Started
                   </Button>
                 </Card>
               </motion.div>
 
-              {/* Human Side */}
+              {/* Human Listener Card */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -10 }}
+                whileHover={{ y: -8, scale: 1.02 }}
               >
-                <Card className="p-8 text-center border-0 shadow-lg hover:shadow-2xl transition-all bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] interactive-card">
-                  <motion.div 
-                    className="w-20 h-20 rounded-full bg-gradient-to-br from-[#F8C8DC] to-[#9BE4D8] flex items-center justify-center mb-6 mx-auto"
-                    whileHover={{ scale: 1.1, rotate: -360 }}
-                    transition={{ duration: 0.6 }}
-                  >
+                <Card className="p-8 text-center bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full flex flex-col">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-pink-400 to-pink-500 flex items-center justify-center mb-6 mx-auto">
                     <Users className="w-10 h-10 text-white" />
-                  </motion.div>
-                  <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">Human Listener</h3>
-                  <p className="text-gray-600 dark:text-[#BFC3D1] mb-4">
-                    Real connection, genuine care
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">Human Listener</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">
+                    Connect with a real, empathetic person for genuine understanding and deep connection.
                   </p>
                   <Button
                     onClick={() => onNavigate("connect")}
                     variant="outline"
-                    className="border-[#7CB9E8] text-[#7CB9E8] dark:border-[#BFA2DB] dark:text-[#BFA2DB] hover:bg-gradient-to-r hover:from-[#BFA2DB] hover:to-[#F8C8DC] hover:text-white"
+                    className="border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white rounded-full"
                   >
                     Connect Now
                   </Button>
@@ -575,46 +228,40 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
       </section>
 
       {/* Why Unmutte Section */}
-      <section className="py-20 bg-gradient-soft">
+      <section className="py-20 bg-white dark:bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="mb-4">Why Choose Unmutte?</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              We combine the best of technology and human compassion to create
-              a truly supportive environment.
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Unmutte?</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              We combine the best of technology and human compassion to create a truly supportive and secure environment for you.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
-              { icon: Shield, gradient: "from-[#7CB9E8] to-[#BFA2DB]", title: "100% Anonymous", desc: "No names, no profiles. Your identity is completely protected. Share freely without fear of judgment." },
-              { icon: MessageCircle, gradient: "from-[#BFA2DB] to-[#F8C8DC]", title: "AI-Powered Empathy", desc: "Our advanced AI provides instant, thoughtful responses that help you process your emotions." },
-              { icon: Users, gradient: "from-[#F8C8DC] to-[#A8E6CF]", title: "Real Human Listeners", desc: "Connect with trained, empathetic listeners who genuinely care and understand." },
-              { icon: Video, gradient: "from-[#7CB9E8] to-[#A8E6CF]", title: "Voice & Video Calls", desc: "Sometimes text isn't enough. Connect through voice or video for deeper, more meaningful conversations." },
-              { icon: Lock, gradient: "from-[#BFA2DB] to-[#7CB9E8]", title: "Encrypted & Secure", desc: "All conversations are end-to-end encrypted. Your privacy and safety are our top priorities." },
-              { icon: Heart, gradient: "from-[#F8C8DC] to-[#7CB9E8]", title: "Judgment-Free Zone", desc: "Express yourself authentically. This is a safe space built on compassion and understanding.", fill: true },
+              { icon: Shield, title: "100% Anonymous", desc: "Share freely without fear of judgment. Your identity is completely protected." },
+              { icon: MessageCircle, title: "AI-Powered Empathy", desc: "Our advanced AI provides instant, thoughtful responses 24/7." },
+              { icon: Users, title: "Real Human Listeners", desc: "Connect with trained, empathetic listeners who genuinely care." },
+              { icon: Video, title: "Voice & Video Calls", desc: "Connect through voice or video for deeper, more meaningful conversations." },
+              { icon: Lock, title: "Encrypted & Secure", desc: "All conversations are end-to-end encrypted. Your privacy is our priority." },
+              { icon: Heart, title: "Judgment-Free Zone", desc: "Express yourself authentically in a space built on compassion.", fill: true },
             ].map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  whileHover={{ y: -8, scale: 1.02 }}
                 >
-                  <Card className="p-8 hover:shadow-2xl transition-all duration-300 border-0 bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A] h-full interactive-card">
-                    <motion.div 
-                      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6`}
-                      whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
-                      transition={{ duration: 0.5 }}
-                    >
+                  <div className="p-8 bg-gray-50 dark:bg-gray-900 rounded-2xl h-full text-center">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center mb-6 mx-auto">
                       <Icon className={`w-8 h-8 text-white ${feature.fill ? 'fill-white' : ''}`} />
-                    </motion.div>
-                    <h3 className="mb-3">{feature.title}</h3>
-                    <p className="text-muted-foreground">{feature.desc}</p>
-                  </Card>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">{feature.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400">{feature.desc}</p>
+                  </div>
                 </motion.div>
               );
             })}
@@ -623,49 +270,63 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
       </section>
 
       {/* Wellness Tools Section */}
-      <section className="py-20 bg-gradient-soft">
+      <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="mb-4">Track Your Emotional Journey</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Use our mood tracking and journaling tools to understand your emotions better
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">Track Your Emotional Journey</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Use our mood tracking and journaling tools to understand your emotions better and gain valuable insights.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <Card className="p-8 border border-purple-100 dark:border-0 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A]">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#B088F9] to-[#D8B4FE] flex items-center justify-center mb-6">
-                <BookOpen className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">Mood Journal</h3>
-              <p className="text-gray-600 dark:text-[#BFC3D1] mb-6">
-                Write freely about your feelings and experiences. Track your emotional journey with our private, secure journal.
-              </p>
-              <Button
-                onClick={() => onNavigate("journal")}
-                variant="outline"
-                className="border-[#BCA7FF] text-[#BCA7FF] hover:bg-gradient-to-r hover:from-[#B088F9] hover:to-[#D8B4FE] hover:text-white"
-              >
-                Start Journaling
-              </Button>
-            </Card>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-full flex flex-col">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-500 flex items-center justify-center mb-6">
+                  <BookOpen className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">Mood Journal</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">
+                  Write freely about your feelings and experiences. Track your emotional journey with our private, secure journal.
+                </p>
+                <Button
+                  onClick={() => onNavigate("journal")}
+                  variant="outline"
+                  className="border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white rounded-full"
+                >
+                  Start Journaling
+                </Button>
+              </Card>
+            </motion.div>
 
-            <Card className="p-8 border border-pink-100 dark:border-0 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-gradient-to-br dark:from-[#1E1E2E] dark:to-[#2A2A3A]">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F8C8DC] to-[#9BE4D8] flex items-center justify-center mb-6">
-                <Activity className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="mb-3 text-gray-900 dark:text-[#FFFFFF]">Mood Tracker</h3>
-              <p className="text-gray-600 dark:text-[#BFC3D1] mb-6">
-                Log your daily mood and visualize patterns over time. Discover insights about your emotional wellbeing.
-              </p>
-              <Button
-                onClick={() => onNavigate("tracker")}
-                variant="outline"
-                className="border-[#BFA2DB] text-[#BFA2DB] hover:bg-gradient-to-r hover:from-[#BFA2DB] hover:to-[#F8C8DC] hover:text-white"
-              >
-                Track Your Mood
-              </Button>
-            </Card>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-full flex flex-col">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-pink-500 flex items-center justify-center mb-6">
+                  <Activity className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">Mood Tracker</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">
+                  Log your daily mood and visualize patterns over time. Discover insights about your emotional wellbeing.
+                </p>
+                <Button
+                  onClick={() => onNavigate("tracker")}
+                  variant="outline"
+                  className="border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white rounded-full"
+                >
+                  Track Your Mood
+                </Button>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -674,23 +335,31 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
       <section className="py-20 bg-white dark:bg-black">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="mb-4 text-gray-900 dark:text-white">People Are Finding Their Voice</h2>
-            <p className="text-lg text-gray-600 dark:text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">People Are Finding Their Voice</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Join thousands who have found comfort and connection through Unmutte.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="p-8 border border-blue-100 dark:border-0 shadow-lg hover:shadow-xl transition-shadow bg-white dark:bg-[#1E1E2E]">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-[#7CB9E8] text-[#7CB9E8]" />
-                  ))}
-                </div>
-                <p className="text-gray-800 dark:text-foreground mb-6 italic">"{testimonial.quote}"</p>
-                <p className="text-sm text-gray-500 dark:text-muted-foreground">— {testimonial.author}</p>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+                viewport={{ once: true }}
+              >
+                <Card className="p-8 bg-gray-50 dark:bg-gray-900 rounded-2xl h-full flex flex-col">
+                  <div className="flex gap-1 mb-4 text-yellow-400">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 dark:text-gray-300 mb-6 italic flex-grow">"{testimonial.quote}"</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">— {testimonial.author}</p>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>

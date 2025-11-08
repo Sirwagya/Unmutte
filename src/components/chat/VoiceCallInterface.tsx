@@ -12,7 +12,6 @@ import {
   Volume2,
   VolumeX,
   MoreVertical,
-  Video,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { PostSessionFeedbackModal, type FeedbackData } from "../PostSessionFeedbackModal";
@@ -20,13 +19,11 @@ import { toast } from "sonner@2.0.3";
 
 interface VoiceCallInterfaceProps {
   onClose: () => void;
-  onUpgradeToVideo?: () => void;
   listenerName?: string;
 }
 
 export function VoiceCallInterface({
   onClose,
-  onUpgradeToVideo,
   listenerName = "Listener #A247",
 }: VoiceCallInterfaceProps) {
   const [callDuration, setCallDuration] = useState(0);
@@ -171,18 +168,6 @@ export function VoiceCallInterface({
               <VolumeX className="w-6 h-6" />
             )}
           </Button>
-
-          {onUpgradeToVideo && (
-            <Button
-              size="icon"
-              variant="secondary"
-              onClick={onUpgradeToVideo}
-              className="w-16 h-16 rounded-full"
-              disabled={callStatus === "connecting"}
-            >
-              <Video className="w-6 h-6" />
-            </Button>
-          )}
         </div>
 
         {/* End Call */}

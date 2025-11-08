@@ -3,14 +3,21 @@ import mixpanel from 'mixpanel-browser';
 const RAW_TOKEN = (import.meta.env.VITE_MIXPANEL_TOKEN || '').toString();
 const MIXPANEL_TOKEN = RAW_TOKEN.trim();
 const IS_PLACEHOLDER = /REPLACE_WITH_MIXPANEL_PROJECT_TOKEN/i.test(MIXPANEL_TOKEN);
+const IS_DEV = import.meta.env.DEV;
+
 let initialized = false;
 let heartbeatTimer: number | null = null;
 
 export function initAnalytics() {
-  if (initialized || !MIXPANEL_TOKEN || IS_PLACEHOLDER) {
-    if (import.meta.env.DEV) {
+  if (initialized) {
+    return;
+  }
+  if (!MIXPANEL_TOKEN || IS_PLACEHOLDER) {
+    if (IS_DEV) {
       // Helpful hint in dev if analytics isn't configured
-      console.info('[analytics] Mixpanel disabled: missing or placeholder token');
+      console.info(
+        '[analytics] Mixpanel is disabled. Set `VITE_MIXPANEL_TOKEN` in your .env file to enable.',
+      );
     }
     return;
   }
@@ -21,8 +28,13 @@ export function initAnalytics() {
       record_sessions_percent: 100,
       persistence: 'localStorage',
       ip: false, // reduce PII automatically collected
+      debug: IS_DEV,
     });
     initialized = true;
+
+    if (IS_DEV) {
+      console.info('[analytics] Mixpanel initialized successfully.');
+    }
 
     try {
       let anonId = localStorage.getItem('unmutte_anon_id');

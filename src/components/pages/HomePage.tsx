@@ -533,7 +533,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                   </p>
                   <Button
                     onClick={() => onNavigate("connect")}
-                    className="gradient-sky-lavender border-0 w-full"
+                    className="gradient-sky-lavender border-0 w-full text-white font-semibold shadow-md hover:shadow-lg transition-all overflow-visible"
                   >
                     Get Started
                   </Button>
@@ -563,7 +563,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                   <Button
                     onClick={() => onNavigate("connect")}
                     variant="outline"
-                    className="border-[#7CB9E8] text-[#7CB9E8] dark:border-[#BFA2DB] dark:text-[#BFA2DB] hover:bg-gradient-to-r hover:from-[#BFA2DB] hover:to-[#F8C8DC] hover:text-white"
+                    className="border-2 border-[#7CB9E8] text-[#7CB9E8] dark:border-[#BFA2DB] dark:text-[#BFA2DB] hover:bg-gradient-to-r hover:from-[#BFA2DB] hover:to-[#F8C8DC] hover:text-white hover:border-transparent font-semibold transition-all overflow-visible"
                   >
                     Connect Now
                   </Button>
@@ -749,7 +749,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
               <Button
                 size="lg"
                 onClick={handleStartTalking}
-                className="bg-gradient-to-r from-[#7CB9E8] to-[#BFA2DB] text-white hover:opacity-90 text-lg px-10 py-6 border-0"
+                className="bg-gradient-to-r from-[#7CB9E8] to-[#BFA2DB] hover:from-[#6AA9D8] hover:to-[#AF92CB] text-white shadow-lg hover:shadow-xl transition-all text-lg px-10 py-6 border-0 overflow-visible"
               >
                 Get Started Free
               </Button>
@@ -757,7 +757,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                 size="lg"
                 variant="outline"
                 onClick={() => onNavigate("journal")}
-                className="bg-transparent text-gray-900 dark:text-white border-gray-300 dark:border-white/30 hover:bg-gray-100 dark:hover:bg-white/10 text-lg px-10 py-6"
+                className="bg-transparent text-gray-900 dark:text-white border-2 border-gray-300 dark:border-white/30 hover:bg-gray-100 dark:hover:bg-white/10 hover:border-gray-400 dark:hover:border-white/50 transition-all text-lg px-10 py-6 overflow-visible"
               >
                 Start Journaling
               </Button>

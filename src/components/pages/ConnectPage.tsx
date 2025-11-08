@@ -7,7 +7,6 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { AIChatInterface } from "../chat/AIChatInterface";
 import { VoiceCallInterface } from "../chat/VoiceCallInterface";
-import { VideoCallInterface } from "../chat/VideoCallInterface";
 import { CheckoutPage } from "../CheckoutPage";
 import { AgeConsentModal } from "../AgeConsentModal";
 import { motion } from "motion/react";
@@ -27,13 +26,13 @@ import { toast } from "sonner@2.0.3";
 import { Toaster } from "../ui/sonner";
 
 export function ConnectPage() {
-  const [activeInterface, setActiveInterface] = useState<"none" | "chat" | "voice" | "video">("none");
+  const [activeInterface, setActiveInterface] = useState<"none" | "chat" | "voice">("none");
   const [selectedListener, setSelectedListener] = useState<string>("Listener #A247");
   const [showCheckout, setShowCheckout] = useState(false);
   const [showAgeConsent, setShowAgeConsent] = useState(false);
   const [hasAgeConsent, setHasAgeConsent] = useState(false);
-  const [pendingServiceType, setPendingServiceType] = useState<"chat" | "voice" | "video">("chat");
-  const [servicePrice, setServicePrice] = useState(49);
+  const [pendingServiceType, setPendingServiceType] = useState<"chat" | "voice">("chat");
+  const [servicePrice, setServicePrice] = useState(149); // Default to voice call price
 
   // Check age consent on mount
   useEffect(() => {
@@ -86,17 +85,12 @@ export function ConnectPage() {
     // Check if user has age consent
     if (!hasAgeConsent) {
       setPendingServiceType("chat");
-      setServicePrice(49);
       setShowAgeConsent(true);
       return;
     }
     
-    setPendingServiceType("chat");
-    // Set price based on service type
-    const prices = { chat: 49, voice: 149, video: 199 };
-    setServicePrice(prices["chat"]);
-    // Show checkout page
-    setShowCheckout(true);
+    // AI chat is free, start immediately
+    setActiveInterface("chat");
   };
 
   const handleStartVoice = (listenerName?: string) => {
@@ -111,28 +105,8 @@ export function ConnectPage() {
     
     if (listenerName) setSelectedListener(listenerName);
     setPendingServiceType("voice");
-    // Set price based on service type
-    const prices = { chat: 49, voice: 149, video: 199 };
-    setServicePrice(prices["voice"]);
-    // Show checkout page
-    setShowCheckout(true);
-  };
-
-  const handleStartVideo = (listenerName?: string) => {
-    // Check if user has age consent
-    if (!hasAgeConsent) {
-      if (listenerName) setSelectedListener(listenerName);
-      setPendingServiceType("video");
-      setServicePrice(199);
-      setShowAgeConsent(true);
-      return;
-    }
-    
-    if (listenerName) setSelectedListener(listenerName);
-    setPendingServiceType("video");
-    // Set price based on service type
-    const prices = { chat: 49, voice: 149, video: 199 };
-    setServicePrice(prices["video"]);
+    // Set price for voice call
+    setServicePrice(149);
     // Show checkout page
     setShowCheckout(true);
   };
@@ -140,8 +114,14 @@ export function ConnectPage() {
   const handleAgeConsent = () => {
     setHasAgeConsent(true);
     setShowAgeConsent(false);
-    // After consent, proceed to checkout
-    setShowCheckout(true);
+    
+    // AI chat is free, start immediately without checkout
+    if (pendingServiceType === "chat") {
+      setActiveInterface("chat");
+    } else {
+      // For voice calls, proceed to checkout
+      setShowCheckout(true);
+    }
   };
 
   const handleCheckoutComplete = () => {
@@ -213,20 +193,11 @@ export function ConnectPage() {
         <AIChatInterface
           onClose={handleCloseInterface}
           onUpgradeToVoice={() => setActiveInterface("voice")}
-          onUpgradeToVideo={() => setActiveInterface("video")}
         />
       )}
 
       {activeInterface === "voice" && (
         <VoiceCallInterface
-          onClose={handleCloseInterface}
-          onUpgradeToVideo={() => setActiveInterface("video")}
-          listenerName={selectedListener}
-        />
-      )}
-
-      {activeInterface === "video" && (
-        <VideoCallInterface
           onClose={handleCloseInterface}
           listenerName={selectedListener}
         />
@@ -275,10 +246,10 @@ export function ConnectPage() {
       {/* Quick Start Options */}
       <section className="py-20 bg-white dark:bg-black">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <h2 className="text-center mb-12 text-gray-900 dark:text-white">Choose Your Connection</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* AI Only */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -287,8 +258,8 @@ export function ConnectPage() {
                 viewport={{ once: true }}
                 whileHover={{ y: -10, scale: 1.02 }}
               >
-                <Card className="p-8 border-2 hover:border-primary transition-all duration-300 hover:shadow-2xl cursor-pointer interactive-card bg-white dark:bg-[#1E1E2E]">
-                  <div className="text-center">
+                <Card className="p-8 border-2 hover:border-primary transition-all duration-300 hover:shadow-2xl cursor-pointer interactive-card bg-white dark:bg-[#1E1E2E] h-full">
+                  <div className="text-center flex flex-col h-full">
                     <motion.div 
                       className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7CB9E8] to-[#BFA2DB] flex items-center justify-center mx-auto mb-6"
                       whileHover={{ rotate: 360, scale: 1.1 }}
@@ -298,13 +269,13 @@ export function ConnectPage() {
                     </motion.div>
                   <h3 className="mb-3">AI Listener</h3>
                   <div className="mb-4">
-                    <p className="text-3xl text-primary mb-1">₹49</p>
-                    <p className="text-xs text-muted-foreground">per session</p>
+                    <p className="text-3xl text-primary mb-1">Free</p>
+                    <p className="text-xs text-muted-foreground">unlimited access</p>
                   </div>
                   <p className="text-muted-foreground mb-6">
                     Instant empathetic support, available 24/7. Perfect for processing thoughts anytime.
                   </p>
-                  <div className="space-y-2 mb-6 text-sm">
+                  <div className="space-y-2 mb-6 text-sm flex-grow">
                     <div className="flex items-center gap-2 justify-center text-muted-foreground">
                       <Zap className="w-4 h-4 text-primary" />
                       <span>Instant connection</span>
@@ -333,14 +304,14 @@ export function ConnectPage() {
                 viewport={{ once: true }}
                 whileHover={{ y: -10, scale: 1.02 }}
               >
-                <Card className="p-8 border-2 border-primary hover:border-secondary transition-all duration-300 shadow-xl hover:shadow-2xl relative overflow-hidden interactive-card">
+                <Card className="p-8 border-2 border-primary hover:border-secondary transition-all duration-300 shadow-xl hover:shadow-2xl relative overflow-hidden interactive-card h-full">
                   <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
                     <Badge className="absolute top-4 right-4 bg-primary text-white">Popular</Badge>
                   </motion.div>
-                  <div className="text-center">
+                  <div className="text-center flex flex-col h-full">
                     <motion.div 
                       className="w-20 h-20 rounded-full bg-gradient-to-br from-[#F8C8DC] to-[#A8E6CF] flex items-center justify-center mx-auto mb-6"
                       animate={{ scale: [1, 1.05, 1] }}
@@ -356,7 +327,7 @@ export function ConnectPage() {
                   <p className="text-muted-foreground mb-6">
                     Talk it out with a trained human listener. Sometimes you need to hear a voice.
                   </p>
-                  <div className="space-y-2 mb-6 text-sm">
+                  <div className="space-y-2 mb-6 text-sm flex-grow">
                     <div className="flex items-center gap-2 justify-center text-muted-foreground">
                       <Phone className="w-4 h-4 text-secondary" />
                       <span>Audio only</span>
@@ -377,51 +348,6 @@ export function ConnectPage() {
               </Card>
               </motion.div>
 
-              {/* Video Call */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -10, scale: 1.02 }}
-              >
-                <Card className="p-8 border-2 hover:border-accent transition-all duration-300 hover:shadow-2xl cursor-pointer interactive-card">
-                  <div className="text-center">
-                    <motion.div 
-                      className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7CB9E8] to-[#A8E6CF] flex items-center justify-center mx-auto mb-6"
-                      whileHover={{ rotate: -360, scale: 1.1 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      <Video className="w-10 h-10 text-white" />
-                    </motion.div>
-                  <h3 className="mb-3">Video Call</h3>
-                  <div className="mb-4">
-                    <p className="text-3xl text-accent mb-1">₹199</p>
-                    <p className="text-xs text-muted-foreground">per session</p>
-                  </div>
-                  <p className="text-muted-foreground mb-6">
-                    Face-to-face connection with real empathy. See and be seen (if you choose).
-                  </p>
-                  <div className="space-y-2 mb-6 text-sm">
-                    <div className="flex items-center gap-2 justify-center text-muted-foreground">
-                      <Video className="w-4 h-4 text-accent" />
-                      <span>Video + audio</span>
-                    </div>
-                    <div className="flex items-center gap-2 justify-center text-muted-foreground">
-                      <Clock className="w-4 h-4 text-accent" />
-                      <span>Book a session</span>
-                    </div>
-                    <div className="flex items-center gap-2 justify-center text-muted-foreground">
-                      <Shield className="w-4 h-4 text-accent" />
-                      <span>Camera optional</span>
-                    </div>
-                  </div>
-                  <Button onClick={() => handleStartVideo()} variant="outline" className="w-full">
-                    Start Video Call
-                  </Button>
-                </div>
-              </Card>
-              </motion.div>
             </div>
           </div>
         </div>

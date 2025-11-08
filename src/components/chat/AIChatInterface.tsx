@@ -32,10 +32,9 @@ interface Message {
 interface AIChatInterfaceProps {
   onClose: () => void;
   onUpgradeToVoice?: () => void;
-  onUpgradeToVideo?: () => void;
 }
 
-export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }: AIChatInterfaceProps) {
+export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -53,6 +52,8 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const recognitionRef = useRef<any>(null);
+  const [isTranscribing, setIsTranscribing] = useState(false);
 
   // Auto scroll to bottom when new messages arrive
   useEffect(() => {
@@ -301,39 +302,92 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
       if (!granted) return;
     }
 
+    // Check if Web Speech API is supported
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      toast.error("Speech recognition not supported", {
+        description: "Your browser doesn't support voice transcription. Please use Chrome or Edge.",
+      });
+      return;
+    }
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
 
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
+      let finalTranscript = '';
+      let interimTranscript = '';
 
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        // Simulate voice-to-text conversion
-        const transcribedText = "Voice message: This is a simulated transcription of your voice message.";
-        setInputValue(transcribedText);
-        
-        // Stop all tracks
-        stream.getTracks().forEach(track => track.stop());
-        
-        toast.success("Voice recorded!", {
-          description: "Your voice has been transcribed. Edit if needed, then send.",
+      recognition.onstart = () => {
+        setIsRecording(true);
+        setIsTranscribing(true);
+        toast.success("Recording started", {
+          description: "Speak now. I'm listening...",
         });
       };
 
-      mediaRecorder.start();
-      setIsRecording(true);
-      toast.success("Recording started", {
-        description: "Speak now. Click again to stop.",
-      });
+      recognition.onresult = (event: any) => {
+        interimTranscript = '';
+        finalTranscript = '';
+
+        for (let i = 0; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+
+        // Update input value with transcription (show interim results)
+        const fullText = (finalTranscript + interimTranscript).trim();
+        if (fullText) {
+          setInputValue(fullText);
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        setIsRecording(false);
+        setIsTranscribing(false);
+        
+        let errorMessage = "Voice recognition failed";
+        let description = "Please try again.";
+        
+        if (event.error === 'no-speech') {
+          errorMessage = "No speech detected";
+          description = "Please speak louder or check your microphone.";
+        } else if (event.error === 'network') {
+          errorMessage = "Network error";
+          description = "Please check your internet connection.";
+        } else if (event.error === 'not-allowed') {
+          errorMessage = "Microphone blocked";
+          description = "Please enable microphone access in your browser settings.";
+          setMicPermission('denied');
+        }
+        
+        toast.error(errorMessage, { description });
+      };
+
+      recognition.onend = () => {
+        setIsRecording(false);
+        setIsTranscribing(false);
+        
+        if (inputValue.trim()) {
+          toast.success("Voice recorded!", {
+            description: "Your voice has been transcribed. Edit if needed, then send.",
+          });
+        }
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+      
     } catch (error) {
-      console.error("Error accessing microphone:", error);
+      console.error("Error starting speech recognition:", error);
       setMicPermission('denied');
       toast.error("Microphone access failed", {
         description: "Unable to access your microphone. Please check your browser settings.",
@@ -342,9 +396,10 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
+    if (recognitionRef.current && isRecording) {
+      recognitionRef.current.stop();
       setIsRecording(false);
+      setIsTranscribing(false);
     }
   };
 
@@ -376,15 +431,26 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
   }
 
   return (
-    <motion.div
-      initial={{ scale: 0.95, opacity: 0, y: 20 }}
-      animate={{ scale: 1, opacity: 1, y: 0 }}
-      exit={{ scale: 0.95, opacity: 0, y: 20 }}
-      className="fixed inset-4 md:inset-auto md:bottom-4 md:right-4 md:w-[450px] md:h-[700px] z-50"
-    >
-      <Card className="h-full flex flex-col shadow-2xl border-2 border-primary/20 px-[0px] pt-[60px] pr-[0px] pb-[20px] pl-[0px]">
+    <>
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+        onClick={() => setShowFeedback(true)}
+      />
+      
+      {/* Chat Window */}
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        className="fixed inset-4 md:inset-auto md:bottom-4 md:right-4 md:w-[450px] md:h-[700px] z-50"
+      >
+        <Card className="h-full flex flex-col shadow-2xl border-2 border-primary/20 p-0 overflow-hidden">
         {/* Header */}
-        <div className="gradient-sky-lavender p-4 flex items-center justify-between text-white rounded-t-lg">
+        <div className="gradient-sky-lavender p-4 flex items-center justify-between text-white">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
               <Bot className="w-6 h-6" />
@@ -421,7 +487,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
         {/* Upgrade options */}
         <div className="p-3 bg-gradient-soft border-b flex items-center gap-2">
           <p className="text-sm text-muted-foreground flex-grow">
-            Need more support?
+            Need voice support?
           </p>
           <Button
             size="sm"
@@ -430,16 +496,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
             className="text-xs"
           >
             <Phone className="w-3 h-3 mr-1" />
-            Voice
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={onUpgradeToVideo}
-            className="text-xs"
-          >
-            <Video className="w-3 h-3 mr-1" />
-            Video
+            Voice Call
           </Button>
         </div>
 
@@ -456,7 +513,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
                 }`}
               >
                 <div
-                  className={`flex gap-3 max-w-[80%] ${
+                  className={`flex gap-3 max-w-[85%] ${
                     message.sender === "user" ? "flex-row-reverse" : "flex-row"
                   }`}
                 >
@@ -471,7 +528,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
                       {message.sender === "ai" ? <Bot className="w-4 h-4" /> : "You"}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
+                  <div className="flex-1 min-w-0">
                     <div
                       className={`rounded-2xl p-3 ${
                         message.sender === "user"
@@ -479,7 +536,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
                           : "bg-muted"
                       }`}
                     >
-                      <p className="text-sm leading-relaxed">{message.text}</p>
+                      <p className="text-sm leading-relaxed break-words">{message.text}</p>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 px-1">
                       {message.timestamp.toLocaleTimeString([], {
@@ -527,6 +584,12 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
 
         {/* Input */}
         <div className="p-4 border-t bg-white dark:bg-slate-900">
+          {isTranscribing && (
+            <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+              <span>Listening and transcribing...</span>
+            </div>
+          )}
           <div className="flex gap-2">
             <Textarea
               value={inputValue}
@@ -594,6 +657,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
           </p>
         </div>
       </Card>
+      </motion.div>
 
       {/* Post-Session Feedback Modal */}
       <PostSessionFeedbackModal
@@ -618,6 +682,6 @@ export function AIChatInterface({ onClose, onUpgradeToVoice, onUpgradeToVideo }:
           window.location.href = "/#/connect";
         }}
       />
-    </motion.div>
+    </>
   );
 }

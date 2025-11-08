@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { Bot, Phone, Video, X, MessageCircle, Sparkles } from "lucide-react";
+import { Bot, Phone, X, MessageCircle, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface QuickAccessFABProps {
   onStartChat: () => void;
   onStartVoice: () => void;
-  onStartVideo: () => void;
   onStartGame?: () => void;
 }
 
-export function QuickAccessFAB({ onStartChat, onStartVoice, onStartVideo, onStartGame }: QuickAccessFABProps) {
+export function QuickAccessFAB({ onStartChat, onStartVoice, onStartGame }: QuickAccessFABProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -50,18 +49,6 @@ export function QuickAccessFAB({ onStartChat, onStartVoice, onStartVideo, onStar
                 >
                   <Phone className="w-4 h-4 mr-2" />
                   Voice Call
-                </Button>
-
-                <Button
-                  onClick={() => {
-                    onStartVideo();
-                    setIsOpen(false);
-                  }}
-                  className="w-full justify-start bg-gradient-to-r from-[#7CB9E8] to-[#A8E6CF] hover:opacity-90 text-white border-0"
-                  size="sm"
-                >
-                  <Video className="w-4 h-4 mr-2" />
-                  Video Call
                 </Button>
 
                 {onStartGame && (

@@ -5,9 +5,7 @@ import { QuickAccessFAB } from "./components/QuickAccessFAB";
 import { WelcomeModal } from "./components/WelcomeModal";
 import { AIChatInterface } from "./components/chat/AIChatInterface";
 import { VoiceCallInterface } from "./components/chat/VoiceCallInterface";
-import { VideoCallInterface } from "./components/chat/VideoCallInterface";
-import {
-  SmashStressGame,
+import SmashStressGame, {
   type GameResults,
 } from "./components/SmashStressGame";
 import { toast } from "sonner@2.0.3";
@@ -26,7 +24,7 @@ import { Toaster } from "./components/ui/sonner";
 export default function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [activeInterface, setActiveInterface] = useState<
-    "none" | "chat" | "voice" | "video" | "game"
+    "none" | "chat" | "voice" | "game"
   >("none");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -78,10 +76,6 @@ export default function App() {
 
   const handleStartVoice = () => {
     setActiveInterface("voice");
-  };
-
-  const handleStartVideo = () => {
-    setActiveInterface("video");
   };
 
   const handleCloseInterface = () => {
@@ -151,19 +145,13 @@ export default function App() {
         <AIChatInterface
           onClose={handleCloseInterface}
           onUpgradeToVoice={handleStartVoice}
-          onUpgradeToVideo={handleStartVideo}
         />
       )}
 
       {activeInterface === "voice" && (
         <VoiceCallInterface
           onClose={handleCloseInterface}
-          onUpgradeToVideo={handleStartVideo}
         />
-      )}
-
-      {activeInterface === "video" && (
-        <VideoCallInterface onClose={handleCloseInterface} />
       )}
 
       <Navigation
@@ -185,7 +173,6 @@ export default function App() {
           <QuickAccessFAB
             onStartChat={handleStartChat}
             onStartVoice={handleStartVoice}
-            onStartVideo={handleStartVideo}
           />
         )}
 

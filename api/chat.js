@@ -6,16 +6,15 @@ const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
 const NVIDIA_CHAT_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 
 const PREFERRED_GEMINI = [
-  'gemini-2.5-flash',
-  'gemini-2.5-pro',
+  'gemini-2.0-flash-exp',
   'gemini-2.0-flash',
-  'gemini-2.0-flash-lite',
-  'gemini-1.5-flash',
   'gemini-1.5-flash-latest',
+  'gemini-1.5-flash',
+  'gemini-1.5-flash-8b',
   'gemini-1.5-pro',
+  'gemini-1.5-pro-latest',
   'gemini-1.0-pro',
   'gemini-pro',
-  'gemini-pro-vision',
 ];
 
 const NVIDIA_PREFERRED_MODELS = [

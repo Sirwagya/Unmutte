@@ -19,6 +19,12 @@
 
   Dev server runs on http://localhost:3000 (configurable in `vite.config.ts`).
 
+  ## Live Demo
+
+  Production deployment (Vercel): https://unmutte.vercel.app
+
+  Use this link to quickly verify UI changes, AI chat responses, and performance in a production-like environment. Note that environment variables for AI provider (Gemini/NVIDIA) must be set in the Vercel project for the chat to return real model output.
+
   If you want the AI chat to work locally (calls `/api/chat`), run the Netlify function runtime:
 
   ```sh

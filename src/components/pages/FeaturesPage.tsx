@@ -54,7 +54,7 @@ export function FeaturesPage() {
                       </div>
                       <div>
                         <h2 className="text-gray-900 font-semibold tracking-tight">AI-Powered Empathy</h2>
-                        <p className="text-gray-600 text-sm">Powered by GPT-4.1</p>
+                        <p className="text-gray-600 text-sm">Powered by AI</p>
                       </div>
                     </div>
                     

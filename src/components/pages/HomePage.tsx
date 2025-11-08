@@ -170,7 +170,8 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
           </div>
         )}
 
-        <div className="container mx-auto px-4 relative z-0">
+  {/* Ensure hero content sits beneath global modals/dialogs */}
+  <div className="container mx-auto px-4 relative z-0 isolate">
           <div className="max-w-5xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -457,7 +458,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                   size="lg"
                   onClick={handleStartTalking}
                   aria-label="Start a conversation with the AI listener"
-                  className="gradient-sky-lavender border-0 text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all"
+                  className="gradient-sky-lavender border-0 text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all relative z-[1]"
                 >
                   Start a conversation
                 </Button>
@@ -466,7 +467,7 @@ export function HomePage({ onNavigate, onStartTalking }: HomePageProps) {
                   variant="outline"
                   onClick={() => onNavigate("about")}
                   aria-label="Learn how Unmutte works"
-                  className="text-lg px-10 py-6 border-2"
+                  className="text-lg px-10 py-6 border-2 relative z-[1]"
                 >
                   How it works
                 </Button>

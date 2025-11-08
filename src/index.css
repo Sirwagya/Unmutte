@@ -219,6 +219,14 @@
     font-feature-settings: var(--default-font-feature-settings, normal);
     font-variation-settings: var(--default-font-variation-settings, normal);
     -webkit-tap-highlight-color: transparent;
+      /* Smooth scroll for better UX; respect reduced motion preference */
+      scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html, :host {
+      scroll-behavior: auto; /* Disable smooth scrolling for users who prefer reduced motion */
+    }
   }
 
   body {

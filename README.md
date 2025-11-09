@@ -1,8 +1,4 @@
 
-  # Create Anonymous Feedback Feature
-
-  This is a code bundle for Create Anonymous Feedback Feature. The original project is available at https://www.figma.com/design/1KzsU9yw0AzGEypaGoHVPx/Create-Anonymous-Feedback-Feature.
-
   ## Run locally
 
   1) Install dependencies

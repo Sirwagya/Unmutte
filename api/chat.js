@@ -6,10 +6,10 @@ const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models
 const NVIDIA_CHAT_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 
 const PREFERRED_GEMINI_MODELS = [
+  "gemini-3-pro-preview",
   "gemini-1.5-flash-latest",
   "gemini-1.5-pro-latest",
   "gemini-pro",
-  "gemini-3-pro-preview",
 ];
 
 const NVIDIA_PREFERRED_MODELS = [

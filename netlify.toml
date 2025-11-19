@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
+
+[dev]
+  # Vite dev server runs on 3000; make Netlify Dev serve on a fixed port to support Vite proxy
+  targetPort = 3000
+  port = 8889
+  autoLaunch = true
+
+# Clean route for the function
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/gemini-chat"
+  status = 200
+  force = true

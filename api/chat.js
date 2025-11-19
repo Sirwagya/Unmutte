@@ -30,6 +30,47 @@ const sendStream = (res, initialChunk) => {
   };
 };
 
+const pipeResponseStream = async (body, stream) => {
+  if (!body) {
+    stream.end();
+    return;
+  }
+
+  const writeChunk = (chunk) => {
+    if (!chunk) return;
+    if (typeof chunk === "string") {
+      stream.write(chunk);
+      return;
+    }
+    const bufferChunk = Buffer.isBuffer(chunk)
+      ? chunk
+      : Buffer.from(chunk);
+    stream.write(bufferChunk);
+  };
+
+  if (typeof body.getReader === "function") {
+    const reader = body.getReader();
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        writeChunk(value);
+      }
+    } finally {
+      stream.end();
+    }
+    return;
+  }
+
+  try {
+    for await (const chunk of body) {
+      writeChunk(chunk);
+    }
+  } finally {
+    stream.end();
+  }
+};
+
 const getApiKey = (envVar) => (process.env[envVar] || "").trim().replace(/^['"]|['"]$/g, "");
 
 const validateRequestBody = (body) => {
@@ -99,10 +140,7 @@ const handleNvidiaRequest = async (res, apiKey, messages, modelOverride) => {
 
       if (response.ok) {
         const stream = sendStream(res, `{"model": "${model}", "provider": "nvidia"}\n`);
-        for await (const chunk of response.body) {
-          stream.write(chunk);
-        }
-        stream.end();
+        await pipeResponseStream(response.body, stream);
         return;
       }
     } catch (error) {
@@ -138,10 +176,7 @@ const handleGeminiRequest = async (res, apiKey, contents, modelOverride) => {
 
       if (response.ok) {
         const stream = sendStream(res, `{"model": "${model}", "provider": "gemini"}\n`);
-        for await (const chunk of response.body) {
-          stream.write(chunk);
-        }
-        stream.end();
+        await pipeResponseStream(response.body, stream);
         return;
       }
     } catch (error) {

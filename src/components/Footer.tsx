@@ -29,60 +29,88 @@ export function Footer({ onNavigate }: FooterProps) {
             <h4 className="mb-4 text-gray-900">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <button
-                  onClick={() => onNavigate("home")}
+                <a
+                  href="#home"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("home");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   Home
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate("about")}
+                <a
+                  href="#about"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("about");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   About Us
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate("features")}
+                <a
+                  href="#features"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("features");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   Features
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate("journal")}
+                <a
+                  href="#journal"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("journal");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   Mood Journal
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate("tracker")}
+                <a
+                  href="#tracker"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("tracker");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   Mood Tracker
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate("resources")}
+                <a
+                  href="#resources"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("resources");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   Resources
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate("community")}
+                <a
+                  href="#community"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("community");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   Community
-                </button>
+                </a>
               </li>
             </ul>
           </div>
@@ -92,20 +120,28 @@ export function Footer({ onNavigate }: FooterProps) {
             <h4 className="mb-4 text-gray-900">Connect</h4>
             <ul className="space-y-2">
               <li>
-                <button
-                  onClick={() => onNavigate("connect")}
+                <a
+                  href="#connect"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("connect");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   Start Talking
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => onNavigate("contact")}
+                <a
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate("contact");
+                  }}
                   className="text-gray-600 hover:text-primary transition-colors"
                 >
                   Contact Us
-                </button>
+                </a>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-primary transition-colors">
@@ -138,27 +174,39 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600">
           <p>© 2025 Unmutte. All rights reserved.</p>
           <div className="flex items-center gap-6">
-            <button
-              onClick={() => onNavigate("privacy")}
+            <a
+              href="#privacy"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate("privacy");
+              }}
               className="hover:text-primary transition-colors"
               aria-label="View Privacy Policy"
             >
               Privacy Policy
-            </button>
-            <button
-              onClick={() => onNavigate("terms")}
+            </a>
+            <a
+              href="#terms"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate("terms");
+              }}
               className="hover:text-primary transition-colors"
               aria-label="View Terms of Service"
             >
               Terms of Service
-            </button>
-            <button
-              onClick={() => onNavigate("cookies")}
+            </a>
+            <a
+              href="#cookies"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate("cookies");
+              }}
               className="hover:text-primary transition-colors"
               aria-label="View Cookie Policy"
             >
               Cookie Policy
-            </button>
+            </a>
           </div>
         </div>
       </div>

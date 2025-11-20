@@ -10,7 +10,7 @@ import { Slider } from "../ui/slider";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Activity, TrendingUp, Calendar as CalendarIcon, Smile, Meh, Frown, AlertCircle, CheckCircle, Heart, Download, Upload, Zap, Users, Coffee, Moon, Droplets, Wind, Sun, CloudRain } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { trackEvent } from "../../lib/analytics";
 
 interface MoodEntry {
@@ -109,9 +109,9 @@ export function MoodTrackerPage() {
     const existingIndex = moodEntries.findIndex(entry => entry.date === today);
     
     const newEntry: MoodEntry = {
-      date: today,
+      date: today || "",
       mood: selectedMood,
-      moodLabel: moodData?.label || "",
+      moodLabel: moodData?.label ?? "Unknown",
       energyLevel,
       sleepQuality,
       stressLevel,
@@ -449,7 +449,7 @@ export function MoodTrackerPage() {
                     </div>
                     <Slider
                       value={[energyLevel]}
-                      onValueChange={(val) => setEnergyLevel(val[0])}
+                      onValueChange={(val) => setEnergyLevel(val[0] || 3)}
                       min={1}
                       max={5}
                       step={1}
@@ -477,7 +477,7 @@ export function MoodTrackerPage() {
                     </div>
                     <Slider
                       value={[sleepQuality]}
-                      onValueChange={(val) => setSleepQuality(val[0])}
+                      onValueChange={(val) => setSleepQuality(val[0] || 3)}
                       min={1}
                       max={5}
                       step={1}
@@ -505,7 +505,7 @@ export function MoodTrackerPage() {
                     </div>
                     <Slider
                       value={[stressLevel]}
-                      onValueChange={(val) => setStressLevel(val[0])}
+                      onValueChange={(val) => setStressLevel(val[0] || 3)}
                       min={1}
                       max={5}
                       step={1}
@@ -533,7 +533,7 @@ export function MoodTrackerPage() {
                     </div>
                     <Slider
                       value={[physicalActivity]}
-                      onValueChange={(val) => setPhysicalActivity(val[0])}
+                      onValueChange={(val) => setPhysicalActivity(val[0] || 3)}
                       min={1}
                       max={5}
                       step={1}
@@ -561,7 +561,7 @@ export function MoodTrackerPage() {
                     </div>
                     <Slider
                       value={[socialInteraction]}
-                      onValueChange={(val) => setSocialInteraction(val[0])}
+                      onValueChange={(val) => setSocialInteraction(val[0] || 3)}
                       min={1}
                       max={5}
                       step={1}
@@ -736,13 +736,13 @@ export function MoodTrackerPage() {
                             if (active && payload && payload.length) {
                               return (
                                 <div className="bg-white p-3 rounded-lg shadow-lg border">
-                                  <p className="text-sm">{payload[0].payload.date}</p>
-                                  <p className="font-semibold" style={{ color: payload[0].color }}>
-                                    Mood: {payload[0].payload.moodLabel}
+                                  <p className="text-sm">{payload[0]?.payload.date}</p>
+                                  <p className="font-semibold" style={{ color: payload[0]?.color }}>
+                                    Mood: {payload[0]?.payload.moodLabel}
                                   </p>
                                   {payload[1] && (
-                                    <p className="text-sm" style={{ color: payload[1].color }}>
-                                      Energy: {payload[1].value}/5
+                                    <p className="text-sm" style={{ color: payload[1]?.color }}>
+                                      Energy: {payload[1]?.value}/5
                                     </p>
                                   )}
                                 </div>

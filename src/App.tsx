@@ -6,7 +6,7 @@ import { WelcomeModal } from "./components/WelcomeModal";
 import { AIChatInterface } from "./components/chat/AIChatInterface";
 import { VoiceCallInterface } from "./components/chat/VoiceCallInterface";
 import SmashStressGame, { type GameResults } from "./components/SmashStressGame";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { Toaster } from "./components/ui/sonner";
 
 const HomePage = lazy(() =>
@@ -86,16 +86,13 @@ export default function App() {
     localStorage.getItem("unmutte_high_risk") === "true";
 
   useEffect(() => {
-    // Ensure dark mode class is removed
-    document.documentElement.classList.remove("dark");
-  }, []);
-
-  useEffect(() => {
     const userEmail = localStorage.getItem("unmutte_user_email");
     if (userEmail) {
       setIsLoggedIn(true);
     }
   }, []);
+
+
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
@@ -186,7 +183,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950 transition-colors duration-300">
       {/* Welcome Modal for first-time visitors */}
       <WelcomeModal onClose={() => {}} />
 
@@ -216,7 +213,11 @@ export default function App() {
       <Navigation
         currentPage={currentPage}
         onNavigate={handleNavigate}
-        onStartTalking={handleStartChat}
+        onStartTalking={
+          currentPage === "home" || currentPage === "connect"
+            ? handleStartChat
+            : undefined
+        }
         isLoggedIn={isLoggedIn}
       />
 

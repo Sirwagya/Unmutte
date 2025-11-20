@@ -128,6 +128,8 @@ export default function SmashStressGame({
           }
 
           const bubbleType = bubbleTypes[Math.floor(Math.random() * bubbleTypes.length)];
+          if (!bubbleType) return; // Safety check
+          
           const size = 90 + Math.random() * 30;
           const maxX = Math.max(0, area.clientWidth - size - 40);
           const x = 20 + Math.random() * maxX;

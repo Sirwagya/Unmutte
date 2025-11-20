@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import { BookOpen, Plus, Edit, Trash2, Search, Calendar, Smile, Meh, Frown, Heart, AlertCircle, CheckCircle, Download, Upload, TrendingUp, TrendingDown, Minus, BarChart3, Activity, Mic, MicOff, Languages } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
 
 interface JournalEntry {
@@ -92,7 +92,7 @@ export function MoodJournalPage() {
       // Update existing entry
       setEntries(entries.map(entry => 
         entry.id === editingEntry.id 
-          ? { ...entry, title, content, mood, date: new Date().toISOString().split('T')[0] }
+          ? { ...entry, title, content, mood, date: new Date().toISOString().split('T')[0] || "" }
           : entry
       ));
       toast.success("Journal entry updated successfully!");
@@ -103,7 +103,7 @@ export function MoodJournalPage() {
         title,
         content,
         mood,
-        date: new Date().toISOString().split('T')[0],
+        date: new Date().toISOString().split('T')[0] || "",
         timestamp: Date.now(),
       };
       setEntries([newEntry, ...entries]);
@@ -491,7 +491,7 @@ export function MoodJournalPage() {
         : 0;
       
       return {
-        date: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
+        date: new Date(date || "").toLocaleDateString('en-US', { weekday: 'short' }),
         count: dayEntries.length,
         mood: avgMood,
       };
@@ -813,14 +813,14 @@ export function MoodJournalPage() {
                         <Heart className="w-5 h-5 text-[#BFA2DB]" />
                         <span className="text-2xl">
                           {moodOptions.find(m => m.value === Object.keys(stats.moodCounts).reduce((a, b) => 
-                            stats.moodCounts[a] > stats.moodCounts[b] ? a : b
+                            (stats.moodCounts[a] || 0) > (stats.moodCounts[b] || 0) ? a : b
                           ))?.emoji}
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground mb-1">Common Mood</p>
                       <p className="text-lg capitalize">
                         {Object.keys(stats.moodCounts).reduce((a, b) => 
-                          stats.moodCounts[a] > stats.moodCounts[b] ? a : b
+                          (stats.moodCounts[a] || 0) > (stats.moodCounts[b] || 0) ? a : b
                         )}
                       </p>
                     </CardContent>

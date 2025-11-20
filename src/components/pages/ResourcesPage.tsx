@@ -8,7 +8,7 @@ import { Heart, Wind, Phone, BookOpen, ExternalLink, PlayCircle, PauseCircle, Sp
 import GradientSparkles from "../icons/GradientSparkles";
 import { motion, AnimatePresence } from "motion/react";
 import SmashStressGame, { type GameResults } from "../SmashStressGame";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 export function ResourcesPage() {
   const [breathingActive, setBreathingActive] = useState(false);
@@ -38,6 +38,8 @@ export function ResourcesPage() {
 
     const updateBreathing = () => {
       const currentPhase = phases[currentPhaseIndex];
+      if (!currentPhase) return; // Safety check
+      
       const elapsed = Date.now() - startTime;
       const progress = Math.min((elapsed / currentPhase.duration) * 100, 100);
 
@@ -45,7 +47,10 @@ export function ResourcesPage() {
 
       if (progress >= 100) {
         currentPhaseIndex = (currentPhaseIndex + 1) % phases.length;
-        setBreathingPhase(phases[currentPhaseIndex].name);
+        const nextPhase = phases[currentPhaseIndex];
+        if (nextPhase) {
+          setBreathingPhase(nextPhase.name);
+        }
         startTime = Date.now();
       }
 

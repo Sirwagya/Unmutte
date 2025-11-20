@@ -13,7 +13,7 @@ import { CheckoutPage } from "../CheckoutPage";
 import { AgeConsentModal } from "../AgeConsentModal";
 import { motion } from "motion/react";
 import { Video, Phone, MessageSquare, Clock, Star, Shield, Calendar, Zap, CheckCircle2 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { Toaster } from "../ui/sonner";
 
 export function ConnectPage() {

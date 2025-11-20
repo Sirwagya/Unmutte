@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { PostSessionFeedbackModal, type FeedbackData } from "../PostSessionFeedbackModal";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface VoiceCallInterfaceProps {
   onClose: () => void;

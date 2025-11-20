@@ -60,6 +60,11 @@ export function WelcomeModal({ onClose }: WelcomeModalProps) {
   ];
 
   const currentStep = steps[step];
+  
+  if (!currentStep) {
+    return null; // Safety check
+  }
+  
   const Icon = currentStep.icon;
 
   return (

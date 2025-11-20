@@ -29,7 +29,7 @@ import {
   Edit2,
   X as XIcon,
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 import { motion, AnimatePresence } from "motion/react";
 
 interface AccountPageProps {
@@ -365,10 +365,10 @@ export function AccountPage({ isLoggedIn, onLogin, onLogout }: AccountPageProps)
     const dailyBonus = 20;
     const newCoins = coins + dailyBonus;
     setCoins(newCoins);
-    setLastClaimDate(today);
+    setLastClaimDate(today || "");
     
     localStorage.setItem("unmutte_user_coins", newCoins.toString());
-    localStorage.setItem("unmutte_last_coin_claim", today);
+    localStorage.setItem("unmutte_last_coin_claim", today || "");
 
     toast.success(`+${dailyBonus} coins claimed! 🎉`, {
       description: "Keep up your wellness journey!"
@@ -583,7 +583,7 @@ export function AccountPage({ isLoggedIn, onLogin, onLogout }: AccountPageProps)
                     <Button
                       size="icon"
                       variant="ghost"
-                      onClick={() => handleStartEditingName(userName)}
+                      onClick={() => handleStartEditingName(userName || "")}
                       className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
                       title="Edit display name"
                     >

@@ -76,6 +76,7 @@ export function QuickAccessFAB({ onStartChat, onStartVoice, onStartGame }: Quick
       <Button
         onClick={() => setIsOpen(!isOpen)}
         size="lg"
+        aria-label="Quick Access Menu"
         className="rounded-full h-16 w-16 shadow-2xl gradient-sky-lavender border-0 hover:scale-110 transition-transform"
       >
         {isOpen ? (

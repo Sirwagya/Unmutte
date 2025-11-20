@@ -2,15 +2,13 @@ import { useState } from "react";
 import { Logo } from "./Logo";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Menu, User, Sun, Moon } from "lucide-react";
+import { Menu, User } from "lucide-react";
 
 interface NavigationProps {
   currentPage: string;
   onNavigate: (page: string) => void;
   onStartTalking?: () => void;
   isLoggedIn?: boolean;
-  isDarkMode?: boolean;
-  onToggleTheme?: () => void;
 }
 
 const NAV_ITEMS = [
@@ -30,8 +28,6 @@ export function Navigation({
   onNavigate,
   onStartTalking,
   isLoggedIn,
-  isDarkMode,
-  onToggleTheme,
 }: NavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -63,6 +59,7 @@ export function Navigation({
                     : "text-gray-700 hover:text-primary-accent"
                 }`
           }
+          data-testid={`nav-link-${item.value}${isMobile ? '-mobile' : '-desktop'}`}
         >
           {item.label}
         </a>
@@ -90,25 +87,7 @@ export function Navigation({
           </div>
 
           <div className="flex items-center gap-3">
-            {onToggleTheme && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onToggleTheme}
-                className="rounded-full hover:bg-purple-500/20 transition-all duration-300"
-                aria-label={
-                  isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"
-                }
-              >
-                {isDarkMode ? (
-                  <Sun className="w-5 h-5 text-yellow-400" />
-                ) : (
-                  <Moon className="w-5 h-5 text-indigo-600" />
-                )}
-              </Button>
-            )}
-
-            <Button
+<Button
               variant="ghost"
               size="icon"
               onClick={() => onNavigate("account")}
@@ -123,6 +102,7 @@ export function Navigation({
                 onStartTalking ? onStartTalking() : onNavigate("connect")
               }
               className="hidden md:flex gradient-sky-lavender border-0"
+              data-testid="start-talking-desktop"
             >
               Start Talking
             </Button>
@@ -149,29 +129,12 @@ export function Navigation({
                       }
                     }}
                     className="gradient-sky-lavender border-0 w-full"
+                    data-testid="start-talking-mobile"
                   >
                     Start Talking
                   </Button>
 
-                  {onToggleTheme && (
-                    <Button
-                      variant="outline"
-                      onClick={onToggleTheme}
-                      className="w-full justify-start border-purple-500/30 hover:bg-purple-500/20"
-                    >
-                      {isDarkMode ? (
-                        <>
-                          <Sun className="w-5 h-5 mr-2 text-yellow-400" />
-                          Light Mode
-                        </>
-                      ) : (
-                        <>
-                          <Moon className="w-5 h-5 mr-2 text-indigo-600" />
-                          Dark Mode
-                        </>
-                      )}
-                    </Button>
-                  )}
+
                 </div>
               </SheetContent>
             </Sheet>

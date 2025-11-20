@@ -182,7 +182,7 @@ export function AIChatInterface({ onClose, onUpgradeToVoice }: AIChatInterfacePr
       "Your experience matters, and so do your feelings. What would help you feel a bit better right now?",
     ];
 
-    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)] || "";
   };
 
   async function fetchGeminiResponse(prompt: string, history: Message[]): Promise<any> {

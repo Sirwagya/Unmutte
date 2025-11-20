@@ -23,7 +23,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { Separator } from "./ui/separator";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface PostSessionFeedbackModalProps {
   isOpen: boolean;
@@ -121,6 +121,11 @@ export function PostSessionFeedbackModal({
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
   const currentQ = questions[currentQuestion];
+  
+  if (!currentQ) {
+    return null; // Safety check
+  }
+  
   const QuestionIcon = currentQ.icon;
 
   const handleAnswer = (questionId: string, answer: string | number) => {
